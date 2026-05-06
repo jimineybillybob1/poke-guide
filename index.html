@@ -3,373 +3,364 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Pokémon Lazarus — Type Guide</title>
 <meta name="description" content="Pokémon Lazarus type weakness and resistance guide — search all 1025 Pokémon instantly">
 <meta name="theme-color" content="#0a0e1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Lazarus Dex">
-<meta property="og:title" content="Pokémon Lazarus Type Guide">
-<meta property="og:description" content="Instant type weakness and resistance lookup for all 1025 Pokémon">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@300;400;600;700&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-:root {
-–bg: #0a0e1a;
-–surface: #111827;
-–surface2: #1a2235;
-–border: #2a3550;
-–accent: #f5c518;
-–accent2: #e84393;
-–text: #e8eaf6;
-–muted: #7986a8;
-
-```
---type-normal: #A8A878;
---type-fire: #F08030;
---type-water: #6890F0;
---type-electric: #F8D030;
---type-grass: #78C850;
---type-ice: #98D8D8;
---type-fighting: #C03028;
---type-poison: #A040A0;
---type-ground: #E0C068;
---type-flying: #A890F0;
---type-psychic: #F85888;
---type-bug: #A8B820;
---type-rock: #B8A038;
---type-ghost: #705898;
---type-dragon: #7038F8;
---type-dark: #705848;
---type-steel: #B8B8D0;
---type-fairy: #EE99AC;
-```
-
-}
-
-- { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; }
 
 body {
-background: var(–bg);
-color: var(–text);
-font-family: ‘Exo 2’, sans-serif;
-min-height: 100vh;
+background: #0a0e1a;
+color: #e8eaf6;
+font-family: -apple-system, BlinkMacSystemFont, “SF Pro Text”, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
+min-height: 100%;
 overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
 }
 
-/* Starfield bg */
-body::before {
-content: ‘’;
-position: fixed; inset: 0;
-background-image:
-radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
-radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
-radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.35) 0%, transparent 100%),
-radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
-radial-gradient(1px 1px at 50% 45%, rgba(255,255,255,0.25) 0%, transparent 100%),
-radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.3) 0%, transparent 100%);
-pointer-events: none; z-index: 0;
+.container {
+max-width: 680px;
+margin: 0 auto;
+padding: 0 16px 40px;
 }
 
-.container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px; }
-
+/* HEADER */
 header {
 text-align: center;
-padding: 40px 20px 30px;
+padding: 48px 16px 28px;
+}
+
+.header-icon {
+font-size: 40px;
+margin-bottom: 12px;
+display: block;
 }
 
 header h1 {
-font-family: ‘Press Start 2P’, monospace;
-font-size: clamp(14px, 3vw, 22px);
-color: var(–accent);
-text-shadow: 0 0 20px rgba(245,197,24,0.5), 3px 3px 0 rgba(0,0,0,0.8);
-margin-bottom: 8px;
-line-height: 1.6;
+font-size: 22px;
+font-weight: 800;
+letter-spacing: -0.5px;
+color: #f5c518;
+text-shadow: 0 0 30px rgba(245,197,24,0.4);
+margin-bottom: 6px;
+line-height: 1.3;
 }
 
-header p {
+header h1 span {
+display: block;
 font-size: 13px;
-color: var(–muted);
-font-weight: 300;
+font-weight: 500;
+color: #7986a8;
+letter-spacing: 3px;
+text-transform: uppercase;
+margin-top: 4px;
 }
 
+/* SEARCH */
 .search-wrap {
 position: relative;
-margin: 0 auto 10px;
-max-width: 580px;
+margin: 0 auto 12px;
 }
 
-.search-wrap input {
+.search-icon-el {
+position: absolute;
+left: 16px;
+top: 50%;
+transform: translateY(-50%);
+font-size: 17px;
+pointer-events: none;
+opacity: 0.5;
+}
+
+#search {
 width: 100%;
-padding: 16px 48px 16px 52px;
-background: var(–surface);
-border: 2px solid var(–border);
-border-radius: 12px;
-color: var(–text);
-font-family: ‘Exo 2’, sans-serif;
-font-size: 18px;
-font-weight: 600;
+padding: 15px 48px 15px 46px;
+background: #111827;
+border: 2px solid #2a3550;
+border-radius: 14px;
+color: #e8eaf6;
+font-family: -apple-system, BlinkMacSystemFont, “SF Pro Text”, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
+font-size: 17px;
+font-weight: 500;
 outline: none;
-transition: border-color 0.2s, box-shadow 0.2s;
+-webkit-appearance: none;
+appearance: none;
+transition: border-color 0.2s;
 }
 
-.search-wrap input:focus {
-border-color: var(–accent);
-box-shadow: 0 0 0 3px rgba(245,197,24,0.15);
+#search:focus {
+border-color: #f5c518;
 }
 
-.search-wrap input::placeholder { color: var(–muted); font-weight: 300; }
-
-.search-icon {
-position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
-font-size: 20px; pointer-events: none;
+#search::placeholder {
+color: #4a5568;
+font-weight: 400;
 }
 
 .clear-btn {
-position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-background: var(–border);
+position: absolute;
+right: 12px;
+top: 50%;
+transform: translateY(-50%);
+background: #2a3550;
 border: none;
 border-radius: 50%;
-width: 26px; height: 26px;
-color: var(–muted);
-font-size: 14px;
+width: 28px;
+height: 28px;
+color: #7986a8;
+font-size: 13px;
 cursor: pointer;
 display: none;
 align-items: center;
 justify-content: center;
-line-height: 1;
+font-weight: 700;
 transition: background 0.15s, color 0.15s;
 }
-.clear-btn:hover { background: var(–accent2); color: #fff; }
+.clear-btn:active { background: #e84393; color: #fff; }
 .clear-btn.visible { display: flex; }
 
+/* AUTOCOMPLETE */
 .autocomplete-list {
-position: absolute; top: calc(100% + 4px); left: 0; right: 0;
-background: var(–surface);
-border: 2px solid var(–border);
-border-radius: 10px;
-max-height: 260px;
+position: absolute;
+top: calc(100% + 6px);
+left: 0; right: 0;
+background: #111827;
+border: 2px solid #2a3550;
+border-radius: 14px;
+max-height: 280px;
 overflow-y: auto;
 z-index: 100;
 display: none;
+-webkit-overflow-scrolling: touch;
+box-shadow: 0 8px 32px rgba(0,0,0,0.5);
 }
-
 .autocomplete-list.show { display: block; }
 
-.autocomplete-list::-webkit-scrollbar { width: 6px; }
-.autocomplete-list::-webkit-scrollbar-track { background: var(–surface2); }
-.autocomplete-list::-webkit-scrollbar-thumb { background: var(–border); border-radius: 3px; }
-
 .ac-item {
-padding: 10px 16px;
+padding: 12px 16px;
 cursor: pointer;
 display: flex;
 align-items: center;
 gap: 10px;
-transition: background 0.1s;
 font-size: 15px;
+font-weight: 500;
+border-bottom: 1px solid #1a2235;
+-webkit-user-select: none;
+user-select: none;
+}
+.ac-item:last-child { border-bottom: none; }
+.ac-item:active, .ac-item.selected { background: #1a2235; }
+
+.ac-num { color: #4a5568; font-size: 12px; min-width: 44px; font-variant-numeric: tabular-nums; }
+.ac-types { margin-left: auto; display: flex; gap: 5px; flex-shrink: 0; }
+
+/* RESULT AREA */
+#result { margin-top: 8px; }
+
+.hint {
+text-align: center;
+color: #4a5568;
+font-size: 14px;
+margin-top: 48px;
+line-height: 1.6;
 }
 
-.ac-item:hover, .ac-item.selected { background: var(–surface2); }
-.ac-item .ac-num { color: var(–muted); font-size: 12px; min-width: 44px; }
-.ac-item .ac-types { margin-left: auto; display: flex; gap: 5px; }
-
-#result { margin-top: 20px; }
-
+/* CARD */
 .card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 16px;
+background: #111827;
+border: 1px solid #2a3550;
+border-radius: 18px;
 overflow: hidden;
-animation: slideIn 0.3s ease;
+animation: fadeUp 0.25s ease;
 }
 
-@keyframes slideIn {
-from { opacity: 0; transform: translateY(12px); }
-to { opacity: 1; transform: translateY(0); }
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(10px); }
+to   { opacity: 1; transform: translateY(0); }
 }
 
 .card-header {
-padding: 24px 28px 20px;
-border-bottom: 1px solid var(–border);
+padding: 20px;
+border-bottom: 1px solid #1a2235;
 display: flex;
 align-items: center;
-gap: 20px;
-background: linear-gradient(135deg, var(–surface2), var(–surface));
+gap: 16px;
+background: linear-gradient(135deg, #1a2235 0%, #111827 100%);
 }
 
 .poke-sprite {
-width: 80px; height: 80px;
-image-rendering: auto;
-filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+width: 88px;
+height: 88px;
 object-fit: contain;
+flex-shrink: 0;
+filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
 }
 
-.poke-info h2 {
-font-family: ‘Press Start 2P’, monospace;
-font-size: 16px;
-color: var(–accent);
-margin-bottom: 6px;
+.poke-info { flex: 1; min-width: 0; }
+
+.dex-num {
+font-size: 11px;
+color: #4a5568;
+font-variant-numeric: tabular-nums;
+letter-spacing: 1px;
+margin-bottom: 3px;
+font-weight: 600;
 }
 
-.poke-info .dex-num {
-font-size: 12px; color: var(–muted); margin-bottom: 10px;
+.poke-name {
+font-size: 20px;
+font-weight: 800;
+color: #f5c518;
+letter-spacing: -0.3px;
+margin-bottom: 10px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
-.type-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.type-badges { display: flex; gap: 6px; flex-wrap: wrap; }
 
 .type-badge {
-padding: 4px 12px;
+padding: 4px 11px;
 border-radius: 20px;
-font-size: 12px;
+font-size: 11px;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+color: #fff;
+text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* CARD BODY */
+.card-body {
+padding: 18px 20px;
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+
+.section-label {
+font-size: 10px;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 2px;
+margin-bottom: 9px;
+}
+.lbl-weak4  { color: #ff4444; }
+.lbl-weak2  { color: #ff8844; }
+.lbl-resist { color: #44aaff; }
+.lbl-immune { color: #556; }
+
+.type-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.chip {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+background: #1a2235;
+border: 1px solid #2a3550;
+border-radius: 9px;
+padding: 5px 9px;
+}
+
+.chip-type {
+font-size: 11px;
 font-weight: 700;
 text-transform: uppercase;
 letter-spacing: 0.5px;
 color: #fff;
-text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+padding: 3px 8px;
+border-radius: 5px;
+text-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
-
-.card-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; }
-
-.section-title {
-font-size: 11px;
-font-weight: 700;
-text-transform: uppercase;
-letter-spacing: 2px;
-color: var(–muted);
-margin-bottom: 12px;
-}
-
-.type-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-
-.matchup-chip {
-display: flex;
-align-items: center;
-gap: 7px;
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 8px;
-padding: 6px 10px;
-font-size: 13px;
-font-weight: 600;
-transition: transform 0.1s;
-}
-
-.matchup-chip:hover { transform: scale(1.04); }
 
 .chip-mult {
 font-size: 11px;
-font-weight: 700;
-padding: 2px 6px;
+font-weight: 800;
+padding: 2px 5px;
 border-radius: 4px;
-background: rgba(0,0,0,0.3);
+font-variant-numeric: tabular-nums;
 }
+.mult-4x  { color: #ff4444; background: rgba(255,68,68,0.12); }
+.mult-2x  { color: #ff8844; background: rgba(255,136,68,0.12); }
+.mult-05  { color: #44aaff; background: rgba(68,170,255,0.12); }
+.mult-025 { color: #4488ff; background: rgba(68,136,255,0.12); }
+.mult-0   { color: #556; background: rgba(85,85,102,0.15); }
 
-.weak-4x .chip-mult { color: #ff4444; border: 1px solid #ff4444; }
-.weak-2x .chip-mult { color: #ff8844; border: 1px solid #ff8844; }
-.resist-half .chip-mult { color: #44aaff; border: 1px solid #44aaff; }
-.resist-quarter .chip-mult { color: #4488ff; border: 1px solid #4488ff; }
-.immune .chip-mult { color: #888; border: 1px solid #555; }
-
-.section-row { }
-
-.section-label-weak .section-title { color: #ff8844; }
-.section-label-strong .section-title { color: #44aaff; }
-.section-label-immune .section-title { color: #888; }
-
-.no-result {
-text-align: center;
-padding: 60px 20px;
-color: var(–muted);
+/* Divider between sections */
+.section-divider {
+height: 1px;
+background: #1a2235;
+margin: 0 -20px;
 }
-
-.no-result .emoji { font-size: 48px; margin-bottom: 16px; }
-.no-result p { font-size: 15px; }
-
-.hint {
-text-align: center;
-color: var(–muted);
-font-size: 13px;
-margin-top: 40px;
-}
-
-/* Type colors applied dynamically */
 </style>
 
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>⚔ POKÉMON LAZARUS<br>TYPE GUIDE</h1>
-    <p>Search any Pokémon — instant weaknesses &amp; resistances</p>
+    <span class="header-icon">⚔️</span>
+    <h1>Pokémon Lazarus<span>Type Guide</span></h1>
   </header>
 
   <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="search" placeholder="Type a Pokémon name..." autocomplete="off" spellcheck="false" />
-    <button class="clear-btn" id="clearBtn" aria-label="Clear search">✕</button>
+    <span class="search-icon-el">🔍</span>
+    <input type="search" id="search" placeholder="Search Pokémon..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    <button class="clear-btn" id="clearBtn" aria-label="Clear">✕</button>
     <div class="autocomplete-list" id="autocomplete"></div>
   </div>
 
   <div id="result">
-    <div class="hint">⬆ Start typing to search all 1025 Pokémon</div>
+    <div class="hint">Start typing to search all 1025 Pokémon</div>
   </div>
 </div>
 
 <script>
-// ============================================================
-// TYPE CHART (Gen 6+) — attacker → [list of defending types it hits at 2x]
-// We build a defense lookup: for each defending type, what attacks hit 2x / 0.5x / 0x
-// ============================================================
 const TYPE_COLORS = {
-  Normal:'#A8A878', Fire:'#F08030', Water:'#6890F0', Electric:'#F8D030',
-  Grass:'#78C850', Ice:'#98D8D8', Fighting:'#C03028', Poison:'#A040A0',
-  Ground:'#E0C068', Flying:'#A890F0', Psychic:'#F85888', Bug:'#A8B820',
-  Rock:'#B8A038', Ghost:'#705898', Dragon:'#7038F8', Dark:'#705848',
-  Steel:'#B8B8D0', Fairy:'#EE99AC'
+  Normal:'#9A9A78',Fire:'#E8702A',Water:'#4A80E8',Electric:'#E8C000',
+  Grass:'#58B830',Ice:'#68C8C8',Fighting:'#C02820',Poison:'#9830A0',
+  Ground:'#C8A840',Flying:'#8870E8',Psychic:'#E83878',Bug:'#909010',
+  Rock:'#A88820',Ghost:'#584880',Dragon:'#5828E8',Dark:'#584838',
+  Steel:'#9898B8',Fairy:'#D878A8'
 };
 
-// chart[attackType][defenseType] = multiplier
 const CHART = {
-  Normal:   {Rock:0.5, Ghost:0, Steel:0.5},
-  Fire:     {Fire:0.5, Water:0.5, Grass:2, Ice:2, Bug:2, Rock:0.5, Dragon:0.5, Steel:2},
-  Water:    {Fire:2, Water:0.5, Grass:0.5, Ground:2, Rock:2, Dragon:0.5},
-  Electric: {Water:2, Electric:0.5, Grass:0.5, Ground:0, Flying:2, Dragon:0.5},
-  Grass:    {Fire:0.5, Water:2, Grass:0.5, Poison:0.5, Ground:2, Flying:0.5, Bug:0.5, Rock:2, Dragon:0.5, Steel:0.5},
-  Ice:      {Fire:0.5, Water:0.5, Grass:2, Ice:0.5, Ground:2, Flying:2, Dragon:2, Steel:0.5},
-  Fighting: {Normal:2, Ice:2, Poison:0.5, Flying:0.5, Psychic:0.5, Bug:0.5, Rock:2, Ghost:0, Dark:2, Steel:2, Fairy:0.5},
-  Poison:   {Grass:2, Poison:0.5, Ground:0.5, Rock:0.5, Ghost:0.5, Steel:0, Fairy:2},
-  Ground:   {Fire:2, Electric:2, Grass:0.5, Poison:2, Flying:0, Bug:0.5, Rock:2, Steel:2},
-  Flying:   {Electric:0.5, Grass:2, Fighting:2, Bug:2, Rock:0.5, Steel:0.5},
-  Psychic:  {Fighting:2, Poison:2, Psychic:0.5, Dark:0, Steel:0.5},
-  Bug:      {Fire:0.5, Grass:2, Fighting:0.5, Poison:0.5, Flying:0.5, Psychic:2, Ghost:0.5, Dark:2, Steel:0.5, Fairy:0.5},
-  Rock:     {Fire:2, Ice:2, Fighting:0.5, Ground:0.5, Flying:2, Bug:2, Steel:0.5},
-  Ghost:    {Normal:0, Psychic:2, Ghost:2, Dark:0.5},
-  Dragon:   {Dragon:2, Steel:0.5, Fairy:0},
-  Dark:     {Fighting:0.5, Psychic:2, Ghost:2, Dark:0.5, Fairy:0.5},
-  Steel:    {Fire:0.5, Water:0.5, Electric:0.5, Ice:2, Rock:2, Steel:0.5, Fairy:2},
-  Fairy:    {Fire:0.5, Fighting:2, Poison:0.5, Dragon:2, Dark:2, Steel:0.5}
+  Normal:   {Rock:0.5,Ghost:0,Steel:0.5},
+  Fire:     {Fire:0.5,Water:0.5,Grass:2,Ice:2,Bug:2,Rock:0.5,Dragon:0.5,Steel:2},
+  Water:    {Fire:2,Water:0.5,Grass:0.5,Ground:2,Rock:2,Dragon:0.5},
+  Electric: {Water:2,Electric:0.5,Grass:0.5,Ground:0,Flying:2,Dragon:0.5},
+  Grass:    {Fire:0.5,Water:2,Grass:0.5,Poison:0.5,Ground:2,Flying:0.5,Bug:0.5,Rock:2,Dragon:0.5,Steel:0.5},
+  Ice:      {Fire:0.5,Water:0.5,Grass:2,Ice:0.5,Ground:2,Flying:2,Dragon:2,Steel:0.5},
+  Fighting: {Normal:2,Ice:2,Poison:0.5,Flying:0.5,Psychic:0.5,Bug:0.5,Rock:2,Ghost:0,Dark:2,Steel:2,Fairy:0.5},
+  Poison:   {Grass:2,Poison:0.5,Ground:0.5,Rock:0.5,Ghost:0.5,Steel:0,Fairy:2},
+  Ground:   {Fire:2,Electric:2,Grass:0.5,Poison:2,Flying:0,Bug:0.5,Rock:2,Steel:2},
+  Flying:   {Electric:0.5,Grass:2,Fighting:2,Bug:2,Rock:0.5,Steel:0.5},
+  Psychic:  {Fighting:2,Poison:2,Psychic:0.5,Dark:0,Steel:0.5},
+  Bug:      {Fire:0.5,Grass:2,Fighting:0.5,Poison:0.5,Flying:0.5,Psychic:2,Ghost:0.5,Dark:2,Steel:0.5,Fairy:0.5},
+  Rock:     {Fire:2,Ice:2,Fighting:0.5,Ground:0.5,Flying:2,Bug:2,Steel:0.5},
+  Ghost:    {Normal:0,Psychic:2,Ghost:2,Dark:0.5},
+  Dragon:   {Dragon:2,Steel:0.5,Fairy:0},
+  Dark:     {Fighting:0.5,Psychic:2,Ghost:2,Dark:0.5,Fairy:0.5},
+  Steel:    {Fire:0.5,Water:0.5,Electric:0.5,Ice:2,Rock:2,Steel:0.5,Fairy:2},
+  Fairy:    {Fire:0.5,Fighting:2,Poison:0.5,Dragon:2,Dark:2,Steel:0.5}
 };
 
 function getDefenseMatchups(types) {
   const mults = {};
-  const allTypes = Object.keys(CHART);
-  allTypes.forEach(atk => {
+  Object.keys(CHART).forEach(atk => {
     let m = 1;
-    types.forEach(def => {
-      const val = CHART[atk][def];
-      if (val !== undefined) m *= val;
-    });
+    types.forEach(def => { const v = CHART[atk][def]; if (v !== undefined) m *= v; });
     if (m !== 1) mults[atk] = m;
   });
   return mults;
 }
 
-// ============================================================
-// POKÉMON DATA — name, dex, types (up to Gen 9 national dex)
-// Covers all 1025 Pokémon
-// ============================================================
 const POKEMON = [
 ["Bulbasaur",1,["Grass","Poison"]],["Ivysaur",2,["Grass","Poison"]],["Venusaur",3,["Grass","Poison"]],
 ["Charmander",4,["Fire"]],["Charmeleon",5,["Fire"]],["Charizard",6,["Fire","Flying"]],
@@ -928,140 +919,72 @@ const POKEMON = [
 ["Pecharunt",1025,["Poison","Ghost"]]
 ];
 
-// ============================================================
-// SEARCH & AUTOCOMPLETE
-// ============================================================
+// ── UI refs ──────────────────────────────────────────────────
 const searchEl = document.getElementById('search');
-const acList = document.getElementById('autocomplete');
+const acList   = document.getElementById('autocomplete');
 const resultEl = document.getElementById('result');
 const clearBtn = document.getElementById('clearBtn');
 
 let currentIndex = -1;
 let filtered = [];
 
-function getTypeColor(t) { return TYPE_COLORS[t] || '#888'; }
+function tc(t) { return TYPE_COLORS[t] || '#777'; }
 
-function typeBadge(t) {
-  return `<span class="type-badge" style="background:${getTypeColor(t)}">${t}</span>`;
-}
-
-// Build a slug suitable for PokeAPI sprite URLs
-function toPokeApiSlug(name) {
-  // Special cases
-  const overrides = {
-    "Nidoran♀": "nidoran-f",
-    "Nidoran♂": "nidoran-m",
-    "Mr. Mime": "mr-mime",
-    "Farfetch'd": "farfetch-d",
-    "Ho-Oh": "ho-oh",
-    "Mime Jr.": "mime-jr",
-    "Porygon-Z": "porygon-z",
-    "Mr. Rime": "mr-rime",
-    "Sirfetch'd": "sirfetchd",
-    "Type: Null": "type-null",
-    "Jangmo-o": "jangmo-o",
-    "Hakamo-o": "hakamo-o",
-    "Kommo-o": "kommo-o",
-    "Tapu Koko": "tapu-koko",
-    "Tapu Lele": "tapu-lele",
-    "Tapu Bulu": "tapu-bulu",
-    "Tapu Fini": "tapu-fini",
-    "Flabébé": "flabebe",
-    "Great Tusk": "great-tusk",
-    "Scream Tail": "scream-tail",
-    "Brute Bonnet": "brute-bonnet",
-    "Flutter Mane": "flutter-mane",
-    "Slither Wing": "slither-wing",
-    "Sandy Shocks": "sandy-shocks",
-    "Iron Treads": "iron-treads",
-    "Iron Bundle": "iron-bundle",
-    "Iron Hands": "iron-hands",
-    "Iron Jugulis": "iron-jugulis",
-    "Iron Moth": "iron-moth",
-    "Iron Thorns": "iron-thorns",
-    "Roaring Moon": "roaring-moon",
-    "Iron Valiant": "iron-valiant",
-    "Walking Wake": "walking-wake",
-    "Iron Leaves": "iron-leaves",
-    "Iron Boulder": "iron-boulder",
-    "Iron Crown": "iron-crown",
-    "Gouging Fire": "gouging-fire",
-    "Raging Bolt": "raging-bolt",
-    "Wo-Chien": "wo-chien",
-    "Chien-Pao": "chien-pao",
-    "Ting-Lu": "ting-lu",
-    "Chi-Yu": "chi-yu",
-    "Koraidon": "koraidon",
-    "Miraidon": "miraidon",
-  };
-  if (overrides[name]) return overrides[name];
-  return name.toLowerCase()
-    .replace(/[♀♂]/g,'')
-    .replace(/['.:\s]/g,'-')
-    .replace(/-+/g,'-')
-    .replace(/^-|-$/g,'');
-}
-
-function getSpriteUrl(name, num) {
-  const slug = toPokeApiSlug(name);
-  // PokeAPI sprites are reliable and CORS-friendly
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${num}.png`;
+function badge(t, small) {
+  const p = small ? 'padding:3px 7px;font-size:10px' : '';
+  return `<span class="type-badge" style="background:${tc(t)};${p}">${t}</span>`;
 }
 
 function renderResult(poke) {
   const [name, num, types] = poke;
-  const matchups = getDefenseMatchups(types);
-  const super4x = [], super2x = [], half = [], quarter = [], immune = [];
-  Object.entries(matchups).forEach(([t, m]) => {
-    if (m === 4) super4x.push(t);
-    else if (m === 2) super2x.push(t);
-    else if (m === 0.5) half.push(t);
-    else if (m === 0.25) quarter.push(t);
-    else if (m === 0) immune.push(t);
+  const mu = getDefenseMatchups(types);
+  const w4=[], w2=[], r2=[], r4=[], im=[];
+  Object.entries(mu).forEach(([t,m])=>{
+    if(m===4) w4.push(t);
+    else if(m===2) w2.push(t);
+    else if(m===0.5) r2.push(t);
+    else if(m===0.25) r4.push(t);
+    else if(m===0) im.push(t);
   });
 
-  const chipHtml = (type, cls, mult) => `
-    <div class="matchup-chip ${cls}">
-      <span class="type-badge" style="background:${getTypeColor(type)};padding:3px 8px;font-size:11px">${type}</span>
-      <span class="chip-mult">${mult}</span>
+  function section(label, lblCls, arr, multCls, multTxt) {
+    if (!arr.length) return '';
+    const chips = arr.map(t =>
+      `<div class="chip">
+        <span class="chip-type" style="background:${tc(t)}">${t}</span>
+        <span class="chip-mult ${multCls}">${multTxt}</span>
+      </div>`
+    ).join('');
+    return `<div>
+      <div class="section-label ${lblCls}">${label}</div>
+      <div class="type-grid">${chips}</div>
     </div>`;
+  }
 
-  const spriteUrl = getSpriteUrl(name, num);
-  const fallbackUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${num}.png`;
+  const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${num}.png`;
+  const fallback  = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${num}.png`;
+
+  const sections = [
+    section('⚠ Weak ×4',  'lbl-weak4',  w4, 'mult-4x', '×4'),
+    section('Weak ×2',     'lbl-weak2',  w2, 'mult-2x', '×2'),
+    section('Resists ×½',  'lbl-resist', r2, 'mult-05', '×½'),
+    section('Resists ×¼',  'lbl-resist', r4, 'mult-025','×¼'),
+    section('Immune ×0',   'lbl-immune', im, 'mult-0',  '×0'),
+  ].filter(Boolean).join('<div class="section-divider"></div>');
 
   resultEl.innerHTML = `
     <div class="card">
       <div class="card-header">
-        <img class="poke-sprite" src="${spriteUrl}" alt="${name}" onerror="this.onerror=null;this.src='${fallbackUrl}'" />
+        <img class="poke-sprite" src="${spriteUrl}" alt="${name}"
+          onerror="this.onerror=null;this.src='${fallback}'">
         <div class="poke-info">
           <div class="dex-num">#${String(num).padStart(4,'0')}</div>
-          <h2>${name}</h2>
-          <div class="type-badges">${types.map(typeBadge).join('')}</div>
+          <div class="poke-name">${name}</div>
+          <div class="type-badges">${types.map(t=>badge(t)).join('')}</div>
         </div>
       </div>
       <div class="card-body">
-        ${super4x.length ? `<div class="section-row section-label-weak">
-          <div class="section-title">⚠ Weak ×4</div>
-          <div class="type-grid">${super4x.map(t=>chipHtml(t,'weak-4x','×4')).join('')}</div>
-        </div>` : ''}
-        ${super2x.length ? `<div class="section-row section-label-weak">
-          <div class="section-title">Weak ×2</div>
-          <div class="type-grid">${super2x.map(t=>chipHtml(t,'weak-2x','×2')).join('')}</div>
-        </div>` : ''}
-        ${half.length ? `<div class="section-row section-label-strong">
-          <div class="section-title">Resists ×½</div>
-          <div class="type-grid">${half.map(t=>chipHtml(t,'resist-half','×½')).join('')}</div>
-        </div>` : ''}
-        ${quarter.length ? `<div class="section-row section-label-strong">
-          <div class="section-title">Resists ×¼</div>
-          <div class="type-grid">${quarter.map(t=>chipHtml(t,'resist-quarter','×¼')).join('')}</div>
-        </div>` : ''}
-        ${immune.length ? `<div class="section-row section-label-immune">
-          <div class="section-title">Immune ×0</div>
-          <div class="type-grid">${immune.map(t=>chipHtml(t,'immune','×0')).join('')}</div>
-        </div>` : ''}
-        ${!super4x.length && !super2x.length && !half.length && !quarter.length && !immune.length
-          ? '<p style="color:var(--muted);font-size:14px">No special type matchups.</p>' : ''}
+        ${sections || '<p style="color:#4a5568;font-size:14px">No notable type matchups.</p>'}
       </div>
     </div>`;
 }
@@ -1070,23 +993,22 @@ function clearSearch() {
   searchEl.value = '';
   clearBtn.classList.remove('visible');
   acList.classList.remove('show');
-  resultEl.innerHTML = '<div class="hint">⬆ Start typing to search all 1025 Pokémon</div>';
+  resultEl.innerHTML = '<div class="hint">Start typing to search all 1025 Pokémon</div>';
   searchEl.focus();
 }
 
 clearBtn.addEventListener('click', clearSearch);
 
-function showAutocomplete(query) {
-  if (!query) { acList.classList.remove('show'); return; }
-  const q = query.toLowerCase();
-  filtered = POKEMON.filter(p => p[0].toLowerCase().includes(q)).slice(0, 12);
+function showAC(q) {
+  if (!q) { acList.classList.remove('show'); return; }
+  filtered = POKEMON.filter(p => p[0].toLowerCase().includes(q.toLowerCase())).slice(0,12);
   if (!filtered.length) { acList.classList.remove('show'); return; }
-  acList.innerHTML = filtered.map((p, i) => {
-    const [name, num, types] = p;
+  acList.innerHTML = filtered.map((p,i) => {
+    const [name,num,types] = p;
     return `<div class="ac-item" data-idx="${i}">
       <span class="ac-num">#${String(num).padStart(4,'0')}</span>
       <span>${name}</span>
-      <span class="ac-types">${types.map(t=>`<span class="type-badge" style="background:${getTypeColor(t)};padding:2px 7px;font-size:10px">${t}</span>`).join('')}</span>
+      <span class="ac-types">${types.map(t=>badge(t,true)).join('')}</span>
     </div>`;
   }).join('');
   currentIndex = -1;
@@ -1095,43 +1017,41 @@ function showAutocomplete(query) {
 
 acList.addEventListener('click', e => {
   const item = e.target.closest('.ac-item');
-  if (!item) return;
-  const idx = parseInt(item.dataset.idx);
-  select(idx);
+  if (item) pick(parseInt(item.dataset.idx));
 });
 
-function select(idx) {
-  const poke = filtered[idx];
-  if (!poke) return;
-  searchEl.value = poke[0];
+function pick(i) {
+  const p = filtered[i];
+  if (!p) return;
+  searchEl.value = p[0];
   clearBtn.classList.add('visible');
   acList.classList.remove('show');
-  renderResult(poke);
+  renderResult(p);
 }
 
 searchEl.addEventListener('input', e => {
-  const val = e.target.value.trim();
-  clearBtn.classList.toggle('visible', val.length > 0);
-  showAutocomplete(val);
-  if (!val) resultEl.innerHTML = '<div class="hint">⬆ Start typing to search all 1025 Pokémon</div>';
+  const v = e.target.value.trim();
+  clearBtn.classList.toggle('visible', v.length > 0);
+  showAC(v);
+  if (!v) resultEl.innerHTML = '<div class="hint">Start typing to search all 1025 Pokémon</div>';
 });
 
 searchEl.addEventListener('keydown', e => {
   const items = acList.querySelectorAll('.ac-item');
   if (e.key === 'ArrowDown') {
     e.preventDefault();
-    currentIndex = Math.min(currentIndex + 1, items.length - 1);
-    items.forEach((el, i) => el.classList.toggle('selected', i === currentIndex));
+    currentIndex = Math.min(currentIndex+1, items.length-1);
+    items.forEach((el,i) => el.classList.toggle('selected', i===currentIndex));
   } else if (e.key === 'ArrowUp') {
     e.preventDefault();
-    currentIndex = Math.max(currentIndex - 1, -1);
-    items.forEach((el, i) => el.classList.toggle('selected', i === currentIndex));
+    currentIndex = Math.max(currentIndex-1, -1);
+    items.forEach((el,i) => el.classList.toggle('selected', i===currentIndex));
   } else if (e.key === 'Enter') {
-    if (currentIndex >= 0) { select(currentIndex); return; }
+    if (currentIndex >= 0) { pick(currentIndex); return; }
     const q = searchEl.value.trim().toLowerCase();
-    const exact = POKEMON.findIndex(p => p[0].toLowerCase() === q);
-    if (exact >= 0) renderResult(POKEMON[exact]);
-    else if (filtered.length) select(0);
+    const ex = POKEMON.findIndex(p => p[0].toLowerCase() === q);
+    if (ex >= 0) renderResult(POKEMON[ex]);
+    else if (filtered.length) pick(0);
     acList.classList.remove('show');
   } else if (e.key === 'Escape') {
     acList.classList.remove('show');
@@ -1141,8 +1061,6 @@ searchEl.addEventListener('keydown', e => {
 document.addEventListener('click', e => {
   if (!e.target.closest('.search-wrap')) acList.classList.remove('show');
 });
-
-searchEl.focus();
 </script>
 
 </body>
