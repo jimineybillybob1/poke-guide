@@ -29,6 +29,7 @@ body {
   padding: 0 16px 40px;
 }
 
+/* HEADER */
 header {
   text-align: center;
   padding: 48px 16px 28px;
@@ -60,6 +61,7 @@ header h1 span {
   margin-top: 4px;
 }
 
+/* SEARCH */
 .search-wrap {
   position: relative;
   margin: 0 auto 12px;
@@ -91,8 +93,14 @@ header h1 span {
   transition: border-color 0.2s;
 }
 
-#search:focus { border-color: #f5c518; }
-#search::placeholder { color: #4a5568; font-weight: 400; }
+#search:focus {
+  border-color: #f5c518;
+}
+
+#search::placeholder {
+  color: #4a5568;
+  font-weight: 400;
+}
 
 .clear-btn {
   position: absolute;
@@ -116,6 +124,7 @@ header h1 span {
 .clear-btn:active { background: #e84393; color: #fff; }
 .clear-btn.visible { display: flex; }
 
+/* AUTOCOMPLETE */
 .autocomplete-list {
   position: absolute;
   top: calc(100% + 6px);
@@ -150,6 +159,7 @@ header h1 span {
 .ac-num { color: #4a5568; font-size: 12px; min-width: 44px; font-variant-numeric: tabular-nums; }
 .ac-types { margin-left: auto; display: flex; gap: 5px; flex-shrink: 0; }
 
+/* RESULT AREA */
 #result { margin-top: 8px; }
 
 .hint {
@@ -160,6 +170,7 @@ header h1 span {
   line-height: 1.6;
 }
 
+/* CARD */
 .card {
   background: #111827;
   border: 1px solid #2a3550;
@@ -225,6 +236,7 @@ header h1 span {
   text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
+/* CARD BODY */
 .card-body {
   padding: 18px 20px;
   display: flex;
@@ -280,6 +292,7 @@ header h1 span {
 .mult-025 { color: #4488ff; background: rgba(68,136,255,0.12); }
 .mult-0   { color: #556; background: rgba(85,85,102,0.15); }
 
+/* Divider between sections */
 .section-divider {
   height: 1px;
   background: #1a2235;
@@ -904,202 +917,77 @@ const POKEMON = [
 ["Pecharunt",1025,["Poison","Ghost"]]
 ];
 
-// ── REGIONAL FORMS ───────────────────────────────────────────
-// Each entry: [name, dexNum, types, spriteUrl, fallbackUrl]
+// ── REGIONAL FORMS ──────────────────────────────────────────
+// Format: [name, dexNum, types, spriteOverride (optional PokeAPI form slug)]
+// spriteOverride is the PokeAPI form endpoint slug for the sprite
 const REGIONAL = [
-// ── ALOLAN ──────────────────────────────────────────────────
-["Alolan Rattata",     19,  ["Dark","Normal"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10091.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10091.png"],
-["Alolan Raticate",    20,  ["Dark","Normal"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10092.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10092.png"],
-["Alolan Raichu",      26,  ["Electric","Psychic"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10100.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10100.png"],
-["Alolan Sandshrew",   27,  ["Ice","Steel"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10101.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10101.png"],
-["Alolan Sandslash",   28,  ["Ice","Steel"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10102.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10102.png"],
-["Alolan Vulpix",      37,  ["Ice"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10103.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10103.png"],
-["Alolan Ninetales",   38,  ["Ice","Fairy"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10104.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10104.png"],
-["Alolan Diglett",     50,  ["Ground","Steel"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10105.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10105.png"],
-["Alolan Dugtrio",     51,  ["Ground","Steel"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10106.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10106.png"],
-["Alolan Meowth",      52,  ["Dark"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10107.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10107.png"],
-["Alolan Persian",     53,  ["Dark"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10108.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10108.png"],
-["Alolan Geodude",     74,  ["Rock","Electric"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10109.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10109.png"],
-["Alolan Graveler",    75,  ["Rock","Electric"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10110.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10110.png"],
-["Alolan Golem",       76,  ["Rock","Electric"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10111.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10111.png"],
-["Alolan Grimer",      88,  ["Poison","Dark"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10112.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10112.png"],
-["Alolan Muk",         89,  ["Poison","Dark"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10113.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10113.png"],
-["Alolan Exeggutor",  103,  ["Grass","Dragon"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10114.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10114.png"],
-["Alolan Marowak",    105,  ["Fire","Ghost"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10115.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10115.png"],
+// ── ALOLAN FORMS (Gen 7) ────────────────────────────────────
+["Alolan Rattata",   19, ["Dark","Normal"],       "rattata-alola"],
+["Alolan Raticate",  20, ["Dark","Normal"],       "raticate-alola"],
+["Alolan Raichu",    26, ["Electric","Psychic"],  "raichu-alola"],
+["Alolan Sandshrew", 27, ["Ice","Steel"],         "sandshrew-alola"],
+["Alolan Sandslash", 28, ["Ice","Steel"],         "sandslash-alola"],
+["Alolan Vulpix",    37, ["Ice"],                 "vulpix-alola"],
+["Alolan Ninetales", 38, ["Ice","Fairy"],         "ninetales-alola"],
+["Alolan Diglett",   50, ["Ground","Steel"],      "diglett-alola"],
+["Alolan Dugtrio",   51, ["Ground","Steel"],      "dugtrio-alola"],
+["Alolan Meowth",    52, ["Dark"],                "meowth-alola"],
+["Alolan Persian",   53, ["Dark"],                "persian-alola"],
+["Alolan Geodude",   74, ["Rock","Electric"],     "geodude-alola"],
+["Alolan Graveler",  75, ["Rock","Electric"],     "graveler-alola"],
+["Alolan Golem",     76, ["Rock","Electric"],     "golem-alola"],
+["Alolan Grimer",    88, ["Poison","Dark"],       "grimer-alola"],
+["Alolan Muk",       89, ["Poison","Dark"],       "muk-alola"],
+["Alolan Exeggutor",103, ["Grass","Dragon"],      "exeggutor-alola"],
+["Alolan Marowak",  105, ["Fire","Ghost"],        "marowak-alola"],
 
-// ── GALARIAN ────────────────────────────────────────────────
-["Galarian Meowth",    52,  ["Steel"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10188.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10188.png"],
-["Galarian Ponyta",    77,  ["Psychic"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10193.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10193.png"],
-["Galarian Rapidash",  78,  ["Psychic","Fairy"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10194.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10194.png"],
-["Galarian Slowpoke",  79,  ["Psychic"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10195.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10195.png"],
-["Galarian Slowbro",   80,  ["Poison","Psychic"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10196.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10196.png"],
-["Galarian Farfetch'd",83,  ["Fighting"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10197.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10197.png"],
-["Galarian Weezing",  110,  ["Poison","Fairy"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10199.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10199.png"],
-["Galarian Mr. Mime", 122,  ["Ice","Psychic"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10200.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10200.png"],
-["Galarian Corsola",  222,  ["Ghost"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10201.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10201.png"],
-["Galarian Zigzagoon",263,  ["Dark","Normal"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10202.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10202.png"],
-["Galarian Linoone",  264,  ["Dark","Normal"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10203.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10203.png"],
-["Galarian Darumaka", 554,  ["Ice"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10204.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10204.png"],
-["Galarian Darmanitan",555, ["Ice"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10205.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10205.png"],
-["Galarian Yamask",   562,  ["Ground","Ghost"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10206.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10206.png"],
-["Galarian Stunfisk", 618,  ["Ground","Steel"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10207.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10207.png"],
-["Galarian Articuno", 144,  ["Psychic","Flying"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10189.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10189.png"],
-["Galarian Zapdos",   145,  ["Fighting","Flying"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10190.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10190.png"],
-["Galarian Moltres",  146,  ["Dark","Flying"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10191.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10191.png"],
+// ── GALARIAN FORMS (Gen 8) ──────────────────────────────────
+["Galarian Meowth",   52, ["Steel"],              "meowth-galar"],
+["Galarian Ponyta",   77, ["Psychic"],            "ponyta-galar"],
+["Galarian Rapidash", 78, ["Psychic","Fairy"],    "rapidash-galar"],
+["Galarian Slowpoke", 79, ["Psychic"],            "slowpoke-galar"],
+["Galarian Slowbro",  80, ["Poison","Psychic"],   "slowbro-galar"],
+["Galarian Farfetch'd",83,["Fighting"],           "farfetchd-galar"],
+["Galarian Weezing", 110, ["Poison","Fairy"],     "weezing-galar"],
+["Galarian Mr. Mime",122, ["Ice","Psychic"],      "mr-mime-galar"],
+["Galarian Corsola", 222, ["Ghost"],              "corsola-galar"],
+["Galarian Zigzagoon",263,["Dark","Normal"],      "zigzagoon-galar"],
+["Galarian Linoone", 264, ["Dark","Normal"],      "linoone-galar"],
+["Galarian Darumaka",554, ["Ice"],                "darumaka-galar"],
+["Galarian Darmanitan",555,["Ice"],               "darmanitan-galar-standard"],
+["Galarian Yamask",  562, ["Ground","Ghost"],     "yamask-galar"],
+["Galarian Stunfisk",618, ["Ground","Steel"],     "stunfisk-galar"],
+// Crown Tundra Galarian Legendaries
+["Galarian Articuno",144, ["Psychic","Flying"],   "articuno-galar"],
+["Galarian Zapdos",  145, ["Fighting","Flying"],  "zapdos-galar"],
+["Galarian Moltres", 146, ["Dark","Flying"],      "moltres-galar"],
 
-// ── HISUIAN ─────────────────────────────────────────────────
-["Hisuian Growlithe",  58,  ["Fire","Rock"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10229.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10229.png"],
-["Hisuian Arcanine",   59,  ["Fire","Rock"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10230.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10230.png"],
-["Hisuian Voltorb",   100,  ["Electric","Grass"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10231.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10231.png"],
-["Hisuian Electrode", 101,  ["Electric","Grass"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10232.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10232.png"],
-["Hisuian Typhlosion",157,  ["Fire","Ghost"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10233.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10233.png"],
-["Hisuian Qwilfish",  211,  ["Dark","Poison"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10234.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10234.png"],
-["Hisuian Sneasel",   215,  ["Fighting","Poison"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10235.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10235.png"],
-["Hisuian Samurott",  503,  ["Water","Dark"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10236.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10236.png"],
-["Hisuian Lilligant", 549,  ["Grass","Fighting"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10237.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10237.png"],
-["Hisuian Zorua",     570,  ["Normal","Ghost"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10238.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10238.png"],
-["Hisuian Zoroark",   571,  ["Normal","Ghost"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10239.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10239.png"],
-["Hisuian Braviary",  628,  ["Psychic","Flying"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10240.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10240.png"],
-["Hisuian Sliggoo",   705,  ["Steel","Dragon"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10241.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10241.png"],
-["Hisuian Goodra",    706,  ["Steel","Dragon"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10242.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10242.png"],
-["Hisuian Avalugg",   713,  ["Ice","Rock"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10243.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10243.png"],
-["Hisuian Decidueye", 724,  ["Grass","Fighting"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10244.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10244.png"],
+// ── HISUIAN FORMS (Legends: Arceus) ─────────────────────────
+["Hisuian Growlithe", 58, ["Fire","Rock"],        "growlithe-hisui"],
+["Hisuian Arcanine",  59, ["Fire","Rock"],        "arcanine-hisui"],
+["Hisuian Voltorb",  100, ["Electric","Grass"],   "voltorb-hisui"],
+["Hisuian Electrode",101, ["Electric","Grass"],   "electrode-hisui"],
+["Hisuian Typhlosion",157,["Fire","Ghost"],       "typhlosion-hisui"],
+["Hisuian Qwilfish", 211, ["Dark","Poison"],      "qwilfish-hisui"],
+["Hisuian Sneasel",  215, ["Fighting","Poison"],  "sneasel-hisui"],
+["Hisuian Samurott", 503, ["Water","Dark"],       "samurott-hisui"],
+["Hisuian Lilligant",549, ["Grass","Fighting"],   "lilligant-hisui"],
+["Hisuian Zorua",    570, ["Normal","Ghost"],     "zorua-hisui"],
+["Hisuian Zoroark",  571, ["Normal","Ghost"],     "zoroark-hisui"],
+["Hisuian Braviary", 628, ["Psychic","Flying"],   "braviary-hisui"],
+["Hisuian Sliggoo",  705, ["Steel","Dragon"],     "sliggoo-hisui"],
+["Hisuian Goodra",   706, ["Steel","Dragon"],     "goodra-hisui"],
+["Hisuian Avalugg",  713, ["Ice","Rock"],         "avalugg-hisui"],
+["Hisuian Decidueye",724, ["Grass","Fighting"],   "decidueye-hisui"],
 
-// ── PALDEAN ─────────────────────────────────────────────────
-["Paldean Wooper",            194, ["Poison","Ground"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10253.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10253.png"],
-["Paldean Tauros (Combat)",   128, ["Fighting"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10250.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10250.png"],
-["Paldean Tauros (Blaze)",    128, ["Fighting","Fire"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10251.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10251.png"],
-["Paldean Tauros (Aqua)",     128, ["Fighting","Water"],
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10252.png",
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10252.png"],
+// ── PALDEAN FORMS (Gen 9) ────────────────────────────────────
+["Paldean Wooper",   194, ["Poison","Ground"],    "wooper-paldea"],
+["Paldean Tauros (Combat)",128,["Fighting"],      "tauros-paldea-combat-breed"],
+["Paldean Tauros (Blaze)", 128,["Fighting","Fire"],"tauros-paldea-blaze-breed"],
+["Paldean Tauros (Aqua)",  128,["Fighting","Water"],"tauros-paldea-aqua-breed"],
 ];
 
-const ALL_POKEMON = [
-  ...POKEMON.map(p => ({ name: p[0], num: p[1], types: p[2], spriteUrl: null, fallbackUrl: null, isRegional: false })),
-  ...REGIONAL.map(p => ({ name: p[0], num: p[1], types: p[2], spriteUrl: p[3], fallbackUrl: p[4], isRegional: true }))
-];
-
-function getSpriteUrl(entry) {
-  if (entry.spriteUrl) return entry.spriteUrl;
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.num}.png`;
-}
-
-function getFallbackUrl(entry) {
-  if (entry.fallbackUrl) return entry.fallbackUrl;
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.num}.png`;
-}
-
-// ── UI REFS ──────────────────────────────────────────────────
+// ── UI refs ──────────────────────────────────────────────────
 const searchEl = document.getElementById('search');
 const acList   = document.getElementById('autocomplete');
 const resultEl = document.getElementById('result');
@@ -1115,16 +1003,38 @@ function badge(t, small) {
   return `<span class="type-badge" style="background:${tc(t)};${p}">${t}</span>`;
 }
 
+// Combine all searchable entries: regular Pokémon + regional forms
+// Regional forms: [name, dexNum, types, spriteSlug]
+const ALL_POKEMON = [
+  ...POKEMON.map(p => ({ name: p[0], num: p[1], types: p[2], sprite: null, isRegional: false })),
+  ...REGIONAL.map(p => ({ name: p[0], num: p[1], types: p[2], sprite: p[3], isRegional: true }))
+];
+
+function getSpriteUrl(entry) {
+  if (entry.sprite) {
+    // Regional form — use the PokeAPI form sprite endpoint
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.sprite}.png`;
+  }
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.num}.png`;
+}
+
+function getFallbackUrl(entry) {
+  if (entry.sprite) {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/forms/${entry.sprite}.png`;
+  }
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.num}.png`;
+}
+
 function renderResult(entry) {
   const { name, num, types } = entry;
   const mu = getDefenseMatchups(types);
   const w4=[], w2=[], r2=[], r4=[], im=[];
   Object.entries(mu).forEach(([t,m])=>{
-    if(m===4)    w4.push(t);
-    else if(m===2)    w2.push(t);
-    else if(m===0.5)  r2.push(t);
+    if(m===4) w4.push(t);
+    else if(m===2) w2.push(t);
+    else if(m===0.5) r2.push(t);
     else if(m===0.25) r4.push(t);
-    else if(m===0)    im.push(t);
+    else if(m===0) im.push(t);
   });
 
   function section(label, lblCls, arr, multCls, multTxt) {
@@ -1145,11 +1055,11 @@ function renderResult(entry) {
   const fallback  = getFallbackUrl(entry);
 
   const sections = [
-    section('⚠ Weak ×4',  'lbl-weak4',  w4, 'mult-4x',  '×4'),
-    section('Weak ×2',     'lbl-weak2',  w2, 'mult-2x',  '×2'),
-    section('Resists ×½',  'lbl-resist', r2, 'mult-05',  '×½'),
-    section('Resists ×¼',  'lbl-resist', r4, 'mult-025', '×¼'),
-    section('Immune ×0',   'lbl-immune', im, 'mult-0',   '×0'),
+    section('⚠ Weak ×4',  'lbl-weak4',  w4, 'mult-4x', '×4'),
+    section('Weak ×2',     'lbl-weak2',  w2, 'mult-2x', '×2'),
+    section('Resists ×½',  'lbl-resist', r2, 'mult-05', '×½'),
+    section('Resists ×¼',  'lbl-resist', r4, 'mult-025','×¼'),
+    section('Immune ×0',   'lbl-immune', im, 'mult-0',  '×0'),
   ].filter(Boolean).join('<div class="section-divider"></div>');
 
   resultEl.innerHTML = `
@@ -1181,15 +1091,15 @@ clearBtn.addEventListener('click', clearSearch);
 
 function showAC(q) {
   if (!q) { acList.classList.remove('show'); return; }
-  filtered = ALL_POKEMON.filter(p => p.name.toLowerCase().includes(q.toLowerCase())).slice(0, 14);
+  filtered = ALL_POKEMON.filter(p => p.name.toLowerCase().includes(q.toLowerCase())).slice(0,14);
   if (!filtered.length) { acList.classList.remove('show'); return; }
-  acList.innerHTML = filtered.map((p, i) =>
-    `<div class="ac-item" data-idx="${i}">
+  acList.innerHTML = filtered.map((p,i) => {
+    return `<div class="ac-item" data-idx="${i}">
       <span class="ac-num">#${String(p.num).padStart(4,'0')}</span>
       <span>${p.name}</span>
       <span class="ac-types">${p.types.map(t=>badge(t,true)).join('')}</span>
-    </div>`
-  ).join('');
+    </div>`;
+  }).join('');
   currentIndex = -1;
   acList.classList.add('show');
 }
@@ -1219,12 +1129,12 @@ searchEl.addEventListener('keydown', e => {
   const items = acList.querySelectorAll('.ac-item');
   if (e.key === 'ArrowDown') {
     e.preventDefault();
-    currentIndex = Math.min(currentIndex + 1, items.length - 1);
-    items.forEach((el, i) => el.classList.toggle('selected', i === currentIndex));
+    currentIndex = Math.min(currentIndex+1, items.length-1);
+    items.forEach((el,i) => el.classList.toggle('selected', i===currentIndex));
   } else if (e.key === 'ArrowUp') {
     e.preventDefault();
-    currentIndex = Math.max(currentIndex - 1, -1);
-    items.forEach((el, i) => el.classList.toggle('selected', i === currentIndex));
+    currentIndex = Math.max(currentIndex-1, -1);
+    items.forEach((el,i) => el.classList.toggle('selected', i===currentIndex));
   } else if (e.key === 'Enter') {
     if (currentIndex >= 0) { pick(currentIndex); return; }
     const q = searchEl.value.trim().toLowerCase();
