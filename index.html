@@ -317,7 +317,7 @@ margin: 0 -20px;
   </div>
 
   <div id="result">
-    <div class="hint">Start typing to search all 1025 Pokémon</div>
+    <div class="hint">Search all 1025 Pokémon + regional forms (Alolan, Galarian, Hisuian, Paldean)</div>
   </div>
 </div>
 
@@ -919,6 +919,76 @@ const POKEMON = [
 ["Pecharunt",1025,["Poison","Ghost"]]
 ];
 
+// ── REGIONAL FORMS ──────────────────────────────────────────
+// Format: [name, dexNum, types, spriteOverride (optional PokeAPI form slug)]
+// spriteOverride is the PokeAPI form endpoint slug for the sprite
+const REGIONAL = [
+// ── ALOLAN FORMS (Gen 7) ────────────────────────────────────
+["Alolan Rattata",   19, ["Dark","Normal"],       "rattata-alola"],
+["Alolan Raticate",  20, ["Dark","Normal"],       "raticate-alola"],
+["Alolan Raichu",    26, ["Electric","Psychic"],  "raichu-alola"],
+["Alolan Sandshrew", 27, ["Ice","Steel"],         "sandshrew-alola"],
+["Alolan Sandslash", 28, ["Ice","Steel"],         "sandslash-alola"],
+["Alolan Vulpix",    37, ["Ice"],                 "vulpix-alola"],
+["Alolan Ninetales", 38, ["Ice","Fairy"],         "ninetales-alola"],
+["Alolan Diglett",   50, ["Ground","Steel"],      "diglett-alola"],
+["Alolan Dugtrio",   51, ["Ground","Steel"],      "dugtrio-alola"],
+["Alolan Meowth",    52, ["Dark"],                "meowth-alola"],
+["Alolan Persian",   53, ["Dark"],                "persian-alola"],
+["Alolan Geodude",   74, ["Rock","Electric"],     "geodude-alola"],
+["Alolan Graveler",  75, ["Rock","Electric"],     "graveler-alola"],
+["Alolan Golem",     76, ["Rock","Electric"],     "golem-alola"],
+["Alolan Grimer",    88, ["Poison","Dark"],       "grimer-alola"],
+["Alolan Muk",       89, ["Poison","Dark"],       "muk-alola"],
+["Alolan Exeggutor",103, ["Grass","Dragon"],      "exeggutor-alola"],
+["Alolan Marowak",  105, ["Fire","Ghost"],        "marowak-alola"],
+
+// ── GALARIAN FORMS (Gen 8) ──────────────────────────────────
+["Galarian Meowth",   52, ["Steel"],              "meowth-galar"],
+["Galarian Ponyta",   77, ["Psychic"],            "ponyta-galar"],
+["Galarian Rapidash", 78, ["Psychic","Fairy"],    "rapidash-galar"],
+["Galarian Slowpoke", 79, ["Psychic"],            "slowpoke-galar"],
+["Galarian Slowbro",  80, ["Poison","Psychic"],   "slowbro-galar"],
+["Galarian Farfetch'd",83,["Fighting"],           "farfetchd-galar"],
+["Galarian Weezing", 110, ["Poison","Fairy"],     "weezing-galar"],
+["Galarian Mr. Mime",122, ["Ice","Psychic"],      "mr-mime-galar"],
+["Galarian Corsola", 222, ["Ghost"],              "corsola-galar"],
+["Galarian Zigzagoon",263,["Dark","Normal"],      "zigzagoon-galar"],
+["Galarian Linoone", 264, ["Dark","Normal"],      "linoone-galar"],
+["Galarian Darumaka",554, ["Ice"],                "darumaka-galar"],
+["Galarian Darmanitan",555,["Ice"],               "darmanitan-galar-standard"],
+["Galarian Yamask",  562, ["Ground","Ghost"],     "yamask-galar"],
+["Galarian Stunfisk",618, ["Ground","Steel"],     "stunfisk-galar"],
+// Crown Tundra Galarian Legendaries
+["Galarian Articuno",144, ["Psychic","Flying"],   "articuno-galar"],
+["Galarian Zapdos",  145, ["Fighting","Flying"],  "zapdos-galar"],
+["Galarian Moltres", 146, ["Dark","Flying"],      "moltres-galar"],
+
+// ── HISUIAN FORMS (Legends: Arceus) ─────────────────────────
+["Hisuian Growlithe", 58, ["Fire","Rock"],        "growlithe-hisui"],
+["Hisuian Arcanine",  59, ["Fire","Rock"],        "arcanine-hisui"],
+["Hisuian Voltorb",  100, ["Electric","Grass"],   "voltorb-hisui"],
+["Hisuian Electrode",101, ["Electric","Grass"],   "electrode-hisui"],
+["Hisuian Typhlosion",157,["Fire","Ghost"],       "typhlosion-hisui"],
+["Hisuian Qwilfish", 211, ["Dark","Poison"],      "qwilfish-hisui"],
+["Hisuian Sneasel",  215, ["Fighting","Poison"],  "sneasel-hisui"],
+["Hisuian Samurott", 503, ["Water","Dark"],       "samurott-hisui"],
+["Hisuian Lilligant",549, ["Grass","Fighting"],   "lilligant-hisui"],
+["Hisuian Zorua",    570, ["Normal","Ghost"],     "zorua-hisui"],
+["Hisuian Zoroark",  571, ["Normal","Ghost"],     "zoroark-hisui"],
+["Hisuian Braviary", 628, ["Psychic","Flying"],   "braviary-hisui"],
+["Hisuian Sliggoo",  705, ["Steel","Dragon"],     "sliggoo-hisui"],
+["Hisuian Goodra",   706, ["Steel","Dragon"],     "goodra-hisui"],
+["Hisuian Avalugg",  713, ["Ice","Rock"],         "avalugg-hisui"],
+["Hisuian Decidueye",724, ["Grass","Fighting"],   "decidueye-hisui"],
+
+// ── PALDEAN FORMS (Gen 9) ────────────────────────────────────
+["Paldean Wooper",   194, ["Poison","Ground"],    "wooper-paldea"],
+["Paldean Tauros (Combat)",128,["Fighting"],      "tauros-paldea-combat-breed"],
+["Paldean Tauros (Blaze)", 128,["Fighting","Fire"],"tauros-paldea-blaze-breed"],
+["Paldean Tauros (Aqua)",  128,["Fighting","Water"],"tauros-paldea-aqua-breed"],
+];
+
 // ── UI refs ──────────────────────────────────────────────────
 const searchEl = document.getElementById('search');
 const acList   = document.getElementById('autocomplete');
@@ -935,8 +1005,30 @@ function badge(t, small) {
   return `<span class="type-badge" style="background:${tc(t)};${p}">${t}</span>`;
 }
 
-function renderResult(poke) {
-  const [name, num, types] = poke;
+// Combine all searchable entries: regular Pokémon + regional forms
+// Regional forms: [name, dexNum, types, spriteSlug]
+const ALL_POKEMON = [
+  ...POKEMON.map(p => ({ name: p[0], num: p[1], types: p[2], sprite: null, isRegional: false })),
+  ...REGIONAL.map(p => ({ name: p[0], num: p[1], types: p[2], sprite: p[3], isRegional: true }))
+];
+
+function getSpriteUrl(entry) {
+  if (entry.sprite) {
+    // Regional form — use the PokeAPI form sprite endpoint
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.sprite}.png`;
+  }
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.num}.png`;
+}
+
+function getFallbackUrl(entry) {
+  if (entry.sprite) {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/forms/${entry.sprite}.png`;
+  }
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.num}.png`;
+}
+
+function renderResult(entry) {
+  const { name, num, types } = entry;
   const mu = getDefenseMatchups(types);
   const w4=[], w2=[], r2=[], r4=[], im=[];
   Object.entries(mu).forEach(([t,m])=>{
@@ -961,8 +1053,8 @@ function renderResult(poke) {
     </div>`;
   }
 
-  const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${num}.png`;
-  const fallback  = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${num}.png`;
+  const spriteUrl = getSpriteUrl(entry);
+  const fallback  = getFallbackUrl(entry);
 
   const sections = [
     section('⚠ Weak ×4',  'lbl-weak4',  w4, 'mult-4x', '×4'),
@@ -993,7 +1085,7 @@ function clearSearch() {
   searchEl.value = '';
   clearBtn.classList.remove('visible');
   acList.classList.remove('show');
-  resultEl.innerHTML = '<div class="hint">Start typing to search all 1025 Pokémon</div>';
+  resultEl.innerHTML = '<div class="hint">Search all 1025 Pokémon + regional forms (Alolan, Galarian, Hisuian, Paldean)</div>';
   searchEl.focus();
 }
 
@@ -1001,14 +1093,13 @@ clearBtn.addEventListener('click', clearSearch);
 
 function showAC(q) {
   if (!q) { acList.classList.remove('show'); return; }
-  filtered = POKEMON.filter(p => p[0].toLowerCase().includes(q.toLowerCase())).slice(0,12);
+  filtered = ALL_POKEMON.filter(p => p.name.toLowerCase().includes(q.toLowerCase())).slice(0,14);
   if (!filtered.length) { acList.classList.remove('show'); return; }
   acList.innerHTML = filtered.map((p,i) => {
-    const [name,num,types] = p;
     return `<div class="ac-item" data-idx="${i}">
-      <span class="ac-num">#${String(num).padStart(4,'0')}</span>
-      <span>${name}</span>
-      <span class="ac-types">${types.map(t=>badge(t,true)).join('')}</span>
+      <span class="ac-num">#${String(p.num).padStart(4,'0')}</span>
+      <span>${p.name}</span>
+      <span class="ac-types">${p.types.map(t=>badge(t,true)).join('')}</span>
     </div>`;
   }).join('');
   currentIndex = -1;
@@ -1023,7 +1114,7 @@ acList.addEventListener('click', e => {
 function pick(i) {
   const p = filtered[i];
   if (!p) return;
-  searchEl.value = p[0];
+  searchEl.value = p.name;
   clearBtn.classList.add('visible');
   acList.classList.remove('show');
   renderResult(p);
@@ -1033,7 +1124,7 @@ searchEl.addEventListener('input', e => {
   const v = e.target.value.trim();
   clearBtn.classList.toggle('visible', v.length > 0);
   showAC(v);
-  if (!v) resultEl.innerHTML = '<div class="hint">Start typing to search all 1025 Pokémon</div>';
+  if (!v) resultEl.innerHTML = '<div class="hint">Search all 1025 Pokémon + regional forms (Alolan, Galarian, Hisuian, Paldean)</div>';
 });
 
 searchEl.addEventListener('keydown', e => {
@@ -1049,8 +1140,8 @@ searchEl.addEventListener('keydown', e => {
   } else if (e.key === 'Enter') {
     if (currentIndex >= 0) { pick(currentIndex); return; }
     const q = searchEl.value.trim().toLowerCase();
-    const ex = POKEMON.findIndex(p => p[0].toLowerCase() === q);
-    if (ex >= 0) renderResult(POKEMON[ex]);
+    const ex = ALL_POKEMON.findIndex(p => p.name.toLowerCase() === q);
+    if (ex >= 0) renderResult(ALL_POKEMON[ex]);
     else if (filtered.length) pick(0);
     acList.classList.remove('show');
   } else if (e.key === 'Escape') {
