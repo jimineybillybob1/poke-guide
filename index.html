@@ -29,7 +29,6 @@ body {
   padding: 0 16px 40px;
 }
 
-/* HEADER */
 header {
   text-align: center;
   padding: 48px 16px 28px;
@@ -61,7 +60,6 @@ header h1 span {
   margin-top: 4px;
 }
 
-/* SEARCH */
 .search-wrap {
   position: relative;
   margin: 0 auto 12px;
@@ -93,14 +91,8 @@ header h1 span {
   transition: border-color 0.2s;
 }
 
-#search:focus {
-  border-color: #f5c518;
-}
-
-#search::placeholder {
-  color: #4a5568;
-  font-weight: 400;
-}
+#search:focus { border-color: #f5c518; }
+#search::placeholder { color: #4a5568; font-weight: 400; }
 
 .clear-btn {
   position: absolute;
@@ -124,7 +116,6 @@ header h1 span {
 .clear-btn:active { background: #e84393; color: #fff; }
 .clear-btn.visible { display: flex; }
 
-/* AUTOCOMPLETE */
 .autocomplete-list {
   position: absolute;
   top: calc(100% + 6px);
@@ -159,7 +150,6 @@ header h1 span {
 .ac-num { color: #4a5568; font-size: 12px; min-width: 44px; font-variant-numeric: tabular-nums; }
 .ac-types { margin-left: auto; display: flex; gap: 5px; flex-shrink: 0; }
 
-/* RESULT AREA */
 #result { margin-top: 8px; }
 
 .hint {
@@ -170,7 +160,6 @@ header h1 span {
   line-height: 1.6;
 }
 
-/* CARD */
 .card {
   background: #111827;
   border: 1px solid #2a3550;
@@ -236,7 +225,6 @@ header h1 span {
   text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
-/* CARD BODY */
 .card-body {
   padding: 18px 20px;
   display: flex;
@@ -292,7 +280,6 @@ header h1 span {
 .mult-025 { color: #4488ff; background: rgba(68,136,255,0.12); }
 .mult-0   { color: #556; background: rgba(85,85,102,0.15); }
 
-/* Divider between sections */
 .section-divider {
   height: 1px;
   background: #1a2235;
@@ -917,92 +904,92 @@ const POKEMON = [
 ["Pecharunt",1025,["Poison","Ghost"]]
 ];
 
-// ── REGIONAL FORMS ──────────────────────────────────────────
+// ── REGIONAL FORMS ───────────────────────────────────────────
+// spriteId = the numeric form ID used in the PokeAPI sprites repo
+// e.g. https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{spriteId}.png
 const REGIONAL = [
-// ── ALOLAN FORMS ────────────────────────────────────────────
-["Alolan Rattata",    19,  ["Dark","Normal"],          "rattata-alola"],
-["Alolan Raticate",   20,  ["Dark","Normal"],          "raticate-alola"],
-["Alolan Raichu",     26,  ["Electric","Psychic"],     "raichu-alola"],
-["Alolan Sandshrew",  27,  ["Ice","Steel"],            "sandshrew-alola"],
-["Alolan Sandslash",  28,  ["Ice","Steel"],            "sandslash-alola"],
-["Alolan Vulpix",     37,  ["Ice"],                    "vulpix-alola"],
-["Alolan Ninetales",  38,  ["Ice","Fairy"],            "ninetales-alola"],
-["Alolan Diglett",    50,  ["Ground","Steel"],         "diglett-alola"],
-["Alolan Dugtrio",    51,  ["Ground","Steel"],         "dugtrio-alola"],
-["Alolan Meowth",     52,  ["Dark"],                   "meowth-alola"],
-["Alolan Persian",    53,  ["Dark"],                   "persian-alola"],
-["Alolan Geodude",    74,  ["Rock","Electric"],        "geodude-alola"],
-["Alolan Graveler",   75,  ["Rock","Electric"],        "graveler-alola"],
-["Alolan Golem",      76,  ["Rock","Electric"],        "golem-alola"],
-["Alolan Grimer",     88,  ["Poison","Dark"],          "grimer-alola"],
-["Alolan Muk",        89,  ["Poison","Dark"],          "muk-alola"],
-["Alolan Exeggutor", 103,  ["Grass","Dragon"],         "exeggutor-alola"],
-["Alolan Marowak",   105,  ["Fire","Ghost"],           "marowak-alola"],
-// ── GALARIAN FORMS ──────────────────────────────────────────
-["Galarian Meowth",    52,  ["Steel"],                 "meowth-galar"],
-["Galarian Ponyta",    77,  ["Psychic"],               "ponyta-galar"],
-["Galarian Rapidash",  78,  ["Psychic","Fairy"],       "rapidash-galar"],
-["Galarian Slowpoke",  79,  ["Psychic"],               "slowpoke-galar"],
-["Galarian Slowbro",   80,  ["Poison","Psychic"],      "slowbro-galar"],
-["Galarian Farfetch'd",83,  ["Fighting"],              "farfetchd-galar"],
-["Galarian Weezing",  110,  ["Poison","Fairy"],        "weezing-galar"],
-["Galarian Mr. Mime", 122,  ["Ice","Psychic"],         "mr-mime-galar"],
-["Galarian Corsola",  222,  ["Ghost"],                 "corsola-galar"],
-["Galarian Zigzagoon",263,  ["Dark","Normal"],         "zigzagoon-galar"],
-["Galarian Linoone",  264,  ["Dark","Normal"],         "linoone-galar"],
-["Galarian Darumaka", 554,  ["Ice"],                   "darumaka-galar"],
-["Galarian Darmanitan",555, ["Ice"],                   "darmanitan-galar-standard"],
-["Galarian Yamask",   562,  ["Ground","Ghost"],        "yamask-galar"],
-["Galarian Stunfisk", 618,  ["Ground","Steel"],        "stunfisk-galar"],
-["Galarian Articuno", 144,  ["Psychic","Flying"],      "articuno-galar"],
-["Galarian Zapdos",   145,  ["Fighting","Flying"],     "zapdos-galar"],
-["Galarian Moltres",  146,  ["Dark","Flying"],         "moltres-galar"],
-// ── HISUIAN FORMS ───────────────────────────────────────────
-["Hisuian Growlithe",  58,  ["Fire","Rock"],           "growlithe-hisui"],
-["Hisuian Arcanine",   59,  ["Fire","Rock"],           "arcanine-hisui"],
-["Hisuian Voltorb",   100,  ["Electric","Grass"],      "voltorb-hisui"],
-["Hisuian Electrode", 101,  ["Electric","Grass"],      "electrode-hisui"],
-["Hisuian Typhlosion",157,  ["Fire","Ghost"],          "typhlosion-hisui"],
-["Hisuian Qwilfish",  211,  ["Dark","Poison"],         "qwilfish-hisui"],
-["Hisuian Sneasel",   215,  ["Fighting","Poison"],     "sneasel-hisui"],
-["Hisuian Samurott",  503,  ["Water","Dark"],          "samurott-hisui"],
-["Hisuian Lilligant", 549,  ["Grass","Fighting"],      "lilligant-hisui"],
-["Hisuian Zorua",     570,  ["Normal","Ghost"],        "zorua-hisui"],
-["Hisuian Zoroark",   571,  ["Normal","Ghost"],        "zoroark-hisui"],
-["Hisuian Braviary",  628,  ["Psychic","Flying"],      "braviary-hisui"],
-["Hisuian Sliggoo",   705,  ["Steel","Dragon"],        "sliggoo-hisui"],
-["Hisuian Goodra",    706,  ["Steel","Dragon"],        "goodra-hisui"],
-["Hisuian Avalugg",   713,  ["Ice","Rock"],            "avalugg-hisui"],
-["Hisuian Decidueye", 724,  ["Grass","Fighting"],      "decidueye-hisui"],
-// ── PALDEAN FORMS ───────────────────────────────────────────
-["Paldean Wooper",              194, ["Poison","Ground"],   "wooper-paldea"],
-["Paldean Tauros (Combat)",     128, ["Fighting"],          "tauros-paldea-combat-breed"],
-["Paldean Tauros (Blaze)",      128, ["Fighting","Fire"],   "tauros-paldea-blaze-breed"],
-["Paldean Tauros (Aqua)",       128, ["Fighting","Water"],  "tauros-paldea-aqua-breed"],
+// ── ALOLAN ──────────────────────────────────────────────────
+["Alolan Rattata",    19,  ["Dark","Normal"],        10091],
+["Alolan Raticate",   20,  ["Dark","Normal"],        10092],
+["Alolan Raichu",     26,  ["Electric","Psychic"],   10100],
+["Alolan Sandshrew",  27,  ["Ice","Steel"],          10101],
+["Alolan Sandslash",  28,  ["Ice","Steel"],          10102],
+["Alolan Vulpix",     37,  ["Ice"],                  10103],
+["Alolan Ninetales",  38,  ["Ice","Fairy"],          10104],
+["Alolan Diglett",    50,  ["Ground","Steel"],       10105],
+["Alolan Dugtrio",    51,  ["Ground","Steel"],       10106],
+["Alolan Meowth",     52,  ["Dark"],                 10107],
+["Alolan Persian",    53,  ["Dark"],                 10108],
+["Alolan Geodude",    74,  ["Rock","Electric"],      10109],
+["Alolan Graveler",   75,  ["Rock","Electric"],      10110],
+["Alolan Golem",      76,  ["Rock","Electric"],      10111],
+["Alolan Grimer",     88,  ["Poison","Dark"],        10112],
+["Alolan Muk",        89,  ["Poison","Dark"],        10113],
+["Alolan Exeggutor", 103,  ["Grass","Dragon"],       10114],
+["Alolan Marowak",   105,  ["Fire","Ghost"],         10115],
+// ── GALARIAN ────────────────────────────────────────────────
+["Galarian Meowth",    52, ["Steel"],                10188],
+["Galarian Ponyta",    77, ["Psychic"],              10193],
+["Galarian Rapidash",  78, ["Psychic","Fairy"],      10194],
+["Galarian Slowpoke",  79, ["Psychic"],              10195],
+["Galarian Slowbro",   80, ["Poison","Psychic"],     10196],
+["Galarian Farfetch'd",83, ["Fighting"],             10197],
+["Galarian Weezing",  110, ["Poison","Fairy"],       10199],
+["Galarian Mr. Mime", 122, ["Ice","Psychic"],        10200],
+["Galarian Corsola",  222, ["Ghost"],                10201],
+["Galarian Zigzagoon",263, ["Dark","Normal"],        10202],
+["Galarian Linoone",  264, ["Dark","Normal"],        10203],
+["Galarian Darumaka", 554, ["Ice"],                  10204],
+["Galarian Darmanitan",555,["Ice"],                  10205],
+["Galarian Yamask",   562, ["Ground","Ghost"],       10206],
+["Galarian Stunfisk", 618, ["Ground","Steel"],       10207],
+["Galarian Articuno", 144, ["Psychic","Flying"],     10189],
+["Galarian Zapdos",   145, ["Fighting","Flying"],    10190],
+["Galarian Moltres",  146, ["Dark","Flying"],        10191],
+// ── HISUIAN ─────────────────────────────────────────────────
+["Hisuian Growlithe",  58, ["Fire","Rock"],          10229],
+["Hisuian Arcanine",   59, ["Fire","Rock"],          10230],
+["Hisuian Voltorb",   100, ["Electric","Grass"],     10231],
+["Hisuian Electrode", 101, ["Electric","Grass"],     10232],
+["Hisuian Typhlosion",157, ["Fire","Ghost"],         10233],
+["Hisuian Qwilfish",  211, ["Dark","Poison"],        10234],
+["Hisuian Sneasel",   215, ["Fighting","Poison"],    10235],
+["Hisuian Samurott",  503, ["Water","Dark"],         10236],
+["Hisuian Lilligant", 549, ["Grass","Fighting"],     10237],
+["Hisuian Zorua",     570, ["Normal","Ghost"],       10238],
+["Hisuian Zoroark",   571, ["Normal","Ghost"],       10239],
+["Hisuian Braviary",  628, ["Psychic","Flying"],     10240],
+["Hisuian Sliggoo",   705, ["Steel","Dragon"],       10241],
+["Hisuian Goodra",    706, ["Steel","Dragon"],       10242],
+["Hisuian Avalugg",   713, ["Ice","Rock"],           10243],
+["Hisuian Decidueye", 724, ["Grass","Fighting"],     10244],
+// ── PALDEAN ─────────────────────────────────────────────────
+["Paldean Wooper",             194, ["Poison","Ground"],  10253],
+["Paldean Tauros (Combat)",    128, ["Fighting"],         10250],
+["Paldean Tauros (Blaze)",     128, ["Fighting","Fire"],  10251],
+["Paldean Tauros (Aqua)",      128, ["Fighting","Water"], 10252],
 ];
 
 // ── COMBINE ALL ENTRIES ──────────────────────────────────────
 const ALL_POKEMON = [
-  ...POKEMON.map(p => ({ name: p[0], num: p[1], types: p[2], sprite: null, isRegional: false })),
-  ...REGIONAL.map(p => ({ name: p[0], num: p[1], types: p[2], sprite: p[3], isRegional: true }))
+  ...POKEMON.map(p => ({ name: p[0], num: p[1], types: p[2], spriteId: null, isRegional: false })),
+  ...REGIONAL.map(p => ({ name: p[0], num: p[1], types: p[2], spriteId: p[3], isRegional: true }))
 ];
 
 // ── SPRITE URLS ──────────────────────────────────────────────
-// Regional forms: use HOME sprites (support slugs, high quality)
-// Normal forms:   use official-artwork (numbered, highest quality)
+// Normal forms: official-artwork (highest quality, numbered)
+// Regional forms: numbered form ID sprite, with official-artwork of base as fallback
 function getSpriteUrl(entry) {
-  if (entry.sprite) {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${entry.sprite}.png`;
+  if (entry.spriteId) {
+    // Front-facing sprite using the form's numeric ID
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.spriteId}.png`;
   }
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.num}.png`;
 }
 
-// Fallback: forms/ folder for regionals, default sprite for normals
 function getFallbackUrl(entry) {
-  if (entry.sprite) {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/forms/${entry.sprite}.png`;
-  }
-  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.num}.png`;
+  // Always fall back to the base Pokémon's official artwork
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${entry.num}.png`;
 }
 
 // ── UI REFS ──────────────────────────────────────────────────
@@ -1019,16 +1006,6 @@ function tc(t) { return TYPE_COLORS[t] || '#777'; }
 function badge(t, small) {
   const p = small ? 'padding:3px 7px;font-size:10px' : '';
   return `<span class="type-badge" style="background:${tc(t)};${p}">${t}</span>`;
-}
-
-function getDefenseMatchups(types) {
-  const mults = {};
-  Object.keys(CHART).forEach(atk => {
-    let m = 1;
-    types.forEach(def => { const v = CHART[atk][def]; if (v !== undefined) m *= v; });
-    if (m !== 1) mults[atk] = m;
-  });
-  return mults;
 }
 
 function renderResult(entry) {
