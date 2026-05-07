@@ -496,10 +496,11 @@ header h1 span {
 
 /* Slot autocomplete */
 .slot-ac {
-  position: fixed; left: 16px; right: 16px;
+  position: absolute; left: 0; right: 0; top: calc(100% + 4px);
   background: #111827; border: 2px solid #2a3550; border-radius: 12px;
   max-height: 220px; overflow-y: auto; z-index: 300; display: none;
   box-shadow: 0 8px 32px rgba(0,0,0,0.6); -webkit-overflow-scrolling: touch;
+  min-width: 240px;
 }
 .slot-ac.show { display: block; }
 .slot-ac-item {
@@ -2099,8 +2100,6 @@ function buildSlot(idx) {
         <span class="slot-ac-types">${p.types.map(t=>badge(t,true)).join('')}</span>
       </div>`
     ).join('');
-    const rect = inp.getBoundingClientRect();
-    ac.style.top = (rect.bottom + 6) + 'px';
     ac.classList.add('show');
   });
   ac.addEventListener('click', e => {
