@@ -359,19 +359,21 @@ header h1 span {
 .matchup-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 0;
+  gap: 8px;
+  padding: 5px 0;
   border-bottom: 1px solid #0d1422;
 }
 .matchup-row:last-child { border-bottom: none; }
 .matchup-poke-name {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: #e8eaf6;
-  min-width: 80px;
+  min-width: 64px;
+  max-width: 80px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 .matchup-moves {
   display: flex;
@@ -403,14 +405,17 @@ header h1 span {
   border-radius: 16px;
   overflow: visible;
   transition: border-color 0.2s;
+  min-width: 0;
+  width: 100%;
 }
 .poke-slot.has-pokemon { border-color: #2e3f60; }
 .slot-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
+  gap: 8px;
+  padding: 10px 12px;
   border-bottom: 1px solid #1a2235;
+  min-width: 0;
 }
 .slot-num {
   width: 24px; height: 24px;
@@ -421,7 +426,7 @@ header h1 span {
   font-size: 11px; font-weight: 700; color: #4a5568; flex-shrink: 0;
 }
 .has-pokemon .slot-num { background: #1e2d4a; border-color: #3a5080; color: #7986a8; }
-.slot-poke-wrap { position: relative; flex: 1; }
+.slot-poke-wrap { position: relative; flex: 1; min-width: 0; }
 .slot-poke-input {
   width: 100%; background: transparent; border: none; outline: none;
   color: #e8eaf6;
@@ -430,7 +435,7 @@ header h1 span {
   -webkit-appearance: none; appearance: none;
 }
 .slot-poke-input::placeholder { color: #2a3550; font-weight: 400; }
-.slot-types { display: flex; gap: 5px; flex-shrink: 0; }
+.slot-types { display: flex; gap: 5px; flex-shrink: 0; flex-wrap: nowrap; }
 .slot-clear {
   background: none; border: none; color: #3a4a60;
   font-size: 16px; cursor: pointer; padding: 2px 4px; line-height: 1;
@@ -438,9 +443,25 @@ header h1 span {
 }
 .has-pokemon .slot-clear { display: block; }
 
+/* Slot sprite */
+.slot-sprite {
+  width: 52px; height: 52px;
+  object-fit: contain; flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  display: none;
+}
+.has-pokemon .slot-sprite { display: block; }
+
+/* Matchup row sprite */
+.matchup-sprite {
+  width: 36px; height: 36px;
+  object-fit: contain; flex-shrink: 0;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.5));
+}
+
 /* Slot autocomplete */
 .slot-ac {
-  position: absolute; top: calc(100% + 8px); left: -14px; right: -60px;
+  position: fixed; left: 16px; right: 16px;
   background: #111827; border: 2px solid #2a3550; border-radius: 12px;
   max-height: 220px; overflow-y: auto; z-index: 300; display: none;
   box-shadow: 0 8px 32px rgba(0,0,0,0.6); -webkit-overflow-scrolling: touch;
@@ -462,12 +483,14 @@ header h1 span {
 .moves-grid {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 8px; padding: 10px 12px 12px;
+  min-width: 0;
 }
-.move-slot { position: relative; }
+.move-slot { position: relative; min-width: 0; }
 .move-input-wrap {
   display: flex; align-items: center;
   background: #0d1422; border: 1px solid #1a2235; border-radius: 9px;
-  padding: 7px 10px; gap: 7px; transition: border-color 0.15s;
+  padding: 7px 8px; gap: 5px; transition: border-color 0.15s;
+  min-width: 0; width: 100%; box-sizing: border-box;
 }
 .move-input-wrap:focus-within { border-color: #2a3550; }
 .move-type-dot {
@@ -1015,7 +1038,6 @@ const POKEMON = [
 ["Yungoos",734,["Normal"]],["Gumshoos",735,["Normal"]],
 ["Grubbin",736,["Bug"]],["Charjabug",737,["Bug","Electric"]],["Vikavolt",738,["Bug","Electric"]],
 ["Crabrawler",739,["Fighting"]],["Crabominable",740,["Fighting","Ice"]],
-["Oricorio",741,["Fire","Flying"]],
 ["Cutiefly",742,["Bug","Fairy"]],["Ribombee",743,["Bug","Fairy"]],
 ["Rockruff",744,["Rock"]],["Lycanroc",745,["Rock"]],
 ["Wishiwashi",746,["Water"]],
@@ -1245,6 +1267,12 @@ const REGIONAL = [
 ["Paldean Tauros (Combat)",128,["Fighting"],      "10250"],
 ["Paldean Tauros (Blaze)", 128,["Fighting","Fire"],"10251"],
 ["Paldean Tauros (Aqua)",  128,["Fighting","Water"],"10252"],
+
+// ── ORICORIO FORMS ───────────────────────────────────────────
+["Oricorio (Baile)",   741, ["Fire","Flying"],     "741"],
+["Oricorio (Pom-Pom)", 741, ["Electric","Flying"], "10123"],
+["Oricorio (Pa'u)",    741, ["Psychic","Flying"],  "10124"],
+["Oricorio (Sensu)",   741, ["Ghost","Flying"],    "10125"],
 ];
 
 // ── UI refs ──────────────────────────────────────────────────
@@ -1475,6 +1503,8 @@ function buildTeamMatchup(defTypes) {
     }).join('');
 
     rows.push(`<div class="matchup-row">
+      <img class="matchup-sprite" src="${getSpriteUrl(slot.pokemon)}" alt="${slot.pokemon.name}"
+        onerror="this.onerror=null;this.src='${getFallbackUrl(slot.pokemon)}'">
       <span class="matchup-poke-name">${slot.pokemon.name}</span>
       <div class="matchup-moves">${moveBadges}</div>
     </div>`);
@@ -1699,6 +1729,19 @@ function buildSlot(idx) {
   const num = document.createElement('div');
   num.className = 'slot-num';
   num.textContent = idx + 1;
+
+  // Sprite
+  const spriteImg = document.createElement('img');
+  spriteImg.className = 'slot-sprite';
+  spriteImg.alt = '';
+  if (team[idx].pokemon) {
+    const entry = team[idx].pokemon;
+    const spriteUrl = getSpriteUrl(entry);
+    const fallback  = getFallbackUrl(entry);
+    spriteImg.src = spriteUrl;
+    spriteImg.onerror = function() { this.onerror=null; this.src=fallback; };
+  }
+
   const wrap = document.createElement('div');
   wrap.className = 'slot-poke-wrap';
   const inp = document.createElement('input');
@@ -1725,6 +1768,8 @@ function buildSlot(idx) {
         <span class="slot-ac-types">${p.types.map(t=>badge(t,true)).join('')}</span>
       </div>`
     ).join('');
+    const rect = inp.getBoundingClientRect();
+    ac.style.top = (rect.bottom + 6) + 'px';
     ac.classList.add('show');
   });
   ac.addEventListener('click', e => {
@@ -1752,7 +1797,7 @@ function buildSlot(idx) {
   });
 
   wrap.appendChild(inp); wrap.appendChild(ac);
-  hdr.appendChild(num); hdr.appendChild(wrap); hdr.appendChild(types); hdr.appendChild(clr);
+  hdr.appendChild(num); hdr.appendChild(spriteImg); hdr.appendChild(wrap); hdr.appendChild(types); hdr.appendChild(clr);
   slot.appendChild(hdr);
 
   // Moves
