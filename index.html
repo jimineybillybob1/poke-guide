@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
 <title>Pokémon — Type Guide</title>
 <meta name="description" content="Pokémon type weakness and resistance guide — search all 1025 Pokémon, plus team builder with move coverage">
 <meta name="theme-color" content="#0a0e1a">
@@ -22,6 +23,12 @@ body {
   min-height: 100%;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+.tab-btn, .slot-num, .type-badge, .chip, .ac-item {
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .container {
@@ -33,7 +40,7 @@ body {
 /* HEADER */
 header {
   text-align: center;
-  padding: 100px 16px 28px;
+  padding: 40px 16px 28px;
 }
 
 .header-icon {
@@ -306,9 +313,9 @@ header h1 span {
   background: #0a0e1a;
   border-bottom: 1px solid #1a2235;
   position: sticky;
-  top: 0px;
+  top: 0;
   z-index: 200;
-  padding: 26px 16px;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
   gap: 4px;
 }
 .tab-btn {
