@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>Pokémon Lazarus — Type Guide</title>
-<meta name="description" content="Pokémon Lazarus type weakness and resistance guide — search all 1025 Pokémon instantly">
+<meta name="description" content="Pokémon Lazarus type weakness and resistance guide — search all 1025 Pokémon, plus team builder with move coverage">
 <meta name="theme-color" content="#0a0e1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -33,7 +33,7 @@ body {
 /* HEADER */
 header {
   text-align: center;
-  padding: 100px 16px 28px;
+  padding: 36px 16px 28px;
 }
 
 .header-icon {
@@ -299,25 +299,277 @@ header h1 span {
   background: #1a2235;
   margin: 0 -20px;
 }
+
+/* ── TAB BAR ─────────────────────────────────────────────── */
+.tab-bar {
+  display: flex;
+  background: #0a0e1a;
+  border-bottom: 1px solid #1a2235;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  padding: 0 16px;
+  gap: 4px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 14px 8px 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #4a5568;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.tab-btn.active { color: #f5c518; border-bottom-color: #f5c518; }
+.tab-btn:active { opacity: 0.7; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── TEAM MATCHUP (inside type guide card) ───────────────── */
+.team-matchup-section {
+  padding: 16px 20px;
+  border-top: 1px solid #1a2235;
+}
+.team-matchup-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #f5c518;
+  margin-bottom: 10px;
+}
+.matchup-hint {
+  font-size: 13px;
+  color: #4a5568;
+  font-style: italic;
+}
+.matchup-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid #0d1422;
+}
+.matchup-row:last-child { border-bottom: none; }
+.matchup-poke-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8eaf6;
+  min-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.matchup-moves {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.matchup-move-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #1a2235;
+  border: 1px solid #2a3550;
+  border-radius: 7px;
+  padding: 3px 8px;
+  font-size: 11px;
+}
+.matchup-move-name { color: #c8cfe8; font-weight: 500; }
+.matchup-mult { font-size: 10px; font-weight: 800; }
+.matchup-mult.x2 { color: #ff8844; }
+.matchup-mult.x4 { color: #ff4444; }
+
+/* ── TEAM BUILDER ────────────────────────────────────────── */
+.team-section { padding: 20px 0 48px; }
+.team-grid { display: flex; flex-direction: column; gap: 12px; }
+
+.poke-slot {
+  background: #111827;
+  border: 1px solid #2a3550;
+  border-radius: 16px;
+  overflow: visible;
+  transition: border-color 0.2s;
+}
+.poke-slot.has-pokemon { border-color: #2e3f60; }
+.slot-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #1a2235;
+}
+.slot-num {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: #1a2235;
+  border: 1px solid #2a3550;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #4a5568; flex-shrink: 0;
+}
+.has-pokemon .slot-num { background: #1e2d4a; border-color: #3a5080; color: #7986a8; }
+.slot-poke-wrap { position: relative; flex: 1; }
+.slot-poke-input {
+  width: 100%; background: transparent; border: none; outline: none;
+  color: #e8eaf6;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-size: 15px; font-weight: 600;
+  -webkit-appearance: none; appearance: none;
+}
+.slot-poke-input::placeholder { color: #2a3550; font-weight: 400; }
+.slot-types { display: flex; gap: 5px; flex-shrink: 0; }
+.slot-clear {
+  background: none; border: none; color: #3a4a60;
+  font-size: 16px; cursor: pointer; padding: 2px 4px; line-height: 1;
+  -webkit-tap-highlight-color: transparent; display: none;
+}
+.has-pokemon .slot-clear { display: block; }
+
+/* Slot autocomplete */
+.slot-ac {
+  position: absolute; top: calc(100% + 8px); left: -14px; right: -60px;
+  background: #111827; border: 2px solid #2a3550; border-radius: 12px;
+  max-height: 220px; overflow-y: auto; z-index: 300; display: none;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6); -webkit-overflow-scrolling: touch;
+}
+.slot-ac.show { display: block; }
+.slot-ac-item {
+  padding: 10px 14px; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 500;
+  border-bottom: 1px solid #1a2235;
+  -webkit-user-select: none; user-select: none;
+}
+.slot-ac-item:last-child { border-bottom: none; }
+.slot-ac-item:active { background: #1a2235; }
+.slot-ac-num { color: #4a5568; font-size: 11px; min-width: 38px; font-variant-numeric: tabular-nums; }
+.slot-ac-types { margin-left: auto; display: flex; gap: 4px; }
+
+/* Move slots */
+.moves-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; padding: 10px 12px 12px;
+}
+.move-slot { position: relative; }
+.move-input-wrap {
+  display: flex; align-items: center;
+  background: #0d1422; border: 1px solid #1a2235; border-radius: 9px;
+  padding: 7px 10px; gap: 7px; transition: border-color 0.15s;
+}
+.move-input-wrap:focus-within { border-color: #2a3550; }
+.move-type-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #2a3550; flex-shrink: 0; transition: background 0.2s;
+}
+.move-input {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: #e8eaf6;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-size: 12px; font-weight: 500; min-width: 0;
+  -webkit-appearance: none; appearance: none;
+}
+.move-input::placeholder { color: #2a3550; font-weight: 400; }
+.move-type-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px;
+  color: #fff; padding: 2px 5px; border-radius: 4px; flex-shrink: 0; display: none;
+}
+.move-ac {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: #111827; border: 2px solid #2a3550; border-radius: 10px;
+  max-height: 200px; overflow-y: auto; z-index: 400; display: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6); -webkit-overflow-scrolling: touch;
+}
+.move-ac.show { display: block; }
+.move-ac-item {
+  padding: 8px 11px; cursor: pointer;
+  display: flex; align-items: center; gap: 8px; font-size: 12px;
+  border-bottom: 1px solid #0d1422;
+  -webkit-user-select: none; user-select: none;
+}
+.move-ac-item:last-child { border-bottom: none; }
+.move-ac-item:active { background: #1a2235; }
+.move-ac-name { flex: 1; font-weight: 500; color: #c8cfe8; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.move-ac-cat { font-size: 9px; color: #4a5568; flex-shrink: 0; }
+
+/* ── COVERAGE TABLE ─────────────────────────────────────── */
+.coverage-section { margin-top: 20px; }
+.coverage-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: #4a5568; margin-bottom: 12px; padding: 0 2px;
+}
+.coverage-table {
+  background: #111827; border: 1px solid #2a3550; border-radius: 14px; overflow: hidden;
+}
+.cov-header-row {
+  display: grid; grid-template-columns: 80px repeat(6, 1fr);
+  background: #0d1422; border-bottom: 1px solid #1a2235;
+}
+.cov-col-head {
+  padding: 7px 3px; text-align: center;
+  font-size: 9px; font-weight: 700; color: #4a5568;
+  border-right: 1px solid #1a2235;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cov-col-head:last-child { border-right: none; }
+.cov-row {
+  display: grid; grid-template-columns: 80px repeat(6, 1fr);
+  border-bottom: 1px solid #0d1422;
+}
+.cov-row:last-child { border-bottom: none; }
+.cov-type-cell { padding: 5px 6px; display: flex; align-items: center; border-right: 1px solid #0d1422; }
+.cov-cell {
+  display: flex; align-items: center; justify-content: center;
+  border-right: 1px solid #0d1422; min-height: 28px;
+}
+.cov-cell:last-child { border-right: none; }
+.cov-check { font-size: 14px; }
+.cov-dot { font-size: 10px; color: #1a2a3a; }
+.team-hint {
+  text-align: center; color: #2a3550; font-size: 13px;
+  padding: 24px 0 8px; line-height: 1.7;
+}
 </style>
 </head>
 <body>
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-guide" onclick="switchTab('guide')">⚔️ Type Guide</button>
+  <button class="tab-btn" id="tab-team" onclick="switchTab('team')">🎯 My Team</button>
+</div>
+
+<div class="tab-panel active" id="panel-guide">
 <div class="container">
   <header>
     <span class="header-icon">⚔️</span>
     <h1>Pokémon<span>Type Guide</span></h1>
   </header>
-
   <div class="search-wrap">
     <span class="search-icon-el">🔍</span>
     <input type="search" id="search" placeholder="Search Pokémon..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     <button class="clear-btn" id="clearBtn" aria-label="Clear">✕</button>
     <div class="autocomplete-list" id="autocomplete"></div>
   </div>
-
   <div id="result">
     <div class="hint">Search all Pokémon type effectiveness</div>
   </div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel-team">
+<div class="container">
+  <div class="team-section">
+    <div class="team-grid" id="teamGrid"></div>
+    <div class="coverage-section" id="coverageSection">
+      <div class="coverage-title">Move Type Coverage</div>
+      <div id="coverageTable"></div>
+    </div>
+  </div>
+</div>
 </div>
 
 <script>
@@ -1063,6 +1315,8 @@ function renderResult(entry) {
     section('Immune ×0',   'lbl-immune', im, 'mult-0',  '×0'),
   ].filter(Boolean).join('<div class="section-divider"></div>');
 
+  const teamMatchupHtml = buildTeamMatchup(types);
+
   resultEl.innerHTML = `
     <div class="card">
       <div class="card-header">
@@ -1077,6 +1331,7 @@ function renderResult(entry) {
       <div class="card-body">
         ${sections || '<p style="color:#4a5568;font-size:14px">No notable type matchups.</p>'}
       </div>
+      ${teamMatchupHtml}
     </div>`;
 }
 
@@ -1151,6 +1406,499 @@ searchEl.addEventListener('keydown', e => {
 document.addEventListener('click', e => {
   if (!e.target.closest('.search-wrap')) acList.classList.remove('show');
 });
+
+// ── TAB SWITCHING ─────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'team') renderTeamGrid();
+}
+
+// ── TEAM STATE ────────────────────────────────────────────
+let team = Array.from({length:6}, () => ({ pokemon: null, moves: [null,null,null,null] }));
+function loadTeam() {
+  try {
+    const s = JSON.parse(localStorage.getItem('lazarus_team') || 'null');
+    if (s && Array.isArray(s) && s.length === 6) team = s;
+  } catch {}
+}
+function saveTeam() { localStorage.setItem('lazarus_team', JSON.stringify(team)); }
+loadTeam();
+
+// ── TEAM MATCHUP (shown in type guide card) ───────────────
+function buildTeamMatchup(defTypes) {
+  const hasTeam = team.some(s => s.pokemon && s.moves.some(Boolean));
+  if (!hasTeam) {
+    return `<div class="team-matchup-section">
+      <div class="team-matchup-label">🎯 Your Team</div>
+      <div class="matchup-hint">Add Pokémon & moves in the My Team tab to see coverage suggestions here</div>
+    </div>`;
+  }
+
+  const rows = [];
+  team.forEach(slot => {
+    if (!slot.pokemon) return;
+    const goodMoves = slot.moves.filter(m => {
+      if (!m) return false;
+      // Check how effective this move type is vs defTypes
+      let mult = 1;
+      defTypes.forEach(dt => {
+        const v = CHART[m.type] && CHART[m.type][dt];
+        if (v !== undefined) mult *= v;
+      });
+      return mult >= 2;
+    });
+    if (!goodMoves.length) return;
+
+    const moveBadges = goodMoves.map(m => {
+      let mult = 1;
+      defTypes.forEach(dt => {
+        const v = CHART[m.type] && CHART[m.type][dt];
+        if (v !== undefined) mult *= v;
+      });
+      const cls = mult >= 4 ? 'x4' : 'x2';
+      const txt = mult >= 4 ? '×4' : '×2';
+      return `<div class="matchup-move-badge">
+        <span class="type-badge" style="background:${TYPE_COLORS[m.type]||'#777'};padding:2px 6px;font-size:9px">${m.type}</span>
+        <span class="matchup-move-name">${m.name}</span>
+        <span class="matchup-mult ${cls}">${txt}</span>
+      </div>`;
+    }).join('');
+
+    rows.push(`<div class="matchup-row">
+      <span class="matchup-poke-name">${slot.pokemon.name}</span>
+      <div class="matchup-moves">${moveBadges}</div>
+    </div>`);
+  });
+
+  if (!rows.length) {
+    return `<div class="team-matchup-section">
+      <div class="team-matchup-label">🎯 Your Team</div>
+      <div class="matchup-hint">None of your team's moves are super-effective against this Pokémon</div>
+    </div>`;
+  }
+
+  return `<div class="team-matchup-section">
+    <div class="team-matchup-label">🎯 Your Team — Super Effective Moves</div>
+    ${rows.join('')}
+  </div>`;
+}
+
+// ── COMPLETE MOVES LIST ───────────────────────────────────
+// Format: [name, type, category P/S/T]
+// Full list from pokemondb.net/move/all — all generations
+const MOVES = [
+["10,000,000 Volt Thunderbolt","Electric","S"],["Absorb","Grass","S"],["Accelerock","Rock","P"],
+["Acid","Poison","S"],["Acid Armor","Poison","T"],["Acid Spray","Poison","S"],
+["Acrobatics","Flying","P"],["Aerial Ace","Flying","P"],["Aeroblast","Flying","S"],
+["Air Cutter","Flying","S"],["Air Slash","Flying","S"],["Alluring Voice","Fairy","S"],
+["Ally Switch","Psychic","T"],["Amnesia","Psychic","T"],["Anchor Shot","Steel","P"],
+["Ancient Power","Rock","S"],["Apple Acid","Grass","S"],["Aqua Cutter","Water","P"],
+["Aqua Jet","Water","P"],["Aqua Ring","Water","T"],["Aqua Step","Water","P"],
+["Aqua Tail","Water","P"],["Arm Thrust","Fighting","P"],["Armor Cannon","Fire","S"],
+["Aromatherapy","Grass","T"],["Aromatic Mist","Fairy","T"],["Assurance","Dark","P"],
+["Astonish","Ghost","P"],["Astral Barrage","Ghost","S"],["Attack Order","Bug","P"],
+["Aura Sphere","Fighting","S"],["Aura Wheel","Electric","P"],["Aurora Beam","Ice","S"],
+["Aurora Veil","Ice","T"],["Avalanche","Ice","P"],["Axe Kick","Fighting","P"],
+["Baby-Doll Eyes","Fairy","T"],["Baddy Bad","Dark","S"],["Baneful Bunker","Poison","T"],
+["Barb Barrage","Poison","P"],["Barrier","Psychic","T"],["Beak Blast","Flying","P"],
+["Beat Up","Dark","P"],["Behemoth Bash","Steel","P"],["Behemoth Blade","Steel","P"],
+["Belch","Poison","S"],["Bide","Normal","P"],["Bind","Normal","P"],
+["Bite","Dark","P"],["Bitter Blade","Fire","P"],["Bitter Malice","Ghost","S"],
+["Blast Burn","Fire","S"],["Blaze Kick","Fire","P"],["Blazing Torque","Fire","P"],
+["Bleakwind Storm","Flying","S"],["Blizzard","Ice","S"],["Blood Moon","Normal","S"],
+["Blue Flare","Fire","S"],["Body Press","Fighting","P"],["Body Slam","Normal","P"],
+["Bolt Beak","Electric","P"],["Bolt Strike","Electric","P"],["Bone Club","Ground","P"],
+["Bone Rush","Ground","P"],["Bonemerang","Ground","P"],["Boomburst","Normal","S"],
+["Bounce","Flying","P"],["Bouncy Bubble","Water","S"],["Branch Poke","Grass","P"],
+["Brave Bird","Flying","P"],["Breaking Swipe","Dragon","P"],["Brick Break","Fighting","P"],
+["Brine","Water","S"],["Brutal Swing","Dark","P"],["Bubble","Water","S"],
+["Bubble Beam","Water","S"],["Bug Bite","Bug","P"],["Bug Buzz","Bug","S"],
+["Bulldoze","Ground","P"],["Bullet Punch","Steel","P"],["Bullet Seed","Grass","P"],
+["Burn Up","Fire","S"],["Burning Jealousy","Fire","S"],["Buzzy Buzz","Electric","S"],
+["Calm Mind","Psychic","T"],["Catastropika","Electric","P"],["Ceaseless Edge","Dark","P"],
+["Charge Beam","Electric","S"],["Chatter","Flying","S"],["Chilling Water","Water","S"],
+["Chip Away","Normal","P"],["Chloroblast","Grass","S"],["Circle Throw","Fighting","P"],
+["Clamp","Water","P"],["Clanging Scales","Dragon","S"],["Clear Smog","Poison","S"],
+["Close Combat","Fighting","P"],["Collision Course","Fighting","P"],["Combat Torque","Fighting","P"],
+["Comeuppance","Dark","P"],["Confusion","Psychic","S"],["Counter","Fighting","P"],
+["Crabhammer","Water","P"],["Cross Chop","Fighting","P"],["Cross Poison","Poison","P"],
+["Crunch","Dark","P"],["Crush Claw","Normal","P"],["Crush Grip","Normal","P"],
+["Cut","Normal","P"],["Dark Pulse","Dark","S"],["Darkest Lariat","Dark","P"],
+["Dazzling Gleam","Fairy","S"],["Diamond Storm","Rock","P"],["Dig","Ground","P"],
+["Dire Claw","Poison","P"],["Disarming Voice","Fairy","S"],["Discharge","Electric","S"],
+["Dive","Water","P"],["Dizzy Punch","Normal","P"],["Doom Desire","Steel","S"],
+["Double Hit","Normal","P"],["Double Iron Bash","Steel","P"],["Double Kick","Fighting","P"],
+["Double Shock","Electric","P"],["Double Slap","Normal","P"],["Double-Edge","Normal","P"],
+["Draco Meteor","Dragon","S"],["Dragon Ascent","Flying","P"],["Dragon Breath","Dragon","S"],
+["Dragon Claw","Dragon","P"],["Dragon Darts","Dragon","P"],["Dragon Energy","Dragon","S"],
+["Dragon Hammer","Dragon","P"],["Dragon Pulse","Dragon","S"],["Dragon Rage","Dragon","S"],
+["Dragon Rush","Dragon","P"],["Dragon Tail","Dragon","P"],["Drain Punch","Fighting","P"],
+["Draining Kiss","Fairy","S"],["Dream Eater","Psychic","S"],["Drill Peck","Flying","P"],
+["Drill Run","Ground","P"],["Drum Beating","Grass","P"],["Dual Chop","Dragon","P"],
+["Dual Wingbeat","Flying","P"],["Dynamax Cannon","Dragon","S"],["Dynamic Punch","Fighting","P"],
+["Earth Power","Ground","S"],["Earthquake","Ground","P"],["Eerie Spell","Psychic","S"],
+["Egg Bomb","Normal","P"],["Electro Ball","Electric","S"],["Electro Drift","Electric","S"],
+["Electro Shot","Electric","S"],["Electroweb","Electric","S"],["Ember","Fire","S"],
+["Energy Ball","Grass","S"],["Eruption","Fire","S"],["Esper Wing","Psychic","S"],
+["Eternabeam","Dragon","S"],["Expanding Force","Psychic","S"],["Explosion","Normal","P"],
+["Extrasensory","Psychic","S"],["Extreme Speed","Normal","P"],["Facade","Normal","P"],
+["Fairy Wind","Fairy","S"],["False Surrender","Dark","P"],["False Swipe","Normal","P"],
+["Feint Attack","Dark","P"],["Fell Stinger","Bug","P"],["Fickle Beam","Dragon","S"],
+["Fiery Dance","Fire","S"],["Fiery Wrath","Dark","S"],["Final Gambit","Fighting","S"],
+["Fire Blast","Fire","S"],["Fire Fang","Fire","P"],["Fire Lash","Fire","P"],
+["Fire Pledge","Fire","S"],["Fire Punch","Fire","P"],["Fire Spin","Fire","S"],
+["First Impression","Bug","P"],["Fishious Rend","Water","P"],["Fissure","Ground","P"],
+["Flail","Normal","P"],["Flame Burst","Fire","S"],["Flame Charge","Fire","P"],
+["Flame Wheel","Fire","P"],["Flamethrower","Fire","S"],["Flare Blitz","Fire","P"],
+["Flash Cannon","Steel","S"],["Fleur Cannon","Fairy","S"],["Fling","Dark","P"],
+["Flip Turn","Water","P"],["Floaty Fall","Flying","P"],["Flower Trick","Grass","P"],
+["Fly","Flying","P"],["Flying Press","Fighting","P"],["Focus Blast","Fighting","S"],
+["Focus Punch","Fighting","P"],["Force Palm","Fighting","P"],["Foul Play","Dark","P"],
+["Freeze Shock","Ice","P"],["Freeze-Dry","Ice","S"],["Freezing Glare","Psychic","S"],
+["Freezy Frost","Ice","S"],["Frenzy Plant","Grass","S"],["Frost Breath","Ice","S"],
+["Fury Attack","Normal","P"],["Fury Cutter","Bug","P"],["Fury Swipes","Normal","P"],
+["Fusion Bolt","Electric","P"],["Fusion Flare","Fire","S"],["Future Sight","Psychic","S"],
+["Gear Grind","Steel","P"],["Giga Drain","Grass","S"],["Giga Impact","Normal","P"],
+["Gigaton Hammer","Steel","P"],["Glacial Lance","Ice","P"],["Glaciate","Ice","S"],
+["Glaive Rush","Dragon","P"],["Glitzy Glow","Psychic","S"],["Grass Knot","Grass","S"],
+["Grass Pledge","Grass","S"],["Grassy Glide","Grass","P"],["Grav Apple","Grass","P"],
+["Guillotine","Normal","P"],["Gunk Shot","Poison","P"],["Gust","Flying","S"],
+["Gyro Ball","Steel","P"],["Hammer Arm","Fighting","P"],["Hard Press","Steel","P"],
+["Head Charge","Normal","P"],["Head Smash","Rock","P"],["Headbutt","Normal","P"],
+["Headlong Rush","Ground","P"],["Heat Crash","Fire","P"],["Heat Wave","Fire","S"],
+["Heavy Slam","Steel","P"],["Hex","Ghost","S"],["Hidden Power","Normal","S"],
+["High Horsepower","Ground","P"],["High Jump Kick","Fighting","P"],["Horn Attack","Normal","P"],
+["Horn Drill","Normal","P"],["Horn Leech","Grass","P"],["Hurricane","Flying","S"],
+["Hydro Cannon","Water","S"],["Hydro Pump","Water","S"],["Hydro Steam","Water","S"],
+["Hyper Beam","Normal","S"],["Hyper Drill","Normal","P"],["Hyper Fang","Normal","P"],
+["Hyper Voice","Normal","S"],["Hyperspace Fury","Dark","P"],["Hyperspace Hole","Psychic","S"],
+["Ice Ball","Ice","P"],["Ice Beam","Ice","S"],["Ice Burn","Ice","S"],
+["Ice Fang","Ice","P"],["Ice Hammer","Ice","P"],["Ice Punch","Ice","P"],
+["Ice Shard","Ice","P"],["Ice Spinner","Ice","P"],["Icicle Crash","Ice","P"],
+["Icicle Spear","Ice","P"],["Icy Wind","Ice","S"],["Incinerate","Fire","S"],
+["Infernal Parade","Ghost","S"],["Inferno","Fire","S"],["Infestation","Bug","S"],
+["Iron Head","Steel","P"],["Iron Tail","Steel","P"],["Ivy Cudgel","Grass","P"],
+["Jaw Lock","Dark","P"],["Jet Punch","Water","P"],["Jump Kick","Fighting","P"],
+["Karate Chop","Fighting","P"],["Knock Off","Dark","P"],["Kowtow Cleave","Dark","P"],
+["Land's Wrath","Ground","P"],["Lash Out","Dark","P"],["Last Resort","Normal","P"],
+["Last Respects","Ghost","P"],["Lava Plume","Fire","S"],["Leaf Blade","Grass","P"],
+["Leaf Storm","Grass","S"],["Leaf Tornado","Grass","S"],["Leafage","Grass","P"],
+["Leech Life","Bug","P"],["Lick","Ghost","P"],["Liquidation","Water","P"],
+["Low Kick","Fighting","P"],["Low Sweep","Fighting","P"],["Lumina Crash","Psychic","S"],
+["Lunge","Bug","P"],["Luster Purge","Psychic","S"],["Mach Punch","Fighting","P"],
+["Magical Leaf","Grass","S"],["Magical Torque","Fairy","P"],["Magma Storm","Fire","S"],
+["Magnet Bomb","Steel","P"],["Magnitude","Ground","P"],["Make It Rain","Steel","S"],
+["Malignant Chain","Poison","S"],["Matcha Gotcha","Grass","S"],["Mega Drain","Grass","S"],
+["Mega Kick","Normal","P"],["Mega Punch","Normal","P"],["Megahorn","Bug","P"],
+["Metal Burst","Steel","P"],["Metal Claw","Steel","P"],["Meteor Assault","Fighting","P"],
+["Meteor Beam","Rock","S"],["Meteor Mash","Steel","P"],["Mighty Cleave","Rock","P"],
+["Mind Blown","Fire","S"],["Mirror Coat","Psychic","S"],["Mirror Shot","Steel","S"],
+["Mist Ball","Psychic","S"],["Misty Explosion","Fairy","S"],["Moonblast","Fairy","S"],
+["Moongeist Beam","Ghost","S"],["Mortal Spin","Poison","P"],["Mountain Gale","Ice","P"],
+["Mud Bomb","Ground","S"],["Mud Shot","Ground","S"],["Mud-Slap","Ground","S"],
+["Muddy Water","Water","S"],["Multi-Attack","Normal","P"],["Mystical Fire","Fire","S"],
+["Mystical Power","Psychic","S"],["Nature's Madness","Fairy","S"],["Needle Arm","Grass","P"],
+["Night Daze","Dark","S"],["Night Shade","Ghost","S"],["Night Slash","Dark","P"],
+["Nitro Charge","Fire","P"],["Noxious Torque","Poison","P"],["Nuzzle","Electric","P"],
+["Oblivion Wing","Flying","S"],["Obstruct","Dark","T"],["Octazooka","Water","S"],
+["Octolock","Fighting","T"],["Ominous Wind","Ghost","S"],["Order Up","Dragon","P"],
+["Origin Pulse","Water","S"],["Outrage","Dragon","P"],["Overdrive","Electric","S"],
+["Overheat","Fire","S"],["Parabolic Charge","Electric","S"],["Payback","Dark","P"],
+["Peck","Flying","P"],["Petal Blizzard","Grass","P"],["Petal Dance","Grass","S"],
+["Phantom Force","Ghost","P"],["Photon Geyser","Psychic","S"],["Pin Missile","Bug","P"],
+["Plasma Fists","Electric","P"],["Play Rough","Fairy","P"],["Pluck","Flying","P"],
+["Poison Fang","Poison","P"],["Poison Jab","Poison","P"],["Poison Sting","Poison","P"],
+["Poison Tail","Poison","P"],["Pollen Puff","Bug","S"],["Poltergeist","Ghost","P"],
+["Population Bomb","Normal","P"],["Pounce","Bug","P"],["Pound","Normal","P"],
+["Powder Snow","Ice","S"],["Power Gem","Rock","S"],["Power Trip","Dark","P"],
+["Power Whip","Grass","P"],["Power-Up Punch","Fighting","P"],["Precipice Blades","Ground","P"],
+["Prismatic Laser","Psychic","S"],["Psybeam","Psychic","S"],["Psyblade","Psychic","P"],
+["Psychic","Psychic","S"],["Psychic Fangs","Psychic","P"],["Psychic Noise","Psychic","S"],
+["Psycho Boost","Psychic","S"],["Psycho Cut","Psychic","P"],["Psyshield Bash","Psychic","P"],
+["Psyshock","Psychic","S"],["Psystrike","Psychic","S"],["Punishment","Dark","P"],
+["Pursuit","Dark","P"],["Pyro Ball","Fire","P"],["Quick Attack","Normal","P"],
+["Rage","Normal","P"],["Rage Fist","Ghost","P"],["Raging Bull","Normal","P"],
+["Raging Fury","Fire","P"],["Rapid Spin","Normal","P"],["Razor Leaf","Grass","P"],
+["Razor Shell","Water","P"],["Razor Wind","Normal","S"],["Relic Song","Normal","S"],
+["Retaliate","Normal","P"],["Return","Normal","P"],["Revenge","Fighting","P"],
+["Reversal","Fighting","P"],["Rising Voltage","Electric","S"],["Roar of Time","Dragon","S"],
+["Rock Blast","Rock","P"],["Rock Climb","Normal","P"],["Rock Slide","Rock","P"],
+["Rock Smash","Fighting","P"],["Rock Throw","Rock","P"],["Rock Tomb","Rock","P"],
+["Rock Wrecker","Rock","P"],["Rolling Kick","Fighting","P"],["Rollout","Rock","P"],
+["Round","Normal","S"],["Ruination","Dark","S"],["Sacred Fire","Fire","P"],
+["Sacred Sword","Fighting","P"],["Salt Cure","Rock","P"],["Sand Tomb","Ground","P"],
+["Sandsear Storm","Ground","S"],["Sappy Seed","Grass","P"],["Scald","Water","S"],
+["Scale Shot","Dragon","P"],["Scorching Sands","Ground","S"],["Scratch","Normal","P"],
+["Secret Power","Normal","P"],["Secret Sword","Fighting","S"],["Seed Bomb","Grass","P"],
+["Seed Flare","Grass","S"],["Seismic Toss","Fighting","P"],["Shadow Ball","Ghost","S"],
+["Shadow Bone","Ghost","P"],["Shadow Claw","Ghost","P"],["Shadow Force","Ghost","P"],
+["Shadow Punch","Ghost","P"],["Shadow Sneak","Ghost","P"],["Shell Side Arm","Poison","S"],
+["Shell Trap","Fire","S"],["Shock Wave","Electric","S"],["Signal Beam","Bug","S"],
+["Silver Wind","Bug","S"],["Sizzly Slide","Fire","P"],["Skitter Smack","Bug","P"],
+["Skull Bash","Normal","P"],["Sky Attack","Flying","P"],["Sky Drop","Flying","P"],
+["Sky Uppercut","Fighting","P"],["Slam","Normal","P"],["Slash","Normal","P"],
+["Sludge","Poison","S"],["Sludge Bomb","Poison","S"],["Sludge Wave","Poison","S"],
+["Smack Down","Rock","P"],["Smart Strike","Steel","P"],["Snipe Shot","Water","S"],
+["Solar Beam","Grass","S"],["Solar Blade","Grass","P"],["Sonic Boom","Normal","S"],
+["Spacial Rend","Dragon","S"],["Spark","Electric","P"],["Sparkling Aria","Water","S"],
+["Sparkly Swirl","Fairy","S"],["Spectral Thief","Ghost","P"],["Spin Out","Steel","P"],
+["Spirit Break","Fairy","P"],["Spirit Shackle","Ghost","P"],["Spit Up","Normal","S"],
+["Splishy Splash","Water","S"],["Springtide Storm","Fairy","S"],["Steel Beam","Steel","S"],
+["Steel Roller","Steel","P"],["Steel Wing","Steel","P"],["Stomping Tantrum","Ground","P"],
+["Stone Axe","Rock","P"],["Stone Edge","Rock","P"],["Stored Power","Psychic","S"],
+["Strange Steam","Fairy","S"],["Strength","Normal","P"],["Struggle Bug","Bug","S"],
+["Submission","Fighting","P"],["Sucker Punch","Dark","P"],["Sunsteel Strike","Steel","P"],
+["Super Fang","Normal","P"],["Superpower","Fighting","P"],["Surf","Water","S"],
+["Swift","Normal","S"],["Synchronoise","Psychic","S"],["Tackle","Normal","P"],
+["Take Down","Normal","P"],["Temper Flare","Fire","P"],["Tera Blast","Normal","S"],
+["Thief","Dark","P"],["Thousand Arrows","Ground","P"],["Thousand Waves","Ground","P"],
+["Thunder","Electric","S"],["Thunder Fang","Electric","P"],["Thunder Punch","Electric","P"],
+["Thunderbolt","Electric","S"],["Thunderclap","Electric","P"],["Torch Song","Fire","S"],
+["Tri Attack","Normal","S"],["Triple Axel","Ice","P"],["Triple Kick","Fighting","P"],
+["Trop Kick","Grass","P"],["Trump Card","Normal","S"],["Twin Beam","Psychic","S"],
+["Twister","Dragon","S"],["Uproar","Normal","S"],["V-create","Fire","P"],
+["Vacuum Wave","Fighting","S"],["Venoshock","Poison","S"],["Vice Grip","Normal","P"],
+["Vine Whip","Grass","P"],["Vital Throw","Fighting","P"],["Volt Switch","Electric","S"],
+["Volt Tackle","Electric","P"],["Wake-Up Slap","Fighting","P"],["Water Gun","Water","S"],
+["Water Pledge","Water","S"],["Water Pulse","Water","S"],["Water Shuriken","Water","P"],
+["Water Spout","Water","S"],["Waterfall","Water","P"],["Whirlpool","Water","S"],
+["Wild Charge","Electric","P"],["Wing Attack","Flying","P"],["Wood Hammer","Grass","P"],
+["Wring Out","Normal","S"],["X-Scissor","Bug","P"],["Zap Cannon","Electric","S"],
+["Zen Headbutt","Psychic","P"],["Zing Zap","Electric","P"],["Zippy Zap","Electric","P"]
+];
+
+// Move lookup map
+const MOVE_MAP = {};
+MOVES.forEach(m => { MOVE_MAP[m[0].toLowerCase()] = { name: m[0], type: m[1], cat: m[2] }; });
+
+// ── TEAM GRID RENDER ──────────────────────────────────────
+function renderTeamGrid() {
+  const grid = document.getElementById('teamGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 6; i++) grid.appendChild(buildSlot(i));
+  renderCoverage();
+}
+
+function buildSlot(idx) {
+  const slot = document.createElement('div');
+  slot.className = 'poke-slot' + (team[idx].pokemon ? ' has-pokemon' : '');
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'slot-header';
+  const num = document.createElement('div');
+  num.className = 'slot-num';
+  num.textContent = idx + 1;
+  const wrap = document.createElement('div');
+  wrap.className = 'slot-poke-wrap';
+  const inp = document.createElement('input');
+  inp.className = 'slot-poke-input';
+  inp.type = 'text';
+  inp.placeholder = 'Add Pokémon…';
+  inp.autocomplete = inp.autocorrect = 'off';
+  inp.autocapitalize = 'off';
+  inp.spellcheck = false;
+  inp.value = team[idx].pokemon ? team[idx].pokemon.name : '';
+  const ac = document.createElement('div');
+  ac.className = 'slot-ac';
+
+  let slotFiltered = [];
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim();
+    if (!q) { ac.classList.remove('show'); return; }
+    slotFiltered = ALL_POKEMON.filter(p => p.name.toLowerCase().includes(q.toLowerCase())).slice(0, 10);
+    if (!slotFiltered.length) { ac.classList.remove('show'); return; }
+    ac.innerHTML = slotFiltered.map((p, i) =>
+      `<div class="slot-ac-item" data-idx="${i}">
+        <span class="slot-ac-num">#${String(p.num).padStart(4,'0')}</span>
+        <span>${p.name}</span>
+        <span class="slot-ac-types">${p.types.map(t=>badge(t,true)).join('')}</span>
+      </div>`
+    ).join('');
+    ac.classList.add('show');
+  });
+  ac.addEventListener('click', e => {
+    const item = e.target.closest('.slot-ac-item');
+    if (!item) return;
+    const p = slotFiltered[parseInt(item.dataset.idx)];
+    if (!p) return;
+    team[idx].pokemon = p;
+    saveTeam();
+    renderTeamGrid();
+  });
+  inp.addEventListener('blur', () => setTimeout(() => ac.classList.remove('show'), 150));
+
+  const types = document.createElement('div');
+  types.className = 'slot-types';
+  if (team[idx].pokemon) types.innerHTML = team[idx].pokemon.types.map(t => badge(t, true)).join('');
+
+  const clr = document.createElement('button');
+  clr.className = 'slot-clear';
+  clr.innerHTML = '✕';
+  clr.addEventListener('click', () => {
+    team[idx] = { pokemon: null, moves: [null,null,null,null] };
+    saveTeam();
+    renderTeamGrid();
+  });
+
+  wrap.appendChild(inp); wrap.appendChild(ac);
+  hdr.appendChild(num); hdr.appendChild(wrap); hdr.appendChild(types); hdr.appendChild(clr);
+  slot.appendChild(hdr);
+
+  // Moves
+  const movesGrid = document.createElement('div');
+  movesGrid.className = 'moves-grid';
+  for (let m = 0; m < 4; m++) movesGrid.appendChild(buildMoveSlot(idx, m));
+  slot.appendChild(movesGrid);
+  return slot;
+}
+
+function buildMoveSlot(slotIdx, moveIdx) {
+  const wrap = document.createElement('div');
+  wrap.className = 'move-slot';
+  const innerWrap = document.createElement('div');
+  innerWrap.className = 'move-input-wrap';
+  const dot = document.createElement('div');
+  dot.className = 'move-type-dot';
+  const inp = document.createElement('input');
+  inp.className = 'move-input';
+  inp.type = 'text';
+  inp.placeholder = 'Move ' + (moveIdx + 1);
+  inp.autocomplete = inp.autocorrect = 'off';
+  inp.autocapitalize = 'off';
+  inp.spellcheck = false;
+  const typeLabel = document.createElement('span');
+  typeLabel.className = 'move-type-label';
+
+  const saved = team[slotIdx].moves[moveIdx];
+  if (saved) {
+    inp.value = saved.name;
+    dot.style.background = TYPE_COLORS[saved.type] || '#2a3550';
+    typeLabel.style.background = TYPE_COLORS[saved.type] || '#2a3550';
+    typeLabel.textContent = saved.type;
+    typeLabel.style.display = 'inline-block';
+  }
+
+  const ac = document.createElement('div');
+  ac.className = 'move-ac';
+
+  let moveFiltered = [];
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim().toLowerCase();
+    if (q.length < 2) { ac.classList.remove('show'); return; }
+    moveFiltered = MOVES.filter(m => m[0].toLowerCase().includes(q)).slice(0, 12);
+    if (!moveFiltered.length) { ac.classList.remove('show'); return; }
+    ac.innerHTML = moveFiltered.map((m, i) =>
+      `<div class="move-ac-item" data-idx="${i}">
+        <span class="move-ac-name">${m[0]}</span>
+        <span class="type-badge" style="background:${TYPE_COLORS[m[1]]||'#777'};padding:2px 6px;font-size:9px">${m[1]}</span>
+        <span class="move-ac-cat">${m[2]==='P'?'Phys':m[2]==='S'?'Spec':'Stat'}</span>
+      </div>`
+    ).join('');
+    ac.classList.add('show');
+  });
+
+  const applyMove = (mv) => {
+    team[slotIdx].moves[moveIdx] = { name: mv[0], type: mv[1] };
+    saveTeam();
+    inp.value = mv[0];
+    dot.style.background = TYPE_COLORS[mv[1]] || '#2a3550';
+    typeLabel.style.background = TYPE_COLORS[mv[1]] || '#2a3550';
+    typeLabel.textContent = mv[1];
+    typeLabel.style.display = 'inline-block';
+    ac.classList.remove('show');
+    renderCoverage();
+  };
+
+  ac.addEventListener('click', e => {
+    const item = e.target.closest('.move-ac-item');
+    if (item) applyMove(moveFiltered[parseInt(item.dataset.idx)]);
+  });
+
+  inp.addEventListener('blur', () => {
+    setTimeout(() => {
+      ac.classList.remove('show');
+      const q = inp.value.trim().toLowerCase();
+      const exact = MOVE_MAP[q];
+      if (exact && (!team[slotIdx].moves[moveIdx] || team[slotIdx].moves[moveIdx].name !== exact.name)) {
+        applyMove([exact.name, exact.type, exact.cat]);
+      }
+    }, 180);
+  });
+
+  inp.addEventListener('input', () => {
+    if (!inp.value.trim()) {
+      team[slotIdx].moves[moveIdx] = null;
+      dot.style.background = '#2a3550';
+      typeLabel.style.display = 'none';
+      saveTeam(); renderCoverage();
+    }
+  });
+
+  innerWrap.appendChild(dot); innerWrap.appendChild(inp); innerWrap.appendChild(typeLabel);
+  wrap.appendChild(innerWrap); wrap.appendChild(ac);
+  return wrap;
+}
+
+// ── COVERAGE TABLE (checkmark only) ──────────────────────
+const ALL_TYPES = ['Normal','Fire','Water','Electric','Grass','Ice','Fighting','Poison',
+                   'Ground','Flying','Psychic','Bug','Rock','Ghost','Dragon','Dark','Steel','Fairy'];
+
+function renderCoverage() {
+  const container = document.getElementById('coverageTable');
+  const slotMoveTypes = team.map(slot => slot.moves.filter(Boolean).map(m => m.type));
+  const hasAny = slotMoveTypes.some(mt => mt.length > 0) || team.some(s => s.pokemon);
+  if (!hasAny) {
+    container.innerHTML = '<div class="team-hint">Add Pokémon and moves above to see coverage</div>';
+    return;
+  }
+
+  const colNames = team.map((s, i) =>
+    s.pokemon ? s.pokemon.name.split(' ')[0].substring(0, 7) : '—'
+  );
+
+  let html = `<div class="coverage-table">
+    <div class="cov-header-row">
+      <div class="cov-col-head" style="font-size:8px;color:#3a4a60">TYPE ↓</div>
+      ${colNames.map((n, i) => {
+        const active = slotMoveTypes[i].length > 0;
+        return `<div class="cov-col-head" style="color:${active?'#c8cfe8':'#2a3550'}">${n}</div>`;
+      }).join('')}
+    </div>`;
+
+  ALL_TYPES.forEach(defType => {
+    html += `<div class="cov-row">
+      <div class="cov-type-cell">
+        <span class="type-badge" style="background:${TYPE_COLORS[defType]};padding:3px 6px;font-size:8px">${defType}</span>
+      </div>`;
+    team.forEach((slot, si) => {
+      const moveTypes = slotMoveTypes[si];
+      if (!moveTypes.length) {
+        html += `<div class="cov-cell"><span class="cov-dot">·</span></div>`;
+        return;
+      }
+      let best = 1;
+      moveTypes.forEach(mt => {
+        const v = CHART[mt] && CHART[mt][defType];
+        const eff = v !== undefined ? v : 1;
+        if (eff > best) best = eff;
+      });
+      if (best >= 2) {
+        html += `<div class="cov-cell"><span class="cov-check">✓</span></div>`;
+      } else {
+        html += `<div class="cov-cell"><span class="cov-dot">·</span></div>`;
+      }
+    });
+    html += `</div>`;
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
 </script>
 </body>
 </html>
