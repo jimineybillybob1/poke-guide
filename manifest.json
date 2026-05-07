@@ -1,0 +1,8 @@
+{
+  "name": "Pokémon Team Builder",
+  "short_name": "PokeDex",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0a0e1a",
+  "theme_color": "#0a0e1a"
+}
