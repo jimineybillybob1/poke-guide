@@ -1179,12 +1179,29 @@ rawExcelRows.forEach(row => {
 });
 
 // Convert map to array
+const sectionOrder = ['Land (Day)', 'Land (Night)', 'Fishing', 'Surfing', 'Diving'];
+
 const areasData = Array.from(areasMap.values()).map(area => {
   const subsections = Object.entries(area.subsections).map(([label, pokemon]) => ({
     label,
-    pokemon: pokemon.sort((a,b) => a.name.localeCompare(b.name))
+    pokemon: pokemon.sort((a, b) => a.name.localeCompare(b.name))
   }));
-  return { id: area.title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''), title: area.title, icon: '📍', subsections };
+
+  // Sort subsections into the correct order
+  subsections.sort((a, b) => {
+    const indexA = sectionOrder.indexOf(a.label);
+    const indexB = sectionOrder.indexOf(b.label);
+    const orderA = indexA === -1 ? sectionOrder.length : indexA;
+    const orderB = indexB === -1 ? sectionOrder.length : indexB;
+    return orderA - orderB;
+  });
+
+  return {
+    id: area.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+    title: area.title,
+    icon: '📍',
+    subsections
+  };
 });
 
 // ═══════════════════════════════════════════
