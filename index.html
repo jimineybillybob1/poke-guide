@@ -605,12 +605,223 @@ header h1 span {
   text-align: center; color: #2a3550; font-size: 13px;
   padding: 24px 0 8px; line-height: 1.7;
 }
+
+/* ── TYPE SPRITES ─────────────────────────────────────────── */
+.type-sprite {
+  display: inline-block;
+  height: 26px;
+  width: auto;
+  vertical-align: middle;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4));
+}
+.type-sprite.small {
+  height: 20px;
+}
+.type-sprite.tiny {
+  height: 16px;
+}
+.type-sprite-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* chip with sprite */
+.chip-type-sprite {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* coverage table type cell */
+.cov-type-cell .type-sprite { height: 20px; }
+
+/* ── MOVE DEX TAB ─────────────────────────────────────────── */
+.movedex-section { padding: 20px 0 48px; }
+
+.movedex-search-wrap {
+  position: relative;
+  margin: 0 auto 16px;
+}
+.movedex-search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 17px; pointer-events: none; opacity: 0.5;
+}
+#moveSearch, #itemSearch {
+  width: 100%;
+  padding: 15px 48px 15px 46px;
+  background: #111827;
+  border: 2px solid #2a3550;
+  border-radius: 14px;
+  color: #e8eaf6;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 17px; font-weight: 500;
+  outline: none; -webkit-appearance: none; appearance: none;
+  transition: border-color 0.2s;
+}
+#moveSearch:focus, #itemSearch:focus { border-color: #f5c518; }
+#moveSearch::placeholder, #itemSearch::placeholder { color: #4a5568; font-weight: 400; }
+.movedex-clear-btn {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: #2a3550; border: none; border-radius: 50%;
+  width: 28px; height: 28px; color: #7986a8; font-size: 13px;
+  cursor: pointer; display: none; align-items: center; justify-content: center;
+  font-weight: 700;
+}
+.movedex-clear-btn.visible { display: flex; }
+.movedex-clear-btn:active { background: #e84393; color: #fff; }
+
+.movedex-filters {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.movedex-filter-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #111827; border: 1.5px solid #2a3550; border-radius: 20px;
+  padding: 5px 7px; cursor: pointer; font-size: 11px; font-weight: 600;
+  color: #7986a8; transition: border-color 0.15s, background 0.15s;
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.movedex-filter-btn.active {
+  border-color: #f5c518; background: rgba(245,197,24,0.07); color: #f5c518;
+}
+.movedex-filter-btn img { height: 16px; }
+
+.movedex-cat-filters {
+  display: flex; gap: 6px; margin-bottom: 14px;
+}
+.cat-btn {
+  flex: 1; padding: 7px 4px; background: #111827;
+  border: 1.5px solid #2a3550; border-radius: 10px;
+  color: #4a5568; font-size: 11px; font-weight: 700;
+  cursor: pointer; text-align: center; transition: all 0.15s;
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.cat-btn.active.phys { border-color: #E8702A; color: #E8702A; background: rgba(232,112,42,0.08); }
+.cat-btn.active.spec { border-color: #4A80E8; color: #4A80E8; background: rgba(74,128,232,0.08); }
+.cat-btn.active.stat { border-color: #7986a8; color: #7986a8; background: rgba(121,134,168,0.08); }
+
+.movedex-results-header {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: #3a4a60; margin-bottom: 10px; padding: 0 2px;
+}
+
+.movedex-list {
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.movedex-row {
+  background: #111827; border: 1px solid #2a3550; border-radius: 12px;
+  padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+  animation: fadeUp 0.15s ease;
+}
+.movedex-name {
+  flex: 1; font-size: 14px; font-weight: 600; color: #e8eaf6;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.movedex-cat {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 2px 6px; border-radius: 4px; flex-shrink: 0;
+}
+.movedex-cat.phys { color: #E8702A; background: rgba(232,112,42,0.12); }
+.movedex-cat.spec { color: #4A80E8; background: rgba(74,128,232,0.12); }
+.movedex-cat.stat { color: #7986a8; background: rgba(121,134,168,0.12); }
+
+.movedex-stats { display: flex; gap: 4px; flex-shrink: 0; }
+.movedex-stat-pill {
+  font-size: 9px; color: #7986a8; background: #0d1422;
+  border: 1px solid #1a2235; border-radius: 4px; padding: 2px 5px; white-space: nowrap;
+}
+.movedex-stat-pill b { color: #a8b8d8; }
+
+.movedex-empty {
+  text-align: center; color: #3a4a60; font-size: 14px;
+  padding: 40px 0; line-height: 1.7;
+}
+
+/* ── ITEM DEX ─────────────────────────────────────────────── */
+.item-sprite {
+  width: 24px; height: 24px;
+  object-fit: contain; flex-shrink: 0;
+  image-rendering: pixelated;
+}
+.itemdex-row {
+  background: #111827; border: 1px solid #2a3550; border-radius: 12px;
+  padding: 10px 14px; display: flex; align-items: flex-start; gap: 10px;
+  animation: fadeUp 0.15s ease;
+}
+.itemdex-info { flex: 1; min-width: 0; }
+.itemdex-name {
+  font-size: 14px; font-weight: 600; color: #e8eaf6;
+  margin-bottom: 2px;
+}
+.itemdex-effect {
+  font-size: 11px; color: #7986a8; line-height: 1.4;
+}
+.itemdex-cat-badge {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 2px 6px; border-radius: 4px; flex-shrink: 0; white-space: nowrap; margin-top: 2px;
+}
+.itemcat-hold    { color: #4A80E8; background: rgba(74,128,232,0.12); }
+.itemcat-battle  { color: #E83878; background: rgba(232,56,120,0.12); }
+.itemcat-berry   { color: #58B830; background: rgba(88,184,48,0.12); }
+.itemcat-medicine{ color: #E8C000; background: rgba(232,192,0,0.12); }
+.itemcat-pokeball{ color: #E8702A; background: rgba(232,112,42,0.12); }
+.itemcat-general { color: #9898B8; background: rgba(152,152,184,0.12); }
+.itemcat-machine { color: #C8A840; background: rgba(200,168,64,0.12); }
+.itemcat-other   { color: #4a5568; background: rgba(74,85,104,0.12); }
+
+.item-cat-filter-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #111827; border: 1.5px solid #2a3550; border-radius: 20px;
+  padding: 5px 10px; cursor: pointer; font-size: 11px; font-weight: 600;
+  color: #7986a8; transition: border-color 0.15s, background 0.15s;
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.item-cat-filter-btn.active {
+  border-color: #f5c518; background: rgba(245,197,24,0.07); color: #f5c518;
+}
+
+/* Item search autocomplete */
+.item-ac-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: #111827;
+  border: 2px solid #2a3550;
+  border-radius: 14px;
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.item-ac-list.show { display: block; }
+.item-ac-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 1px solid #1a2235;
+  -webkit-user-select: none; user-select: none;
+}
+.item-ac-item:last-child { border-bottom: none; }
+.item-ac-item:active, .item-ac-item.selected { background: #1a2235; }
+.item-ac-name { flex: 1; color: #c8cfe8; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-ac-effect { font-size: 11px; color: #4a5568; flex: 1.5; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>
 </head>
 <body>
 <div class="tab-bar">
   <button class="tab-btn active" id="tab-guide" onclick="switchTab('guide')">⚔️ Type Guide</button>
   <button class="tab-btn" id="tab-team" onclick="switchTab('team')">📋 My Team</button>
+  <button class="tab-btn" id="tab-moves" onclick="switchTab('moves')">🎯 Move Dex</button>
+  <button class="tab-btn" id="tab-items" onclick="switchTab('items')">🎒 Item Dex</button>
 </div>
 
 <div class="tab-panel active" id="panel-guide">
@@ -639,6 +850,43 @@ header h1 span {
       <div class="coverage-title">Move Type Coverage</div>
       <div id="coverageTable"></div>
     </div>
+  </div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel-moves">
+<div class="container">
+  <div class="movedex-section">
+    <div class="movedex-search-wrap">
+      <span class="movedex-search-icon">🔍</span>
+      <input type="search" id="moveSearch" placeholder="Search moves…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <button class="movedex-clear-btn" id="moveClearBtn" aria-label="Clear">✕</button>
+    </div>
+    <div class="movedex-filters" id="moveTypeFilters"></div>
+    <div class="movedex-cat-filters">
+      <button class="cat-btn phys" data-cat="P" onclick="toggleCat('P')">⚔ Physical</button>
+      <button class="cat-btn spec" data-cat="S" onclick="toggleCat('S')">✦ Special</button>
+      <button class="cat-btn stat" data-cat="T" onclick="toggleCat('T')">◈ Status</button>
+    </div>
+    <div class="movedex-results-header" id="moveDexHeader">All Moves</div>
+    <div class="movedex-list" id="moveDexList"></div>
+  </div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel-items">
+<div class="container">
+  <div class="movedex-section">
+    <div class="movedex-search-wrap">
+      <span class="movedex-search-icon">🔍</span>
+      <input type="search" id="itemSearch" placeholder="Search items…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <button class="movedex-clear-btn" id="itemClearBtn" aria-label="Clear">✕</button>
+      <div class="item-ac-list" id="itemAutocomplete"></div>
+    </div>
+    <div class="movedex-filters" id="itemCatFilters"></div>
+    <div class="movedex-filters" id="itemTypeFilters" style="display:none"></div>
+    <div class="movedex-results-header" id="itemDexHeader">All Items</div>
+    <div class="movedex-list" id="itemDexList"></div>
   </div>
 </div>
 </div>
@@ -1327,9 +1575,23 @@ let filtered = [];
 
 function tc(t) { return TYPE_COLORS[t] || '#777'; }
 
+const TYPE_IDS = {
+  Normal:1, Fighting:2, Flying:3, Poison:4, Ground:5, Rock:6,
+  Bug:7, Ghost:8, Steel:9, Fire:10, Water:11, Grass:12,
+  Electric:13, Psychic:14, Ice:15, Dragon:16, Dark:17, Fairy:18
+};
+
+const TYPE_SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-vi/omega-ruby-alpha-sapphire/';
+
+function typeSprite(t, size) {
+  const id = TYPE_IDS[t];
+  if (!id) return `<span class="type-badge" style="background:${tc(t)};padding:3px 7px;font-size:10px">${t}</span>`;
+  const cls = size === 'tiny' ? 'tiny' : size === 'small' ? 'small' : '';
+  return `<img class="type-sprite ${cls}" src="${TYPE_SPRITE_BASE}${id}.png" alt="${t}" title="${t}" loading="lazy">`;
+}
+
 function badge(t, small) {
-  const p = small ? 'padding:3px 7px;font-size:10px' : '';
-  return `<span class="type-badge" style="background:${tc(t)};${p}">${t}</span>`;
+  return typeSprite(t, small ? 'small' : 'normal');
 }
 
 // Combine all searchable entries: regular Pokémon + regional forms
@@ -1370,7 +1632,7 @@ function renderResult(entry) {
     if (!arr.length) return '';
     const chips = arr.map(t =>
       `<div class="chip">
-        <span class="chip-type" style="background:${tc(t)}">${t}</span>
+        <span class="chip-type-sprite">${typeSprite(t, 'small')}</span>
         <span class="chip-mult ${multCls}">${multTxt}</span>
       </div>`
     ).join('');
@@ -1484,12 +1746,15 @@ document.addEventListener('click', e => {
 });
 
 // ── TAB SWITCHING ─────────────────────────────────────────
+let moveDexInited = false;
 function switchTab(name) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + name).classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
   if (name === 'team') renderTeamGrid();
+  if (name === 'moves' && !moveDexInited) { moveDexInited = true; initMoveDex(); }
+  if (name === 'items' && !itemDexInited) { itemDexInited = true; initItemDex(); }
 }
 
 // ── TEAM STATE ────────────────────────────────────────────
@@ -1543,7 +1808,7 @@ function buildTeamMatchup(defTypes) {
         ? `<span class="matchup-move-stats"><span class="matchup-stat-pill">PWR&nbsp;<b>${pw}</b></span><span class="matchup-stat-pill">ACC&nbsp;<b>${ac}</b></span></span>`
         : '';
       return `<div class="matchup-move-badge">
-        <span class="type-badge" style="background:${TYPE_COLORS[m.type]||'#777'};padding:2px 6px;font-size:9px">${m.type}</span>
+        ${typeSprite(m.type, 'tiny')}
         <span class="matchup-move-name">${m.name}</span>
         ${statsHtml}
         <span class="matchup-mult ${cls}">${txt}</span>
@@ -2183,7 +2448,7 @@ function buildMoveSlot(slotIdx, moveIdx) {
     ac.innerHTML = moveFiltered.map((m, i) =>
       `<div class="move-ac-item" data-idx="${i}">
         <span class="move-ac-name">${m[0]}</span>
-        <span class="type-badge" style="background:${TYPE_COLORS[m[1]]||'#777'};padding:2px 6px;font-size:9px">${m[1]}</span>
+        ${typeSprite(m[1], 'tiny')}
         <span class="move-ac-cat">${m[2]==='P'?'Phys':m[2]==='S'?'Spec':'Stat'}</span>
       </div>`
     ).join('');
@@ -2281,7 +2546,7 @@ function renderCoverage() {
   ALL_TYPES.forEach(defType => {
     html += `<div class="cov-row">
       <div class="cov-type-cell">
-        <span class="type-badge" style="background:${TYPE_COLORS[defType]};padding:3px 6px;font-size:8px">${defType}</span>
+        ${typeSprite(defType, 'tiny')}
       </div>`;
     team.forEach((slot, si) => {
       const moveTypes = slotMoveTypes[si];
@@ -2306,6 +2571,1242 @@ function renderCoverage() {
 
   html += '</div>';
   container.innerHTML = html;
+}
+
+// ── MOVE DEX ─────────────────────────────────────────────────
+let moveDexQuery = '';
+let moveDexTypeFilter = null; // null = all, or a type name
+let moveDexCatFilters = new Set(); // empty = all cats
+
+const ALL_TYPE_NAMES = ['Normal','Fire','Water','Electric','Grass','Ice','Fighting','Poison',
+                        'Ground','Flying','Psychic','Bug','Rock','Ghost','Dragon','Dark','Steel','Fairy'];
+
+function initMoveDex() {
+  const filtersEl = document.getElementById('moveTypeFilters');
+  filtersEl.innerHTML = ALL_TYPE_NAMES.map(t =>
+    `<button class="movedex-filter-btn" data-type="${t}" onclick="toggleTypeFilter('${t}')" title="${t}">
+      ${typeSprite(t, 'tiny')}
+    </button>`
+  ).join('');
+
+  document.getElementById('moveSearch').addEventListener('input', function() {
+    moveDexQuery = this.value.trim();
+    document.getElementById('moveClearBtn').classList.toggle('visible', moveDexQuery.length > 0);
+    renderMoveDex();
+  });
+
+  document.getElementById('moveClearBtn').addEventListener('click', function() {
+    document.getElementById('moveSearch').value = '';
+    moveDexQuery = '';
+    this.classList.remove('visible');
+    renderMoveDex();
+  });
+
+  renderMoveDex();
+}
+
+function toggleTypeFilter(t) {
+  moveDexTypeFilter = moveDexTypeFilter === t ? null : t;
+  document.querySelectorAll('.movedex-filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.type === moveDexTypeFilter);
+  });
+  renderMoveDex();
+}
+
+function toggleCat(c) {
+  if (moveDexCatFilters.has(c)) moveDexCatFilters.delete(c);
+  else moveDexCatFilters.add(c);
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.classList.toggle('active', moveDexCatFilters.has(btn.dataset.cat));
+  });
+  renderMoveDex();
+}
+
+function renderMoveDex() {
+  const q = moveDexQuery.toLowerCase();
+  let results = MOVES;
+
+  if (q.length >= 1) {
+    results = results.filter(m => m[0].toLowerCase().includes(q));
+  }
+  if (moveDexTypeFilter) {
+    results = results.filter(m => m[1] === moveDexTypeFilter);
+  }
+  if (moveDexCatFilters.size > 0) {
+    results = results.filter(m => moveDexCatFilters.has(m[2]));
+  }
+
+  const header = document.getElementById('moveDexHeader');
+  const list = document.getElementById('moveDexList');
+
+  header.textContent = results.length === MOVES.length
+    ? `All Moves (${MOVES.length})`
+    : `${results.length} Move${results.length !== 1 ? 's' : ''} Found`;
+
+  if (!results.length) {
+    list.innerHTML = `<div class="movedex-empty">No moves match your search.</div>`;
+    return;
+  }
+
+  // Limit to 200 for performance when no filters active
+  const toShow = results.slice(0, 200);
+  const catMap = { P: 'phys', S: 'spec', T: 'stat' };
+  const catLabel = { P: 'Phys', S: 'Spec', T: 'Status' };
+
+  list.innerHTML = toShow.map(m => {
+    const stats = MOVE_STATS[m[0]] || [null, null];
+    const pw = m[2] !== 'T' ? (stats[0] !== null && stats[0] !== undefined ? stats[0] : '—') : null;
+    const ac = stats[1] !== null && stats[1] !== undefined ? stats[1] + '%' : '∞';
+    const statHtml = m[2] !== 'T'
+      ? `<div class="movedex-stats">
+          <span class="movedex-stat-pill">PWR&nbsp;<b>${pw}</b></span>
+          <span class="movedex-stat-pill">ACC&nbsp;<b>${ac}</b></span>
+        </div>`
+      : '';
+    return `<div class="movedex-row">
+      ${typeSprite(m[1], 'small')}
+      <span class="movedex-name">${m[0]}</span>
+      ${statHtml}
+      <span class="movedex-cat ${catMap[m[2]]}">${catLabel[m[2]]}</span>
+    </div>`;
+  }).join('');
+
+  if (results.length > 200) {
+    list.innerHTML += `<div class="movedex-empty" style="padding:16px 0">Showing first 200 of ${results.length} — refine your search to see more</div>`;
+  }
+}
+
+// ── ITEM DEX ─────────────────────────────────────────────────
+// Format: [name, category, effect, spriteSlug]
+// spriteSlug: kebab-case for PokeAPI sprite URL, or null for fallback
+// Categories: hold, battle, berry, medicine, pokeball, general, machine, other
+const ITEMS = [
+// ── HOLD ITEMS ──────────────────────────────────────────────
+["Ability Capsule","hold","Switches between a Pokémon's two non-Hidden Abilities.","ability-capsule"],
+["Ability Shield","hold","Protects the holder from having its Ability changed by others.","ability-shield"],
+["Absorb Bulb","hold","If the holder is hit by a Water-type move, its Sp. Atk rises.","absorb-bulb"],
+["Abomasite","hold","Enables Abomasnow to Mega Evolve during battle.","abomasite"],
+["Absolite","hold","Enables Absol to Mega Evolve during battle.","absolite"],
+["Adamant Crystal","hold","Raises power of Dialga's moves as Origin Forme.","adamant-crystal"],
+["Adamant Orb","hold","Raises Dragon- and Steel-type move power when held by Dialga.","adamant-orb"],
+["Adrenaline Orb","hold","Boosts Speed when holder is Intimidated. Single use.","adrenaline-orb"],
+["Aerodactylite","hold","Enables Aerodactyl to Mega Evolve during battle.","aerodactylite"],
+["Aggronite","hold","Enables Aggron to Mega Evolve during battle.","aggronite"],
+["Air Balloon","hold","Holder floats; balloon bursts when hit by an attack.","air-balloon"],
+["Alakazite","hold","Enables Alakazam to Mega Evolve during battle.","alakazite"],
+["Aloraichium Z","hold","Allows Alolan Raichu to use Stoked Sparksurfer Z-Move.","aloraichium-z"],
+["Altarianite","hold","Enables Altaria to Mega Evolve during battle.","altarianite"],
+["Ampharosite","hold","Enables Ampharos to Mega Evolve during battle.","ampharosite"],
+["Amulet Coin","hold","Doubles prize money from battles.","amulet-coin"],
+["Assault Vest","hold","Raises Special Defense but prevents use of status moves.","assault-vest"],
+["Audinite","hold","Enables Audino to Mega Evolve during battle.","audinite"],
+["Banettite","hold","Enables Banette to Mega Evolve during battle.","banettite"],
+["Beedrillite","hold","Enables Beedrill to Mega Evolve during battle.","beedrillite"],
+["Berry Sweet","hold","Evolves Milcery into Blueberry Flavor Alcremie.","berry-sweet"],
+["Big Root","hold","Recovers more HP from HP-stealing moves.","big-root"],
+["Binding Band","hold","Increases the power of binding moves.","binding-band"],
+["Black Belt","hold","Increases the power of Fighting-type moves.","black-belt"],
+["Black Glasses","hold","Increases the power of Dark-type moves.","black-glasses"],
+["Black Sludge","hold","Gradually restores HP of Poison-type holders; damages others.","black-sludge"],
+["Blastoisinite","hold","Enables Blastoise to Mega Evolve during battle.","blastoisinite"],
+["Blazikenite","hold","Enables Blaziken to Mega Evolve during battle.","blazikenite"],
+["Blank Plate","hold","A plate that does not raise any type's power.","blank-plate"],
+["Blunder Policy","hold","Raises Speed sharply if holder's attack misses.","blunder-policy"],
+["Bright Powder","hold","Lowers the opponent's accuracy.","bright-powder"],
+["Bug Gem","hold","Increases the power of a Bug-type move once. Single use.","bug-gem"],
+["Bug Memory","hold","Changes Silvally's type to Bug.","bug-memory"],
+["Buginium Z","hold","Allows use of Savage Spin-Out, the Bug-type Z-Move.","buginium-z"],
+["Burn Drive","hold","Changes Techno Blast to Fire-type when held by Genesect.","burn-drive"],
+["Cameruptite","hold","Enables Camerupt to Mega Evolve during battle.","cameruptite"],
+["Cell Battery","hold","If holder is hit by an Electric-type move, its Attack rises.","cell-battery"],
+["Charcoal","hold","Increases the power of Fire-type moves.","charcoal"],
+["Charizardite X","hold","Enables Charizard to Mega Evolve into X Forme.","charizardite-x"],
+["Charizardite Y","hold","Enables Charizard to Mega Evolve into Y Forme.","charizardite-y"],
+["Chill Drive","hold","Changes Techno Blast to Ice-type when held by Genesect.","chill-drive"],
+["Chipped Pot","hold","Evolves Sinistea (chipped) into Polteageist.","chipped-pot"],
+["Choice Band","hold","Raises Attack, but only one move can be used.","choice-band"],
+["Choice Scarf","hold","Raises Speed, but only one move can be used.","choice-scarf"],
+["Choice Specs","hold","Raises Special Attack, but only one move can be used.","choice-specs"],
+["Cleanse Tag","hold","Helps keep wild Pokémon away when holder leads the party.","cleanse-tag"],
+["Clear Amulet","hold","Protects holder from having its stats lowered by others.","clear-amulet"],
+["Clover Sweet","hold","Evolves Milcery into Clover Flavor Alcremie.","clover-sweet"],
+["Covert Cloak","hold","Protects holder from the additional effects of moves.","covert-cloak"],
+["Cracked Pot","hold","Evolves Sinistea (antique) into Polteageist.","cracked-pot"],
+["Damp Rock","hold","Extends the duration of Rain Dance.","damp-rock"],
+["Dark Gem","hold","Increases the power of a Dark-type move once. Single use.","dark-gem"],
+["Dark Memory","hold","Changes Silvally's type to Dark.","dark-memory"],
+["Darkinium Z","hold","Allows use of Black Hole Eclipse, the Dark-type Z-Move.","darkinium-z"],
+["Decidium Z","hold","Allows Decidueye to use Sinister Arrow Raid Z-Move.","decidium-z"],
+["Deep Sea Scale","hold","Raises Clamperl's Sp. Def; evolves Clamperl when traded.","deep-sea-scale"],
+["Deep Sea Tooth","hold","Raises Clamperl's Sp. Atk; evolves Clamperl when traded.","deep-sea-tooth"],
+["Destiny Knot","hold","If holder becomes infatuated, the foe does too. Passes 5 IVs.","destiny-knot"],
+["Diancite","hold","Enables Diancie to Mega Evolve during battle.","diancite"],
+["Douse Drive","hold","Changes Techno Blast to Water-type when held by Genesect.","douse-drive"],
+["Draco Plate","hold","Raises Dragon-type move power; changes Arceus to Dragon.","draco-plate"],
+["Dragon Fang","hold","Increases the power of Dragon-type moves.","dragon-fang"],
+["Dragon Gem","hold","Increases the power of a Dragon-type move once. Single use.","dragon-gem"],
+["Dragon Memory","hold","Changes Silvally's type to Dragon.","dragon-memory"],
+["Dragonium Z","hold","Allows use of Devastating Drake, the Dragon-type Z-Move.","dragonium-z"],
+["Dread Plate","hold","Raises Dark-type move power; changes Arceus to Dark.","dread-plate"],
+["Earth Plate","hold","Raises Ground-type move power; changes Arceus to Ground.","earth-plate"],
+["Eevium Z","hold","Allows Eevee to use Extreme Evoboost Z-Move.","eevium-z"],
+["Eject Button","hold","If holder is hit, it automatically switches out.","eject-button"],
+["Eject Pack","hold","Holder switches out if its stats are lowered.","eject-pack"],
+["Electric Gem","hold","Increases the power of an Electric-type move once. Single use.","electric-gem"],
+["Electric Memory","hold","Changes Silvally's type to Electric.","electric-memory"],
+["Electric Seed","hold","Boosts Defense on Electric Terrain. Single use.","electric-seed"],
+["Electrium Z","hold","Allows use of Gigavolt Havoc, the Electric-type Z-Move.","electrium-z"],
+["Everstone","hold","Prevents the holder from evolving. Passes Nature in breeding.","everstone"],
+["Eviolite","hold","Raises Defense and Sp. Def of Pokémon that can still evolve.","eviolite"],
+["Exp. Share","hold","Holder gets a share of Exp. Points without battling.","exp-share"],
+["Expert Belt","hold","Increases the power of super-effective moves.","expert-belt"],
+["Fairium Z","hold","Allows use of Twinkle Tackle, the Fairy-type Z-Move.","fairium-z"],
+["Fairy Memory","hold","Changes Silvally's type to Fairy.","fairy-memory"],
+["Fighting Gem","hold","Increases the power of a Fighting-type move once. Single use.","fighting-gem"],
+["Fighting Memory","hold","Changes Silvally's type to Fighting.","fighting-memory"],
+["Fightinium Z","hold","Allows use of All-Out Pummeling, the Fighting-type Z-Move.","fightinium-z"],
+["Fire Gem","hold","Increases the power of a Fire-type move once. Single use.","fire-gem"],
+["Fire Memory","hold","Changes Silvally's type to Fire.","fire-memory"],
+["Firium Z","hold","Allows use of Inferno Overdrive, the Fire-type Z-Move.","firium-z"],
+["Fist Plate","hold","Raises Fighting-type move power; changes Arceus to Fighting.","fist-plate"],
+["Flame Orb","hold","Inflicts a burn on the holder in battle.","flame-orb"],
+["Flame Plate","hold","Raises Fire-type move power; changes Arceus to Fire.","flame-plate"],
+["Float Stone","hold","A very light stone that reduces the holder's weight.","float-stone"],
+["Flower Sweet","hold","Evolves Milcery into Flower Flavor Alcremie.","flower-sweet"],
+["Flying Gem","hold","Increases the power of a Flying-type move once. Single use.","flying-gem"],
+["Flying Memory","hold","Changes Silvally's type to Flying.","flying-memory"],
+["Flyinium Z","hold","Allows use of Supersonic Skystrike, the Flying-type Z-Move.","flyinium-z"],
+["Focus Band","hold","Holder may endure a KO attack, leaving it with 1 HP.","focus-band"],
+["Focus Sash","hold","If at full HP, holder survives one potential KO with 1 HP.","focus-sash"],
+["Full Incense","hold","Holder always attacks last. Breeds Munchlax from Snorlax.","full-incense"],
+["Galladite","hold","Enables Gallade to Mega Evolve during battle.","galladite"],
+["Garchompite","hold","Enables Garchomp to Mega Evolve during battle.","garchompite"],
+["Gardevoirite","hold","Enables Gardevoir to Mega Evolve during battle.","gardevoirite"],
+["Gengarite","hold","Enables Gengar to Mega Evolve during battle.","gengarite"],
+["Ghost Gem","hold","Increases the power of a Ghost-type move once. Single use.","ghost-gem"],
+["Ghost Memory","hold","Changes Silvally's type to Ghost.","ghost-memory"],
+["Ghostium Z","hold","Allows use of Never-Ending Nightmare, the Ghost-type Z-Move.","ghostium-z"],
+["Glalitite","hold","Enables Glalie to Mega Evolve during battle.","glalitite"],
+["Grass Gem","hold","Increases the power of a Grass-type move once. Single use.","grass-gem"],
+["Grass Memory","hold","Changes Silvally's type to Grass.","grass-memory"],
+["Grassium Z","hold","Allows use of Bloom Doom, the Grass-type Z-Move.","grassium-z"],
+["Grassy Seed","hold","Boosts Defense on Grassy Terrain. Single use.","grassy-seed"],
+["Grip Claw","hold","Extends the duration of multiturn binding moves.","grip-claw"],
+["Griseous Core","hold","Raises Dragon- and Ghost-type move power for Origin Forme Giratina.","griseous-core"],
+["Griseous Orb","hold","Raises Dragon- and Ghost-type moves for Giratina; changes to Origin Forme.","griseous-orb"],
+["Grit Dust","hold","Raises EVs (Legends: Arceus), when EVs are between 0–2.","grit-dust"],
+["Grit Gravel","hold","Raises EVs (Legends: Arceus), when EVs are between 3–5.","grit-gravel"],
+["Grit Pebble","hold","Raises EVs (Legends: Arceus), when EVs are between 6–8.","grit-pebble"],
+["Grit Rock","hold","Raises EVs (Legends: Arceus), when EVs are 8–9.","grit-rock"],
+["Ground Gem","hold","Increases the power of a Ground-type move once. Single use.","ground-gem"],
+["Ground Memory","hold","Changes Silvally's type to Ground.","ground-memory"],
+["Groundium Z","hold","Allows use of Tectonic Rage, the Ground-type Z-Move.","groundium-z"],
+["Gyaradosite","hold","Enables Gyarados to Mega Evolve during battle.","gyaradosite"],
+["Hard Stone","hold","Increases the power of Rock-type moves.","hard-stone"],
+["Heat Rock","hold","Extends the duration of Sunny Day.","heat-rock"],
+["Heavy-Duty Boots","hold","Protects the holder from traps set on the battlefield.","heavy-duty-boots"],
+["Heracronite","hold","Enables Heracross to Mega Evolve during battle.","heracronite"],
+["Houndoominite","hold","Enables Houndoom to Mega Evolve during battle.","houndoominite"],
+["Ice Gem","hold","Increases the power of an Ice-type move once. Single use.","ice-gem"],
+["Ice Memory","hold","Changes Silvally's type to Ice.","ice-memory"],
+["Icicle Plate","hold","Raises Ice-type move power; changes Arceus to Ice.","icicle-plate"],
+["Icium Z","hold","Allows use of Subzero Slammer, the Ice-type Z-Move.","icium-z"],
+["Icy Rock","hold","Extends the duration of Hail.","icy-rock"],
+["Incinium Z","hold","Allows Incineroar to use Malicious Moonsault Z-Move.","incinium-z"],
+["Insect Plate","hold","Raises Bug-type move power; changes Arceus to Bug.","insect-plate"],
+["Iron Ball","hold","Cuts Speed; makes Flying-type and levitating holders susceptible to Ground.","iron-ball"],
+["Iron Plate","hold","Raises Steel-type move power; changes Arceus to Steel.","iron-plate"],
+["Kangaskhanite","hold","Enables Kangaskhan to Mega Evolve during battle.","kangaskhanite"],
+["King's Rock","hold","May cause flinch. Evolves Poliwhirl/Slowpoke when traded.","kings-rock"],
+["Kommonium Z","hold","Allows Kommo-o to use Clangorous Soulblaze Z-Move.","kommonium-z"],
+["Lagging Tail","hold","Holder always attacks last.","lagging-tail"],
+["Latiasite","hold","Enables Latias to Mega Evolve during battle.","latiasite"],
+["Latiosite","hold","Enables Latios to Mega Evolve during battle.","latiosite"],
+["Lax Incense","hold","Lowers the opponent's accuracy. Breeds Wynaut from Wobbuffet.","lax-incense"],
+["Leek","hold","Increases critical-hit ratio when held by Farfetch'd/Sirfetch'd.","leek"],
+["Leftovers","hold","Gradually restores the holder's HP during battle.","leftovers"],
+["Legend Plate","hold","Allows Arceus to use Judgement as any type.","legend-plate"],
+["Life Orb","hold","Increases move power but holder loses HP each turn.","life-orb"],
+["Light Ball","hold","Raises Attack and Sp. Atk when held by Pikachu.","light-ball"],
+["Light Clay","hold","Extends the duration of Light Screen and Reflect.","light-clay"],
+["Loaded Dice","hold","Makes multi-strike moves more likely to hit more times.","loaded-dice"],
+["Lopunnite","hold","Enables Lopunny to Mega Evolve during battle.","lopunnite"],
+["Lucarionite","hold","Enables Lucario to Mega Evolve during battle.","lucarionite"],
+["Luck Incense","hold","Doubles prize money. Breeds Happiny from Chansey/Blissey.","luck-incense"],
+["Lucky Egg","hold","Earns extra Exp. Points in battle.","lucky-egg"],
+["Lucky Punch","hold","Increases critical-hit ratio when held by Chansey.","lucky-punch"],
+["Luminous Moss","hold","Raises Special Defense if hit by a Water-type move.","luminous-moss"],
+["Lustrous Orb","hold","Raises Dragon- and Water-type move power when held by Palkia.","lustrous-orb"],
+["Macho Brace","hold","Promotes stronger EV growth but lowers Speed.","macho-brace"],
+["Magnet","hold","Increases the power of Electric-type moves.","magnet"],
+["Manectite","hold","Enables Manectric to Mega Evolve during battle.","manectite"],
+["Marshadium Z","hold","Allows Marshadow to use Soul-Stealing 7-Star Strike Z-Move.","marshadium-z"],
+["Mawilite","hold","Enables Mawile to Mega Evolve during battle.","mawilite"],
+["Meadow Plate","hold","Raises Grass-type move power; changes Arceus to Grass.","meadow-plate"],
+["Medichamite","hold","Enables Medicham to Mega Evolve during battle.","medichamite"],
+["Mental Herb","hold","Snaps the holder out of infatuation. Single use.","mental-herb"],
+["Metal Coat","hold","Raises Steel-type move power. Evolves Onix/Scyther when traded.","metal-coat"],
+["Metal Powder","hold","Increases Defense when held by Ditto.","metal-powder"],
+["Metronome","hold","Increases the power of moves used consecutively.","metronome"],
+["Mewtwonite X","hold","Enables Mewtwo to Mega Evolve into X Forme.","mewtwonite-x"],
+["Mewtwonite Y","hold","Enables Mewtwo to Mega Evolve into Y Forme.","mewtwonite-y"],
+["Mimikium Z","hold","Allows Mimikyu to use Let's Snuggle Forever Z-Move.","mimikium-z"],
+["Mind Plate","hold","Raises Psychic-type move power; changes Arceus to Psychic.","mind-plate"],
+["Miracle Seed","hold","Increases the power of Grass-type moves.","miracle-seed"],
+["Mirror Herb","hold","Copies an opponent's stat increases when consumed. Single use.","mirror-herb"],
+["Misty Seed","hold","Boosts Sp. Def on Misty Terrain. Single use.","misty-seed"],
+["Muscle Band","hold","Increases the power of Physical-category moves.","muscle-band"],
+["Mystic Water","hold","Increases the power of Water-type moves.","mystic-water"],
+["Never-Melt Ice","hold","Increases the power of Ice-type moves.","never-melt-ice"],
+["Normal Gem","hold","Increases the power of a Normal-type move once. Single use.","normal-gem"],
+["Normalium Z","hold","Allows use of Breakneck Blitz, the Normal-type Z-Move.","normalium-z"],
+["Odd Incense","hold","Raises Psychic-type move power. Breeds Mime Jr. from Mr. Mime.","odd-incense"],
+["Pixie Plate","hold","Raises Fairy-type move power; changes Arceus to Fairy.","pixie-plate"],
+["Poison Barb","hold","Increases the power of Poison-type moves.","poison-barb"],
+["Poison Memory","hold","Changes Silvally's type to Poison.","poison-memory"],
+["Poisonium Z","hold","Allows use of Acid Downpour, the Poison-type Z-Move.","poisonium-z"],
+["Power Anklet","hold","Promotes Attack EV growth but lowers Speed.","power-anklet"],
+["Power Band","hold","Promotes Sp. Def EV growth but lowers Speed.","power-band"],
+["Power Belt","hold","Promotes Defense EV growth but lowers Speed.","power-belt"],
+["Power Bracer","hold","Promotes Attack EV growth but lowers Speed.","power-bracer"],
+["Power Herb","hold","Holder can use a two-turn move in one turn. Single use.","power-herb"],
+["Power Lens","hold","Promotes Sp. Atk EV growth but lowers Speed.","power-lens"],
+["Power Weight","hold","Promotes HP EV growth but lowers Speed.","power-weight"],
+["Primarium Z","hold","Allows Primarina to use Oceanic Operetta Z-Move.","primarium-z"],
+["Protective Pads","hold","Protects holder from effects triggered by making direct contact.","protective-pads"],
+["Psychic Memory","hold","Changes Silvally's type to Psychic.","psychic-memory"],
+["Psychic Seed","hold","Boosts Sp. Def on Psychic Terrain. Single use.","psychic-seed"],
+["Psychium Z","hold","Allows use of Shattered Psyche, the Psychic-type Z-Move.","psychium-z"],
+["Punching Glove","hold","Boosts punching moves and prevents direct contact.","punching-glove"],
+["Pure Incense","hold","Decreases wild Pokémon encounter rate. Breeds Chingling from Chimecho.","pure-incense"],
+["Quick Claw","hold","Holder may move first occasionally.","quick-claw"],
+["Quick Powder","hold","Increases Speed when held by Ditto.","quick-powder"],
+["Razor Claw","hold","Raises critical-hit ratio. Evolves Sneasel into Weavile when traded at night.","razor-claw"],
+["Razor Fang","hold","May cause flinch. Evolves Gligar into Gliscor when traded at night.","razor-fang"],
+["Ring Target","hold","Holder can be hit by moves it would normally be immune to.","ring-target"],
+["Rock Gem","hold","Increases the power of a Rock-type move once. Single use.","rock-gem"],
+["Rock Memory","hold","Changes Silvally's type to Rock.","rock-memory"],
+["Rockium Z","hold","Allows use of Continental Crush, the Rock-type Z-Move.","rockium-z"],
+["Rocky Helmet","hold","Damages the attacker if hit with a contact move.","rocky-helmet"],
+["Rose Incense","hold","Raises Grass-type move power. Breeds Budew from Roselia/Roserade.","rose-incense"],
+["Rusted Shield","hold","Changes Zamazenta to Crowned Shield forme.","rusted-shield"],
+["Rusted Sword","hold","Changes Zacian to Crowned Sword forme.","rusted-sword"],
+["Safety Goggles","hold","Protects holder from weather damage and powder/spore moves.","safety-goggles"],
+["Salt Cure","hold","Inflicts damage each turn on Steel- and Water-types.","salt-cure"],
+["Sand Cloud Plate","hold","Raises Rock-type move power; changes Arceus to Rock.","stone-plate"],
+["Scope Lens","hold","Raises the critical-hit ratio of moves.","scope-lens"],
+["Sea Incense","hold","Raises Water-type move power. Breeds Azurill from Marill.","sea-incense"],
+["Sharp Beak","hold","Increases the power of Flying-type moves.","sharp-beak"],
+["Shell Bell","hold","Restores HP equal to 1/8 of damage dealt.","shell-bell"],
+["Shiny Charm","general","Increases the chance of encountering a Shiny Pokémon.","shiny-charm"],
+["Shock Drive","hold","Changes Techno Blast to Electric-type when held by Genesect.","shock-drive"],
+["Silk Scarf","hold","Increases the power of Normal-type moves.","silk-scarf"],
+["Silver Powder","hold","Increases the power of Bug-type moves.","silver-powder"],
+["Smooth Rock","hold","Extends the duration of Sandstorm.","smooth-rock"],
+["Snowball","hold","Raises Attack if hit by an Ice-type move. Single use.","snowball"],
+["Soft Sand","hold","Increases the power of Ground-type moves.","soft-sand"],
+["Soothe Bell","hold","Increases the holder's Friendship growth.","soothe-bell"],
+["Soul Dew","hold","Raises Sp. Atk and Sp. Def of Latios/Latias.","soul-dew"],
+["Spell Tag","hold","Increases the power of Ghost-type moves.","spell-tag"],
+["Splash Plate","hold","Raises Water-type move power; changes Arceus to Water.","splash-plate"],
+["Spooky Plate","hold","Raises Ghost-type move power; changes Arceus to Ghost.","spooky-plate"],
+["Star Sweet","hold","Evolves Milcery into Star Sweet Alcremie.","star-sweet"],
+["Steel Gem","hold","Increases the power of a Steel-type move once. Single use.","steel-gem"],
+["Steel Memory","hold","Changes Silvally's type to Steel.","steel-memory"],
+["Steelium Z","hold","Allows use of Corkscrew Crash, the Steel-type Z-Move.","steelium-z"],
+["Stone Plate","hold","Raises Rock-type move power; changes Arceus to Rock.","stone-plate"],
+["Strawberry Sweet","hold","Evolves Milcery into Strawberry Flavor Alcremie.","strawberry-sweet"],
+["Sturdy Umbrella","hold","Protects holder from weather effects. (Utility Umbrella)","utility-umbrella"],
+["Sweet Apple","hold","Evolves Applin into Appletun.","sweet-apple"],
+["Syrupy Apple","hold","Evolves Applin into Dipplin.","syrupy-apple"],
+["Tart Apple","hold","Evolves Applin into Flapple.","tart-apple"],
+["Terrain Extender","hold","Extends the duration of terrain caused by the holder.","terrain-extender"],
+["Thick Club","hold","Increases Attack when held by Cubone or Marowak.","thick-club"],
+["Throat Spray","hold","Raises Sp. Atk when a sound-based move is used.","throat-spray"],
+["Toxic Orb","hold","Badly poisons the holder in battle.","toxic-orb"],
+["Toxic Plate","hold","Raises Poison-type move power; changes Arceus to Poison.","toxic-plate"],
+["Twisted Spoon","hold","Increases the power of Psychic-type moves.","twisted-spoon"],
+["Utility Umbrella","hold","Protects the holder from the effects of weather.","utility-umbrella"],
+["Water Gem","hold","Increases the power of a Water-type move once. Single use.","water-gem"],
+["Water Memory","hold","Changes Silvally's type to Water.","water-memory"],
+["Waterium Z","hold","Allows use of Hydro Vortex, the Water-type Z-Move.","waterium-z"],
+["Wave Incense","hold","Raises Water-type move power. Breeds Mantyke from Mantine.","wave-incense"],
+["Weakness Policy","hold","Sharply raises Attack and Sp. Atk if hit by a super-effective move.","weakness-policy"],
+["White Herb","hold","Restores any lowered stat in battle. Single use.","white-herb"],
+["Wide Lens","hold","Increases the accuracy of moves.","wide-lens"],
+["Wise Glasses","hold","Increases the power of Special-category moves.","wise-glasses"],
+["Zoom Lens","hold","Raises accuracy if holder moves after its target.","zoom-lens"],
+["Zap Plate","hold","Raises Electric-type move power; changes Arceus to Electric.","zap-plate"],
+// ── BATTLE ITEMS ────────────────────────────────────────────
+["Ability Urge","battle","Activates the Ability of an ally Pokémon.","ability-urge"],
+["Adamant Mint","battle","Changes Pokémon's stats to match the Adamant nature.","adamant-mint"],
+["Aux Evasion","battle","Makes moves less likely to strike the Pokémon in battle.","aux-evasion"],
+["Aux Guard","battle","Sharply boosts the defensive stats of a Pokémon in battle.","aux-guard"],
+["Aux Power","battle","Sharply boosts the offensive stats of a Pokémon in battle.","aux-power"],
+["Aux Powerguard","battle","Sharply boosts offensive and defensive stats in battle.","aux-powerguard"],
+["Bold Mint","battle","Changes Pokémon's stats to match the Bold nature.","bold-mint"],
+["Brave Mint","battle","Changes Pokémon's stats to match the Brave nature.","brave-mint"],
+["Calm Mint","battle","Changes Pokémon's stats to match the Calm nature.","calm-mint"],
+["Careful Mint","battle","Changes Pokémon's stats to match the Careful nature.","careful-mint"],
+["Dire Hit","battle","Raises critical-hit ratio of a Pokémon in battle.","dire-hit"],
+["Dire Hit 2","battle","Raises a Pokémon's critical-hit ratio in battle.","dire-hit-2"],
+["Dire Hit 3","battle","Greatly raises a Pokémon's critical-hit ratio in battle.","dire-hit-3"],
+["Gentle Mint","battle","Changes Pokémon's stats to match the Gentle nature.","gentle-mint"],
+["Guard Spec.","battle","Prevents stat reduction for the whole team for five turns.","guard-spec"],
+["Hasty Mint","battle","Changes Pokémon's stats to match the Hasty nature.","hasty-mint"],
+["Impish Mint","battle","Changes Pokémon's stats to match the Impish nature.","impish-mint"],
+["Item Drop","battle","Causes an ally Pokémon to drop its held item.","item-drop"],
+["Item Urge","battle","Causes an ally Pokémon to use its held item.","item-urge"],
+["Jolly Mint","battle","Changes Pokémon's stats to match the Jolly nature.","jolly-mint"],
+["Lax Mint","battle","Changes Pokémon's stats to match the Lax nature.","lax-mint"],
+["Lonely Mint","battle","Changes Pokémon's stats to match the Lonely nature.","lonely-mint"],
+["Mild Mint","battle","Changes Pokémon's stats to match the Mild nature.","mild-mint"],
+["Modest Mint","battle","Changes Pokémon's stats to match the Modest nature.","modest-mint"],
+["Naive Mint","battle","Changes Pokémon's stats to match the Naive nature.","naive-mint"],
+["Naughty Mint","battle","Changes Pokémon's stats to match the Naughty nature.","naughty-mint"],
+["Quiet Mint","battle","Changes Pokémon's stats to match the Quiet nature.","quiet-mint"],
+["Quirky Mint","battle","Changes Pokémon's stats to match the Quirky nature.","quirky-mint"],
+["Rash Mint","battle","Changes Pokémon's stats to match the Rash nature.","rash-mint"],
+["Relaxed Mint","battle","Changes Pokémon's stats to match the Relaxed nature.","relaxed-mint"],
+["Sassy Mint","battle","Changes Pokémon's stats to match the Sassy nature.","sassy-mint"],
+["Serious Mint","battle","Changes Pokémon's stats to match the Serious nature.","serious-mint"],
+["Speed Up","battle","Raises the Speed of a Pokémon in battle.","speed-up"],
+["Timid Mint","battle","Changes Pokémon's stats to match the Timid nature.","timid-mint"],
+["X Accuracy","battle","Raises Accuracy of a Pokémon in battle.","x-accuracy"],
+["X Attack","battle","Raises Attack of a Pokémon in battle.","x-attack"],
+["X Defense","battle","Raises Defense of a Pokémon in battle.","x-defense"],
+["X Sp. Atk","battle","Raises Special Attack of a Pokémon in battle.","x-sp-atk"],
+["X Sp. Def","battle","Raises Special Defense of a Pokémon in battle.","x-sp-def"],
+["X Speed","battle","Raises Speed of a Pokémon in battle.","x-speed"],
+// ── MEDICINE ─────────────────────────────────────────────────
+["Antidote","medicine","Cures a Pokémon of poisoning.","antidote"],
+["Awakening","medicine","Wakes up a sleeping Pokémon.","awakening"],
+["Berry Juice","medicine","Restores 20 HP.","berry-juice"],
+["Big Malasada","medicine","Heals all major status conditions.","big-malasada"],
+["Burn Heal","medicine","Cures a Pokémon of a burn.","burn-heal"],
+["Calcium","medicine","Increases Special Attack EVs by 10.","calcium"],
+["Carbos","medicine","Increases Speed EVs by 10.","carbos"],
+["Casteliacone","medicine","Heals all major status conditions.","casteliacone"],
+["Clever Feather","medicine","Increases Special Defense EVs by 1.","clever-feather"],
+["Clever Mochi","medicine","Increases Special Defense EVs.","clever-mochi"],
+["Courage Candy","medicine","Increases a Pokémon's Special Defense stat by 1.","courage-candy"],
+["Courage Candy L","medicine","Increases a Pokémon's Special Defense stat (large).","courage-candy-l"],
+["Courage Candy XL","medicine","Increases a Pokémon's Special Defense stat (extra large).","courage-candy-xl"],
+["Dynamax Candy","medicine","Raises Dynamax Level of a Pokémon.","dynamax-candy"],
+["Elixir","medicine","Restores 10 PP to all moves of a Pokémon.","elixir"],
+["Energy Powder","medicine","Restores 60 HP but lowers Friendship.","energy-powder"],
+["Energy Root","medicine","Restores 120 HP but lowers Friendship.","energy-root"],
+["Ether","medicine","Restores 10 PP to one move of a Pokémon.","ether"],
+["Exp. Candy XS","medicine","Increases a Pokémon's Exp. Points by 100.","exp-candy-xs"],
+["Exp. Candy S","medicine","Increases a Pokémon's Exp. Points by 800.","exp-candy-s"],
+["Exp. Candy M","medicine","Increases a Pokémon's Exp. Points by 3,000.","exp-candy-m"],
+["Exp. Candy L","medicine","Increases a Pokémon's Exp. Points by 10,000.","exp-candy-l"],
+["Exp. Candy XL","medicine","Increases a Pokémon's Exp. Points by 30,000.","exp-candy-xl"],
+["Fresh Water","medicine","Restores 30 HP.","fresh-water"],
+["Fresh-Start Mochi","medicine","Resets a Pokémon's base points (EVs).","fresh-start-mochi"],
+["Full Heal","medicine","Cures a Pokémon of any status condition.","full-heal"],
+["Full Restore","medicine","Fully restores HP and cures any status condition.","full-restore"],
+["Genius Feather","medicine","Increases Special Attack EVs by 1.","genius-feather"],
+["Genius Mochi","medicine","Increases Special Attack EVs.","genius-mochi"],
+["Heal Powder","medicine","Heals all status problems but lowers Friendship.","heal-powder"],
+["Health Candy","medicine","Increases a Pokémon's HP stat by 1.","health-candy"],
+["Health Candy L","medicine","Increases a Pokémon's HP stat (large).","health-candy-l"],
+["Health Candy XL","medicine","Increases a Pokémon's HP stat (extra large).","health-candy-xl"],
+["Health Feather","medicine","Increases HP EVs by 1.","health-feather"],
+["Health Mochi","medicine","Increases HP EVs.","health-mochi"],
+["HP Up","medicine","Increases HP EVs by 10.","hp-up"],
+["Hyper Potion","medicine","Restores 120 HP.","hyper-potion"],
+["Ice Heal","medicine","Cures a Pokémon of freezing.","ice-heal"],
+["Iron","medicine","Increases Defense EVs by 10.","iron"],
+["Lava Cookie","medicine","Heals all major status conditions.","lava-cookie"],
+["Lemonade","medicine","Restores 70 HP.","lemonade"],
+["Max Elixir","medicine","Fully restores PP to all moves of a Pokémon.","max-elixir"],
+["Max Ether","medicine","Fully restores PP to one move of a Pokémon.","max-ether"],
+["Max Potion","medicine","Fully restores HP of a Pokémon.","max-potion"],
+["Max Revive","medicine","Revives a fainted Pokémon, fully restoring its HP.","max-revive"],
+["Moomoo Milk","medicine","Restores 100 HP.","moomoo-milk"],
+["Muscle Feather","medicine","Increases Attack EVs by 1.","muscle-feather"],
+["Muscle Mochi","medicine","Increases Attack EVs.","muscle-mochi"],
+["Paralyze Heal","medicine","Cures a Pokémon of paralysis.","paralyze-heal"],
+["Potion","medicine","Restores 20 HP.","potion"],
+["PP Max","medicine","Raises the maximum PP of a move to its maximum.","pp-max"],
+["PP Up","medicine","Raises the maximum PP of a move.","pp-up"],
+["Protein","medicine","Increases Attack EVs by 10.","protein"],
+["Rare Candy","medicine","Raises a Pokémon's level by 1.","rare-candy"],
+["Resist Feather","medicine","Increases Defense EVs by 1.","resist-feather"],
+["Resist Mochi","medicine","Increases Defense EVs.","resist-mochi"],
+["Revival Herb","medicine","Revives a fainted Pokémon but lowers Friendship.","revival-herb"],
+["Revive","medicine","Revives a fainted Pokémon, restoring half its HP.","revive"],
+["Soda Pop","medicine","Restores 50 HP.","soda-pop"],
+["Speed Feather","medicine","Increases Speed EVs by 1.","swift-feather"],
+["Super Potion","medicine","Restores 60 HP.","super-potion"],
+["Swift Feather","medicine","Increases Speed EVs by 1.","swift-feather"],
+["Sweet Heart","medicine","Restores 20 HP of one Pokémon.","sweet-heart"],
+["Zinc","medicine","Increases Special Defense EVs by 10.","zinc"],
+// ── POKÉ BALLS ───────────────────────────────────────────────
+["Beast Ball","pokeball","A special Poké Ball designed to catch Ultra Beasts.","beast-ball"],
+["Cherish Ball","pokeball","Rare Poké Ball used for event Pokémon.","cherish-ball"],
+["Dive Ball","pokeball","Catches Pokémon in water with 3.5× catch rate.","dive-ball"],
+["Dream Ball","pokeball","A special Poké Ball from the Entree Forest.","dream-ball"],
+["Dusk Ball","pokeball","Catches Pokémon at night or in caves with 3× catch rate.","dusk-ball"],
+["Fast Ball","pokeball","Easier to catch Pokémon that are quick to run away.","fast-ball"],
+["Feather Ball","pokeball","A light ball that can be thrown far.","feather-ball"],
+["Friend Ball","pokeball","Makes caught Pokémon more friendly.","friend-ball"],
+["Gigaton Ball","pokeball","A heavy ball that sinks when thrown.","gigaton-ball"],
+["Great Ball","pokeball","Catches wild Pokémon with 1.5× the rate of a Poké Ball.","great-ball"],
+["Heal Ball","pokeball","Catches wild Pokémon and fully heals them.","heal-ball"],
+["Heavy Ball","pokeball","Better at catching very heavy Pokémon.","heavy-ball"],
+["Jet Ball","pokeball","A fast ball used in Legends: Arceus.","jet-ball"],
+["Leaden Ball","pokeball","A heavy ball used in Legends: Arceus.","leaden-ball"],
+["Level Ball","pokeball","Better at catching Pokémon at a lower level than your own.","level-ball"],
+["Love Ball","pokeball","Better at catching Pokémon of the opposite gender.","love-ball"],
+["Lure Ball","pokeball","Better at catching Pokémon hooked while fishing.","lure-ball"],
+["Luxury Ball","pokeball","Catches Pokémon and increases their Friendship more quickly.","luxury-ball"],
+["Master Ball","pokeball","Catches any wild Pokémon without fail.","master-ball"],
+["Moon Ball","pokeball","Better at catching Pokémon that evolve using the Moon Stone.","moon-ball"],
+["Nest Ball","pokeball","Better at catching lower-level wild Pokémon.","nest-ball"],
+["Net Ball","pokeball","3.5× catch rate for Water- and Bug-type Pokémon.","net-ball"],
+["Poké Ball","pokeball","Catches wild Pokémon.","poke-ball"],
+["Premier Ball","pokeball","Received after buying 10 Poké Balls. No special effect.","premier-ball"],
+["Quick Ball","pokeball","5× catch rate on the first turn of battle.","quick-ball"],
+["Repeat Ball","pokeball","Better at catching Pokémon already caught before.","repeat-ball"],
+["Safari Ball","pokeball","A special Poké Ball used in the Safari Zone.","safari-ball"],
+["Sport Ball","pokeball","A special Poké Ball used in the Bug-Catching Contest.","sport-ball"],
+["Timer Ball","pokeball","Catch rate increases the more turns have occurred.","timer-ball"],
+["Ultra Ball","pokeball","Catches wild Pokémon with 2× the rate of a Poké Ball.","ultra-ball"],
+["Wing Ball","pokeball","A ball used in Legends: Arceus.","wing-ball"],
+// ── GENERAL ITEMS ────────────────────────────────────────────
+["Ability Patch","general","Changes a Pokémon's ability to its Hidden Ability.","ability-patch"],
+["Apricorn","general","Shell used to craft Poké Balls.","apricorn"],
+["Armor Fossil","general","A fossil. Revives into Shieldon.","armor-fossil"],
+["Armorite Ore","general","Used to teach moves in the Isle of Armor.","armorite-ore"],
+["Auspicious Armor","general","Evolves Charcadet into Armarouge.","auspicious-armor"],
+["Balm Mushroom","general","A rare mushroom. Sells for a high price.","balm-mushroom"],
+["Big Mushroom","general","A large and rare mushroom. Sought after by collectors.","big-mushroom"],
+["Big Nugget","general","A big nugget of pure gold. Sells for a high price.","big-nugget"],
+["Big Pearl","general","A quite-large pearl. Can be sold at a high price.","big-pearl"],
+["Black Augurite","general","Evolves Scyther into Kleavor.","black-augurite"],
+["Black Flute","general","A toy flute made from black glass. Sells for a high price.","black-flute"],
+["Black Tumblestone","general","Ore used to craft Poké Balls in Legends: Arceus.","black-tumblestone"],
+["Blue Apricorn","general","A blue Apricorn used to craft Poké Balls.","blue-apricorn"],
+["Blue Flute","general","A toy flute made from blue glass. Sells for a high price.","blue-flute"],
+["Blue Scarf","general","Raises holder's Beauty stat in Contests.","blue-scarf"],
+["Blue Shard","general","A small blue shard from a long-ago implement.","blue-shard"],
+["Bottle Cap","general","Maximizes one IV stat in Hyper Training.","bottle-cap"],
+["Bread","general","A camp cooking ingredient.","bread"],
+["Claw Fossil","general","A fossil. Revives into Anorith.","claw-fossil"],
+["Comet Shard","general","A shard from a comet. Sells for a high price.","comet-shard"],
+["Cover Fossil","general","A fossil. Revives into Tirtouga.","cover-fossil"],
+["Crafting Kit","general","Used to craft items in Pokémon Legends: Arceus.","crafting-kit"],
+["Damp Mulch","general","Fertilizer for Berry growth. Slows berry growth.","damp-mulch"],
+["Dawn Stone","general","Evolves certain Pokémon species.","dawn-stone"],
+["DNA Splicers","general","Fuses Kyurem with Reshiram or Zekrom.","dna-splicers"],
+["Dome Fossil","general","A fossil. Revives into Kabuto.","dome-fossil"],
+["Dragon Scale","general","Evolves Seadra when traded holding the item.","dragon-scale"],
+["Dream Ball","pokeball","Catches Pokémon in the Dream World.","dream-ball"],
+["Dubious Disc","general","Evolves Porygon2 into Porygon-Z when traded.","dubious-disc"],
+["Dusk Stone","general","Evolves certain Pokémon species.","dusk-stone"],
+["Dynite Ore","general","Ore obtained in the Max Lair. Used in the Crown Tundra.","dynite-ore"],
+["Electirizer","general","Evolves Electabuzz when traded holding the item.","electirizer"],
+["Escape Rope","general","Use to escape instantly from a cave or dungeon.","escape-rope"],
+["Festival Ticket","general","Allows you to host a mission in Festival Plaza.","festival-ticket"],
+["Fire Stone","general","Evolves certain Pokémon species.","fire-stone"],
+["Fossilized Bird","general","Fossil of an ancient flying Pokémon.","fossilized-bird"],
+["Fossilized Dino","general","Fossil of an ancient sea Pokémon.","fossilized-dino"],
+["Fossilized Drake","general","Fossil of an ancient land Pokémon.","fossilized-drake"],
+["Fossilized Fish","general","Fossil of an ancient sea Pokémon.","fossilized-fish"],
+["Galarica Cuff","general","Evolves Galarian Slowpoke into Galarian Slowbro.","galarica-cuff"],
+["Galarica Twig","general","Used to craft Galarica Cuff/Wreath.","galarica-twig"],
+["Galarica Wreath","general","Evolves Galarian Slowpoke into Galarian Slowking.","galarica-wreath"],
+["Gigantamix","general","A mysterious camp cooking ingredient.","gigantamix"],
+["Gimmighoul Coin","general","Obtained from Gimmighoul. 999 needed to evolve into Gholdengo.","gimmighoul-coin"],
+["Gold Bottle Cap","general","Maximizes all of a Pokémon's IV stats in Hyper Training.","gold-bottle-cap"],
+["Gold Leaf","general","A shiny gold leaf. Sells for a high price.","gold-leaf"],
+["Gooey Mulch","general","Fertilizer for Berry growth. Spreads roots.","gooey-mulch"],
+["Green Apricorn","general","A green Apricorn used to craft Poké Balls.","green-apricorn"],
+["Green Scarf","general","Raises holder's Smart stat in Contests.","green-scarf"],
+["Green Shard","general","A small green shard from a long-ago implement.","green-shard"],
+["Growth Mulch","general","Fertilizer for Berry growth. Speeds up growth.","growth-mulch"],
+["Heart Scale","general","A pretty scale used to re-learn forgotten moves.","heart-scale"],
+["Helix Fossil","general","A fossil. Revives into Omanyte.","helix-fossil"],
+["Honey","general","A sweet honey that attracts wild Pokémon.","honey"],
+["Ice Stone","general","Evolves certain Pokémon species.","ice-stone"],
+["Iceroot Carrot","general","Special carrot for Glastrier.","iceroot-carrot"],
+["King's Leaf","general","Used in crafting in Legends: Arceus.","kings-leaf"],
+["Leaf Stone","general","Evolves certain Pokémon species.","leaf-stone"],
+["Linking Cord","general","Evolves certain Pokémon that normally need trading.","linking-cord"],
+["Magmarizer","general","Evolves Magmar when traded holding the item.","magmarizer"],
+["Malicious Armor","general","Evolves Charcadet into Ceruledge.","malicious-armor"],
+["Master Ball","pokeball","Catches any wild Pokémon without fail.","master-ball"],
+["Max Repel","general","Prevents weak wild Pokémon from appearing for 250 steps.","max-repel"],
+["Metal Alloy","general","Evolves Duraludon into Archaludon.","metal-alloy"],
+["Moon Stone","general","Evolves certain Pokémon species.","moon-stone"],
+["Nanab Berry","general","Calms a wild Pokémon in Pokémon GO.","nanab-berry"],
+["Nugget","general","A pure gold nugget. Sells for a high price.","nugget"],
+["Old Amber","general","A fossil. Revives into Aerodactyl.","old-amber"],
+["Old Gateau","general","Heals all status conditions. Found in Old Chateau.","old-gateau"],
+["Oval Charm","general","Increases the chance of finding Pokémon Eggs.","oval-charm"],
+["Oval Stone","general","Evolves Happiny when leveled up holding it during daytime.","oval-stone"],
+["Pearl","general","A pretty pearl. Sells for a decent price.","pearl"],
+["Pearl String","general","A string of pearls. Sells for a very high price.","pearl-string"],
+["Pink Apricorn","general","A pink Apricorn used to craft Poké Balls.","pink-apricorn"],
+["Pinap Berry","general","Increases chance of getting items when catching in Pokémon GO.","pinap-berry"],
+["Plume Fossil","general","A fossil. Revives into Archen.","plume-fossil"],
+["Prism Scale","general","Evolves Feebas when traded holding the item.","prism-scale"],
+["Protector","general","Evolves Rhydon when traded holding the item.","protector"],
+["Razz Berry","general","Makes wild Pokémon easier to catch in Pokémon GO.","razz-berry"],
+["Red Apricorn","general","A red Apricorn used to craft Poké Balls.","red-apricorn"],
+["Red Flute","general","A toy flute made from red glass. Snaps out infatuation.","red-flute"],
+["Red Scarf","general","Raises holder's Coolness stat in Contests.","red-scarf"],
+["Red Shard","general","A small red shard from a long-ago implement.","red-shard"],
+["Reaper Cloth","general","Evolves Dusclops when traded holding the item.","reaper-cloth"],
+["Repel","general","Prevents weak wild Pokémon from appearing for 100 steps.","repel"],
+["Root Fossil","general","A fossil. Revives into Lileep.","root-fossil"],
+["Sachet","general","Evolves Spritzee when traded holding the item.","sachet"],
+["Shiny Charm","general","Increases the chance of encountering Shiny Pokémon.","shiny-charm"],
+["Silver Leaf","general","A shiny silver leaf. Sells for a decent price.","silver-leaf"],
+["Skull Fossil","general","A fossil. Revives into Cranidos.","skull-fossil"],
+["Sky Plate","hold","Raises Flying-type move power; changes Arceus to Flying.","sky-plate"],
+["Stardust","general","Lovely red sand. Sells for a decent price.","stardust"],
+["Star Piece","general","A shard of a beautiful gem. Sells for a high price.","star-piece"],
+["Sticky Barb","hold","Damages the holder and may attach to attackers making contact.","sticky-barb"],
+["Sun Stone","general","Evolves certain Pokémon species.","sun-stone"],
+["Super Repel","general","Prevents weak wild Pokémon from appearing for 200 steps.","super-repel"],
+["Thunder Stone","general","Evolves certain Pokémon species.","thunder-stone"],
+["Tiny Mushroom","general","A small and ordinary mushroom. Sells for a low price.","tiny-mushroom"],
+["TR00","general","TR for Swords Dance. Single use.","tr00"],
+["Upgrade","general","Evolves Porygon when traded holding the item.","upgrade"],
+["Water Stone","general","Evolves certain Pokémon species.","water-stone"],
+["Whipped Dream","general","Evolves Swirlix when traded holding the item.","whipped-dream"],
+["White Flute","general","A toy flute made from white glass. Attracts weak Pokémon.","white-flute"],
+["Yellow Apricorn","general","A yellow Apricorn used to craft Poké Balls.","yellow-apricorn"],
+["Yellow Flute","general","A toy flute made from yellow glass. Cures confusion.","yellow-flute"],
+["Yellow Scarf","general","Raises holder's Toughness stat in Contests.","yellow-scarf"],
+["Yellow Shard","general","A small yellow shard from a long-ago implement.","yellow-shard"],
+// ── BERRIES ──────────────────────────────────────────────────
+["Aguav Berry","berry","Restores HP if low; may cause confusion in Pokémon that dislike bitter flavor.","aguav-berry"],
+["Apicot Berry","berry","Raises Special Defense when HP is low.","apicot-berry"],
+["Aspear Berry","berry","Cures the holder of freezing.","aspear-berry"],
+["Babiri Berry","berry","Weakens a supereffective Steel-type attack against the holder.","babiri-berry"],
+["Belue Berry","berry","A rare Berry. Can be sold at high price.","belue-berry"],
+["Bluk Berry","berry","A rare Berry. Can be sold at high price.","bluk-berry"],
+["Charti Berry","berry","Weakens a supereffective Rock-type attack against the holder.","charti-berry"],
+["Cheri Berry","berry","Cures the holder of paralysis.","cheri-berry"],
+["Chesto Berry","berry","Cures the holder of sleep.","chesto-berry"],
+["Chilan Berry","berry","Weakens a Normal-type attack against the holder.","chilan-berry"],
+["Chople Berry","berry","Weakens a supereffective Fighting-type attack against the holder.","chople-berry"],
+["Coba Berry","berry","Weakens a supereffective Flying-type attack against the holder.","coba-berry"],
+["Colbur Berry","berry","Weakens a supereffective Dark-type attack against the holder.","colbur-berry"],
+["Cornn Berry","berry","A rare Berry. Can be sold at high price.","cornn-berry"],
+["Custap Berry","berry","Holder can move first when HP is low.","custap-berry"],
+["Durin Berry","berry","A rare Berry. Can be sold at high price.","durin-berry"],
+["Enigma Berry","berry","Restores HP if hit by any supereffective attack.","enigma-berry"],
+["Figy Berry","berry","Restores HP when low; may cause confusion.","figy-berry"],
+["Ganlon Berry","berry","Raises Defense when HP is low.","ganlon-berry"],
+["Golden Nanab Berry","berry","Drastically calms a wild Pokémon (Pokémon Let's Go).","golden-nanab-berry"],
+["Golden Pinap Berry","berry","Drastically increases chance of getting items on catch (Let's Go).","golden-pinap-berry"],
+["Golden Razz Berry","berry","Makes a Pokémon much easier to catch (Pokémon Let's Go).","golden-razz-berry"],
+["Grepa Berry","berry","Increases Friendship; lowers Special Defense EVs.","grepa-berry"],
+["Haban Berry","berry","Weakens a supereffective Dragon-type attack against the holder.","haban-berry"],
+["Hondew Berry","berry","Increases Friendship; lowers Special Attack EVs.","hondew-berry"],
+["Iapapa Berry","berry","Restores HP when low; may cause confusion.","iapapa-berry"],
+["Jaboca Berry","berry","If holder takes a physical hit, the attacker also takes damage.","jaboca-berry"],
+["Kasib Berry","berry","Weakens a supereffective Ghost-type attack against the holder.","kasib-berry"],
+["Kebia Berry","berry","Weakens a supereffective Poison-type attack against the holder.","kebia-berry"],
+["Kee Berry","berry","Raises Defense if the holder is hit with a physical move.","kee-berry"],
+["Kelpsy Berry","berry","Increases Friendship; lowers Attack EVs.","kelpsy-berry"],
+["Lansat Berry","berry","Raises critical-hit ratio when HP is low.","lansat-berry"],
+["Leppa Berry","berry","Restores 10 PP to one move when held.","leppa-berry"],
+["Liechi Berry","berry","Raises Attack when HP is low.","liechi-berry"],
+["Lum Berry","berry","Recovers the holder from any status condition.","lum-berry"],
+["Mago Berry","berry","Restores HP when low; may cause confusion.","mago-berry"],
+["Maranga Berry","berry","Raises Sp. Def if the holder is hit with a special move.","maranga-berry"],
+["Micle Berry","berry","Increases a move's accuracy when HP is low.","micle-berry"],
+["Nomel Berry","berry","A rare Berry used for Pokéblocks and Poffins.","nomel-berry"],
+["Nutpea Berry","berry","A rare Berry used for Pokéblocks and Poffins.","nutpea-berry"],
+["Occa Berry","berry","Weakens a supereffective Fire-type attack against the holder.","occa-berry"],
+["Oran Berry","berry","Restores 10 HP if held by a Pokémon.","oran-berry"],
+["Passho Berry","berry","Weakens a supereffective Water-type attack against the holder.","passho-berry"],
+["Payapa Berry","berry","Weakens a supereffective Psychic-type attack against the holder.","payapa-berry"],
+["Pecha Berry","berry","Cures the holder of poisoning.","pecha-berry"],
+["Persim Berry","berry","Cures the holder of confusion.","persim-berry"],
+["Petaya Berry","berry","Raises Special Attack when HP is low.","petaya-berry"],
+["Pomeg Berry","berry","Increases Friendship; lowers HP EVs.","pomeg-berry"],
+["Qualot Berry","berry","Increases Friendship; lowers Defense EVs.","qualot-berry"],
+["Rabuta Berry","berry","A rare Berry used for Pokéblocks and Poffins.","rabuta-berry"],
+["Rawst Berry","berry","Cures the holder of a burn.","rawst-berry"],
+["Razz Berry","berry","Makes wild Pokémon easier to catch (Pokémon GO/Let's Go).","razz-berry"],
+["Rindo Berry","berry","Weakens a supereffective Grass-type attack against the holder.","rindo-berry"],
+["Roseli Berry","berry","Weakens a supereffective Fairy-type attack against the holder.","roseli-berry"],
+["Rowap Berry","berry","If holder takes a special hit, the attacker also takes damage.","rowap-berry"],
+["Salac Berry","berry","Raises Speed when HP is low.","salac-berry"],
+["Shuca Berry","berry","Weakens a supereffective Ground-type attack against the holder.","shuca-berry"],
+["Sitrus Berry","berry","Restores 25% of the holder's HP.","sitrus-berry"],
+["Spelon Berry","berry","A rare Berry used for Pokéblocks and Poffins.","spelon-berry"],
+["Starf Berry","berry","Sharply raises a random stat when HP is low.","starf-berry"],
+["Tamato Berry","berry","Increases Friendship; lowers Speed EVs.","tamato-berry"],
+["Tanga Berry","berry","Weakens a supereffective Bug-type attack against the holder.","tanga-berry"],
+["Topsy-Turvy Berry","berry","Swaps the holder's stat changes when used.","topsy-turvy-berry"],
+["Wacan Berry","berry","Weakens a supereffective Electric-type attack against the holder.","wacan-berry"],
+["Watmel Berry","berry","A rare Berry used for Pokéblocks and Poffins.","watmel-berry"],
+["Wiki Berry","berry","Restores HP when low; may cause confusion.","wiki-berry"],
+["Wixim Berry","berry","A rare Berry used for Pokéblocks and Poffins.","wixim-berry"],
+["Yache Berry","berry","Weakens a supereffective Ice-type attack against the holder.","yache-berry"],
+// ── MACHINES (HMs) ───────────────────────────────────────────
+["HM01","machine","Teaches Cut. Field move.","hm01"],
+["HM02","machine","Teaches Fly. Field move.","hm02"],
+["HM03","machine","Teaches Surf. Field move.","hm03"],
+["HM04","machine","Teaches Strength. Field move.","hm04"],
+["HM05","machine","Teaches Flash/Defog/Whirlpool/Waterfall (varies by game).","hm05"],
+["HM06","machine","Teaches Rock Smash/Whirlpool/Dive (varies by game).","hm06"],
+["HM07","machine","Teaches Waterfall.","hm07"],
+["HM08","machine","Teaches Dive/Rock Climb (varies by game).","hm08"],
+// ── MACHINES (TMs 001–171) ────────────────────────────────────
+["TM001","machine","Teaches Take Down.","tm001"],
+["TM002","machine","Teaches Charm.","tm002"],
+["TM003","machine","Teaches Fake Tears.","tm003"],
+["TM004","machine","Teaches Agility.","tm004"],
+["TM005","machine","Teaches Mud-Slap.","tm005"],
+["TM006","machine","Teaches Scary Face.","tm006"],
+["TM007","machine","Teaches Protect.","tm007"],
+["TM008","machine","Teaches Hyper Fang.","tm008"],
+["TM009","machine","Teaches Thunder Fang.","tm009"],
+["TM010","machine","Teaches Ice Fang.","tm010"],
+["TM011","machine","Teaches Fire Fang.","tm011"],
+["TM012","machine","Teaches Low Kick.","tm012"],
+["TM013","machine","Teaches Acid Spray.","tm013"],
+["TM014","machine","Teaches Acrobatics.","tm014"],
+["TM015","machine","Teaches Struggle Bug.","tm015"],
+["TM016","machine","Teaches Psybeam.","tm016"],
+["TM017","machine","Teaches Confuse Ray.","tm017"],
+["TM018","machine","Teaches Thief.","tm018"],
+["TM019","machine","Teaches Disarming Voice.","tm019"],
+["TM020","machine","Teaches Trailblaze.","tm020"],
+["TM021","machine","Teaches Pounce.","tm021"],
+["TM022","machine","Teaches Chilling Water.","tm022"],
+["TM023","machine","Teaches Charge Beam.","tm023"],
+["TM024","machine","Teaches Fire Spin.","tm024"],
+["TM025","machine","Teaches Facade.","tm025"],
+["TM026","machine","Teaches Poison Tail.","tm026"],
+["TM027","machine","Teaches Aerial Ace.","tm027"],
+["TM028","machine","Teaches Bulldoze.","tm028"],
+["TM029","machine","Teaches Hex.","tm029"],
+["TM030","machine","Teaches Snarl.","tm030"],
+["TM031","machine","Teaches Metal Claw.","tm031"],
+["TM032","machine","Teaches Swift.","tm032"],
+["TM033","machine","Teaches Magical Leaf.","tm033"],
+["TM034","machine","Teaches Icy Wind.","tm034"],
+["TM035","machine","Teaches Mud Shot.","tm035"],
+["TM036","machine","Teaches Rock Tomb.","tm036"],
+["TM037","machine","Teaches Draining Kiss.","tm037"],
+["TM038","machine","Teaches Flame Charge.","tm038"],
+["TM039","machine","Teaches Low Sweep.","tm039"],
+["TM040","machine","Teaches Air Cutter.","tm040"],
+["TM041","machine","Teaches Stored Power.","tm041"],
+["TM042","machine","Teaches Night Shade.","tm042"],
+["TM043","machine","Teaches Fling.","tm043"],
+["TM044","machine","Teaches Nitro Charge.","tm044"],
+["TM045","machine","Teaches Venoshock.","tm045"],
+["TM046","machine","Teaches Avalanche.","tm046"],
+["TM047","machine","Teaches Endure.","tm047"],
+["TM048","machine","Teaches Volt Switch.","tm048"],
+["TM049","machine","Teaches Sunny Day.","tm049"],
+["TM050","machine","Teaches Rain Dance.","tm050"],
+["TM051","machine","Teaches Sandstorm.","tm051"],
+["TM052","machine","Teaches Snowscape.","tm052"],
+["TM053","machine","Teaches Smart Strike.","tm053"],
+["TM054","machine","Teaches Psych Up.","tm054"],
+["TM055","machine","Teaches Dig.","tm055"],
+["TM056","machine","Teaches Bullet Seed.","tm056"],
+["TM057","machine","Teaches False Swipe.","tm057"],
+["TM058","machine","Teaches Brick Break.","tm058"],
+["TM059","machine","Teaches Zen Headbutt.","tm059"],
+["TM060","machine","Teaches U-turn.","tm060"],
+["TM061","machine","Teaches Shadow Claw.","tm061"],
+["TM062","machine","Teaches Foul Play.","tm062"],
+["TM063","machine","Teaches Psychic Fangs.","tm063"],
+["TM064","machine","Teaches Bulk Up.","tm064"],
+["TM065","machine","Teaches Air Slash.","tm065"],
+["TM066","machine","Teaches Body Slam.","tm066"],
+["TM067","machine","Teaches Fire Punch.","tm067"],
+["TM068","machine","Teaches Thunder Punch.","tm068"],
+["TM069","machine","Teaches Ice Punch.","tm069"],
+["TM070","machine","Teaches Sleep Powder.","tm070"],
+["TM071","machine","Teaches Seed Bomb.","tm071"],
+["TM072","machine","Teaches Electroweb.","tm072"],
+["TM073","machine","Teaches Aqua Step.","tm073"],
+["TM074","machine","Teaches Reflect.","tm074"],
+["TM075","machine","Teaches Light Screen.","tm075"],
+["TM076","machine","Teaches Rock Blast.","tm076"],
+["TM077","machine","Teaches Waterfall.","tm077"],
+["TM078","machine","Teaches Frost Breath.","tm078"],
+["TM079","machine","Teaches Dazzling Gleam.","tm079"],
+["TM080","machine","Teaches Metronome.","tm080"],
+["TM081","machine","Teaches Grass Knot.","tm081"],
+["TM082","machine","Teaches Thunder Wave.","tm082"],
+["TM083","machine","Teaches Poison Powder.","tm083"],
+["TM084","machine","Teaches Stomping Tantrum.","tm084"],
+["TM085","machine","Teaches Rest.","tm085"],
+["TM086","machine","Teaches Rock Slide.","tm086"],
+["TM087","machine","Teaches Taunt.","tm087"],
+["TM088","machine","Teaches Swords Dance.","tm088"],
+["TM089","machine","Teaches Body Press.","tm089"],
+["TM090","machine","Teaches Spikes.","tm090"],
+["TM091","machine","Teaches Swift.","tm091"],
+["TM092","machine","Teaches Imprison.","tm092"],
+["TM093","machine","Teaches Flash Cannon.","tm093"],
+["TM094","machine","Teaches Dark Pulse.","tm094"],
+["TM095","machine","Teaches Leech Seed.","tm095"],
+["TM096","machine","Teaches Eerie Impulse.","tm096"],
+["TM097","machine","Teaches Fly.","tm097"],
+["TM098","machine","Teaches Skill Swap.","tm098"],
+["TM099","machine","Teaches Iron Head.","tm099"],
+["TM100","machine","Teaches Calm Mind.","tm100"],
+["TM101","machine","Teaches Power Gem.","tm101"],
+["TM102","machine","Teaches Gunk Shot.","tm102"],
+["TM103","machine","Teaches Substitute.","tm103"],
+["TM104","machine","Teaches Iron Defense.","tm104"],
+["TM105","machine","Teaches X-Scissor.","tm105"],
+["TM106","machine","Teaches Drill Run.","tm106"],
+["TM107","machine","Teaches Will-O-Wisp.","tm107"],
+["TM108","machine","Teaches Crunch.","tm108"],
+["TM109","machine","Teaches Trick.","tm109"],
+["TM110","machine","Teaches Liquidation.","tm110"],
+["TM111","machine","Teaches Giga Drain.","tm111"],
+["TM112","machine","Teaches Aura Sphere.","tm112"],
+["TM113","machine","Teaches Tailwind.","tm113"],
+["TM114","machine","Teaches Shadow Ball.","tm114"],
+["TM115","machine","Teaches Dragon Pulse.","tm115"],
+["TM116","machine","Teaches Stealth Rock.","tm116"],
+["TM117","machine","Teaches Hyper Voice.","tm117"],
+["TM118","machine","Teaches Heat Wave.","tm118"],
+["TM119","machine","Teaches Energy Ball.","tm119"],
+["TM120","machine","Teaches Psychic.","tm120"],
+["TM121","machine","Teaches Heavy Slam.","tm121"],
+["TM122","machine","Teaches Encore.","tm122"],
+["TM123","machine","Teaches Surf.","tm123"],
+["TM124","machine","Teaches Ice Spinner.","tm124"],
+["TM125","machine","Teaches Flamethrower.","tm125"],
+["TM126","machine","Teaches Thunderbolt.","tm126"],
+["TM127","machine","Teaches Play Rough.","tm127"],
+["TM128","machine","Teaches Amnesia.","tm128"],
+["TM129","machine","Teaches Calm Mind (alternate).","tm129"],
+["TM130","machine","Teaches Helping Hand.","tm130"],
+["TM131","machine","Teaches Pollen Puff.","tm131"],
+["TM132","machine","Teaches Baton Pass.","tm132"],
+["TM133","machine","Teaches Earth Power.","tm133"],
+["TM134","machine","Teaches Reversal.","tm134"],
+["TM135","machine","Teaches Ice Beam.","tm135"],
+["TM136","machine","Teaches Electric Terrain.","tm136"],
+["TM137","machine","Teaches Grassy Terrain.","tm137"],
+["TM138","machine","Teaches Psychic Terrain.","tm138"],
+["TM139","machine","Teaches Misty Terrain.","tm139"],
+["TM140","machine","Teaches Nasty Plot.","tm140"],
+["TM141","machine","Teaches Fire Blast.","tm141"],
+["TM142","machine","Teaches Hydro Pump.","tm142"],
+["TM143","machine","Teaches Blizzard.","tm143"],
+["TM144","machine","Teaches Thunder.","tm144"],
+["TM145","machine","Teaches Earthquake.","tm145"],
+["TM146","machine","Teaches Hyper Beam.","tm146"],
+["TM147","machine","Teaches Wild Charge.","tm147"],
+["TM148","machine","Teaches Sludge Bomb.","tm148"],
+["TM149","machine","Teaches Earthquake (alt).","tm149"],
+["TM150","machine","Teaches Stone Edge.","tm150"],
+["TM151","machine","Teaches Phantom Force.","tm151"],
+["TM152","machine","Teaches Giga Impact.","tm152"],
+["TM153","machine","Teaches Icicle Spear.","tm153"],
+["TM154","machine","Teaches Toxic.","tm154"],
+["TM155","machine","Teaches Mystical Power.","tm155"],
+["TM156","machine","Teaches Outrage.","tm156"],
+["TM157","machine","Teaches Overheat.","tm157"],
+["TM158","machine","Teaches Focus Blast.","tm158"],
+["TM159","machine","Teaches Leaf Storm.","tm159"],
+["TM160","machine","Teaches Hurricane.","tm160"],
+["TM161","machine","Teaches Trick Room.","tm161"],
+["TM162","machine","Teaches Bug Buzz.","tm162"],
+["TM163","machine","Teaches Hyper Beam (alt).","tm163"],
+["TM164","machine","Teaches Brave Bird.","tm164"],
+["TM165","machine","Teaches Flare Blitz.","tm165"],
+["TM166","machine","Teaches Thunder Wave (alt).","tm166"],
+["TM167","machine","Teaches Close Combat.","tm167"],
+["TM168","machine","Teaches Dragon Dance.","tm168"],
+["TM169","machine","Teaches Draco Meteor.","tm169"],
+["TM170","machine","Teaches Steel Beam.","tm170"],
+["TM171","machine","Teaches Tera Blast.","tm171"],
+];
+
+const ITEM_CATEGORIES = [
+  {id:'hold',label:'Hold',cls:'itemcat-hold'},
+  {id:'battle',label:'Battle',cls:'itemcat-battle'},
+  {id:'berry',label:'Berries',cls:'itemcat-berry'},
+  {id:'medicine',label:'Medicine',cls:'itemcat-medicine'},
+  {id:'pokeball',label:'Poké Balls',cls:'itemcat-pokeball'},
+  {id:'general',label:'General',cls:'itemcat-general'},
+  {id:'machine',label:'Machines',cls:'itemcat-machine'},
+  {id:'other',label:'Other',cls:'itemcat-other'},
+];
+
+const ITEM_SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/';
+const TM_SPRITE_BASE   = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tm-';
+
+// Map TM/HM name → [move name, type] for sprite & filter
+const TM_MOVE_MAP = {
+  'HM01':['Cut','Normal'],      'HM02':['Fly','Flying'],
+  'HM03':['Surf','Water'],      'HM04':['Strength','Normal'],
+  'HM05':['Waterfall','Water'], 'HM06':['Rock Smash','Fighting'],
+  'HM07':['Waterfall','Water'], 'HM08':['Dive','Water'],
+  'TM001':['Take Down','Normal'],       'TM002':['Charm','Fairy'],
+  'TM003':['Fake Tears','Dark'],        'TM004':['Agility','Psychic'],
+  'TM005':['Mud-Slap','Ground'],        'TM006':['Scary Face','Normal'],
+  'TM007':['Protect','Normal'],         'TM008':['Hyper Fang','Normal'],
+  'TM009':['Thunder Fang','Electric'],  'TM010':['Ice Fang','Ice'],
+  'TM011':['Fire Fang','Fire'],         'TM012':['Low Kick','Fighting'],
+  'TM013':['Acid Spray','Poison'],      'TM014':['Acrobatics','Flying'],
+  'TM015':['Struggle Bug','Bug'],       'TM016':['Psybeam','Psychic'],
+  'TM017':['Confuse Ray','Ghost'],      'TM018':['Thief','Dark'],
+  'TM019':['Disarming Voice','Fairy'],  'TM020':['Trailblaze','Grass'],
+  'TM021':['Pounce','Bug'],             'TM022':['Chilling Water','Water'],
+  'TM023':['Charge Beam','Electric'],   'TM024':['Fire Spin','Fire'],
+  'TM025':['Facade','Normal'],          'TM026':['Poison Tail','Poison'],
+  'TM027':['Aerial Ace','Flying'],      'TM028':['Bulldoze','Ground'],
+  'TM029':['Hex','Ghost'],              'TM030':['Snarl','Dark'],
+  'TM031':['Metal Claw','Steel'],       'TM032':['Swift','Normal'],
+  'TM033':['Magical Leaf','Grass'],     'TM034':['Icy Wind','Ice'],
+  'TM035':['Mud Shot','Ground'],        'TM036':['Rock Tomb','Rock'],
+  'TM037':['Draining Kiss','Fairy'],    'TM038':['Flame Charge','Fire'],
+  'TM039':['Low Sweep','Fighting'],     'TM040':['Air Cutter','Flying'],
+  'TM041':['Stored Power','Psychic'],   'TM042':['Night Shade','Ghost'],
+  'TM043':['Fling','Dark'],             'TM044':['Nitro Charge','Fire'],
+  'TM045':['Venoshock','Poison'],       'TM046':['Avalanche','Ice'],
+  'TM047':['Endure','Normal'],          'TM048':['Volt Switch','Electric'],
+  'TM049':['Sunny Day','Fire'],         'TM050':['Rain Dance','Water'],
+  'TM051':['Sandstorm','Rock'],         'TM052':['Snowscape','Ice'],
+  'TM053':['Smart Strike','Steel'],     'TM054':['Psych Up','Normal'],
+  'TM055':['Dig','Ground'],             'TM056':['Bullet Seed','Grass'],
+  'TM057':['False Swipe','Normal'],     'TM058':['Brick Break','Fighting'],
+  'TM059':['Zen Headbutt','Psychic'],   'TM060':['U-turn','Bug'],
+  'TM061':['Shadow Claw','Ghost'],      'TM062':['Foul Play','Dark'],
+  'TM063':['Psychic Fangs','Psychic'],  'TM064':['Bulk Up','Fighting'],
+  'TM065':['Air Slash','Flying'],       'TM066':['Body Slam','Normal'],
+  'TM067':['Fire Punch','Fire'],        'TM068':['Thunder Punch','Electric'],
+  'TM069':['Ice Punch','Ice'],          'TM070':['Sleep Powder','Grass'],
+  'TM071':['Seed Bomb','Grass'],        'TM072':['Electroweb','Electric'],
+  'TM073':['Aqua Step','Water'],        'TM074':['Reflect','Psychic'],
+  'TM075':['Light Screen','Psychic'],   'TM076':['Rock Blast','Rock'],
+  'TM077':['Waterfall','Water'],        'TM078':['Frost Breath','Ice'],
+  'TM079':['Dazzling Gleam','Fairy'],   'TM080':['Metronome','Normal'],
+  'TM081':['Grass Knot','Grass'],       'TM082':['Thunder Wave','Electric'],
+  'TM083':['Poison Powder','Poison'],   'TM084':['Stomping Tantrum','Ground'],
+  'TM085':['Rest','Psychic'],           'TM086':['Rock Slide','Rock'],
+  'TM087':['Taunt','Dark'],             'TM088':['Swords Dance','Normal'],
+  'TM089':['Body Press','Fighting'],    'TM090':['Spikes','Ground'],
+  'TM091':['Swift','Normal'],           'TM092':['Imprison','Psychic'],
+  'TM093':['Flash Cannon','Steel'],     'TM094':['Dark Pulse','Dark'],
+  'TM095':['Leech Seed','Grass'],       'TM096':['Eerie Impulse','Electric'],
+  'TM097':['Fly','Flying'],             'TM098':['Skill Swap','Psychic'],
+  'TM099':['Iron Head','Steel'],        'TM100':['Calm Mind','Psychic'],
+  'TM101':['Power Gem','Rock'],         'TM102':['Gunk Shot','Poison'],
+  'TM103':['Substitute','Normal'],      'TM104':['Iron Defense','Steel'],
+  'TM105':['X-Scissor','Bug'],          'TM106':['Drill Run','Ground'],
+  'TM107':['Will-O-Wisp','Fire'],       'TM108':['Crunch','Dark'],
+  'TM109':['Trick','Psychic'],          'TM110':['Liquidation','Water'],
+  'TM111':['Giga Drain','Grass'],       'TM112':['Aura Sphere','Fighting'],
+  'TM113':['Tailwind','Flying'],        'TM114':['Shadow Ball','Ghost'],
+  'TM115':['Dragon Pulse','Dragon'],    'TM116':['Stealth Rock','Rock'],
+  'TM117':['Hyper Voice','Normal'],     'TM118':['Heat Wave','Fire'],
+  'TM119':['Energy Ball','Grass'],      'TM120':['Psychic','Psychic'],
+  'TM121':['Heavy Slam','Steel'],       'TM122':['Encore','Normal'],
+  'TM123':['Surf','Water'],             'TM124':['Ice Spinner','Ice'],
+  'TM125':['Flamethrower','Fire'],      'TM126':['Thunderbolt','Electric'],
+  'TM127':['Play Rough','Fairy'],       'TM128':['Amnesia','Psychic'],
+  'TM129':['Calm Mind','Psychic'],      'TM130':['Helping Hand','Normal'],
+  'TM131':['Pollen Puff','Bug'],        'TM132':['Baton Pass','Normal'],
+  'TM133':['Earth Power','Ground'],     'TM134':['Reversal','Fighting'],
+  'TM135':['Ice Beam','Ice'],           'TM136':['Electric Terrain','Electric'],
+  'TM137':['Grassy Terrain','Grass'],   'TM138':['Psychic Terrain','Psychic'],
+  'TM139':['Misty Terrain','Fairy'],    'TM140':['Nasty Plot','Dark'],
+  'TM141':['Fire Blast','Fire'],        'TM142':['Hydro Pump','Water'],
+  'TM143':['Blizzard','Ice'],           'TM144':['Thunder','Electric'],
+  'TM145':['Earthquake','Ground'],      'TM146':['Hyper Beam','Normal'],
+  'TM147':['Wild Charge','Electric'],   'TM148':['Sludge Bomb','Poison'],
+  'TM149':['Earthquake','Ground'],      'TM150':['Stone Edge','Rock'],
+  'TM151':['Phantom Force','Ghost'],    'TM152':['Giga Impact','Normal'],
+  'TM153':['Icicle Spear','Ice'],       'TM154':['Toxic','Poison'],
+  'TM155':['Mystical Power','Psychic'], 'TM156':['Outrage','Dragon'],
+  'TM157':['Overheat','Fire'],          'TM158':['Focus Blast','Fighting'],
+  'TM159':['Leaf Storm','Grass'],       'TM160':['Hurricane','Flying'],
+  'TM161':['Trick Room','Psychic'],     'TM162':['Bug Buzz','Bug'],
+  'TM163':['Hyper Beam','Normal'],      'TM164':['Brave Bird','Flying'],
+  'TM165':['Flare Blitz','Fire'],       'TM166':['Thunder Wave','Electric'],
+  'TM167':['Close Combat','Fighting'],  'TM168':['Dragon Dance','Dragon'],
+  'TM169':['Draco Meteor','Dragon'],    'TM170':['Steel Beam','Steel'],
+  'TM171':['Tera Blast','Normal'],
+};
+
+// Get the move type for a machine item name (e.g. "TM001" → "Normal")
+function getMachineType(name) {
+  const entry = TM_MOVE_MAP[name.toUpperCase()];
+  return entry ? entry[1] : null;
+}
+
+// Get sprite URL for a machine item
+function getMachineSprite(type) {
+  if (!type) return null;
+  return TM_SPRITE_BASE + type.toLowerCase() + '.png';
+}
+
+let itemQuery = '';
+let itemCatFilter = null;
+let itemTypeFilter = null; // type sub-filter for machines
+let itemDexInited = false;
+let itemFiltered = [];
+let itemCurrentIndex = -1;
+
+const ALL_TYPES_ORDERED = ['Normal','Fire','Water','Electric','Grass','Ice','Fighting','Poison','Ground','Flying','Psychic','Bug','Rock','Ghost','Dragon','Dark','Steel','Fairy'];
+
+function initItemDex() {
+  const filtersEl = document.getElementById('itemCatFilters');
+  filtersEl.innerHTML = ITEM_CATEGORIES.map(c =>
+    `<button class="item-cat-filter-btn" data-cat="${c.id}" onclick="toggleItemCat('${c.id}')">
+      <span class="itemdex-cat-badge ${c.cls}">${c.label}</span>
+    </button>`
+  ).join('');
+
+  renderTypeFilters();
+
+  const searchEl = document.getElementById('itemSearch');
+  const acList   = document.getElementById('itemAutocomplete');
+  const clearBtn = document.getElementById('itemClearBtn');
+
+  function highlightMatch(text, q) {
+    if (!q) return text;
+    const idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return text;
+    return text.slice(0, idx)
+      + `<mark style="background:rgba(245,197,24,0.25);color:#f5c518;border-radius:2px;padding:0 1px">${text.slice(idx, idx + q.length)}</mark>`
+      + text.slice(idx + q.length);
+  }
+
+  function spriteForItem(item) {
+    const [name, cat, , slug] = item;
+    if (cat === 'machine') {
+      const type = getMachineType(name);
+      const sp = getMachineSprite(type);
+      if (sp) return `<img class="item-sprite" src="${sp}" alt="${name}" loading="lazy" onerror="this.src='${ITEM_SPRITE_BASE}${slug}.png';this.onerror=null">`;
+    }
+    if (slug) return `<img class="item-sprite" src="${ITEM_SPRITE_BASE}${slug}.png" alt="${name}" loading="lazy" onerror="this.style.display='none'">`;
+    return `<div style="width:24px;height:24px;flex-shrink:0"></div>`;
+  }
+
+  function typeBadgeForItem(item) {
+    const [name, cat] = item;
+    if (cat !== 'machine') return '';
+    const type = getMachineType(name);
+    if (!type) return '';
+    return typeSprite(type, 'tiny');
+  }
+
+  function showItemAC(q) {
+    if (!q) { acList.classList.remove('show'); return; }
+    const matches = getItemResults(q, itemCatFilter, itemTypeFilter).slice(0, 14);
+    itemFiltered = matches;
+    if (!matches.length) { acList.classList.remove('show'); return; }
+    acList.innerHTML = matches.map((item, i) => {
+      const [name, cat, effect] = item;
+      const catInfo = ITEM_CATEGORIES.find(c => c.id === cat) || {label: cat, cls:'itemcat-other'};
+      return `<div class="item-ac-item" data-idx="${i}">
+        ${spriteForItem(item)}
+        <span class="item-ac-name">${highlightMatch(name, q)}</span>
+        <span class="item-ac-effect">${effect || ''}</span>
+        ${typeBadgeForItem(item)}
+        <span class="itemdex-cat-badge ${catInfo.cls}" style="flex-shrink:0">${catInfo.label}</span>
+      </div>`;
+    }).join('');
+    itemCurrentIndex = -1;
+    acList.classList.add('show');
+  }
+
+  searchEl.addEventListener('input', () => {
+    const v = searchEl.value.trim();
+    itemQuery = v;
+    clearBtn.classList.toggle('visible', v.length > 0);
+    showItemAC(v);
+    if (!v) { renderItemDex(); }
+  });
+
+  searchEl.addEventListener('keydown', e => {
+    const items = acList.querySelectorAll('.item-ac-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      itemCurrentIndex = Math.min(itemCurrentIndex + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle('selected', i === itemCurrentIndex));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      itemCurrentIndex = Math.max(itemCurrentIndex - 1, -1);
+      items.forEach((el, i) => el.classList.toggle('selected', i === itemCurrentIndex));
+    } else if (e.key === 'Enter') {
+      if (itemCurrentIndex >= 0 && itemFiltered[itemCurrentIndex]) {
+        pickItem(itemCurrentIndex, searchEl, acList);
+      } else if (itemFiltered.length) {
+        pickItem(0, searchEl, acList);
+      }
+      acList.classList.remove('show');
+    } else if (e.key === 'Escape') {
+      acList.classList.remove('show');
+    }
+  });
+
+  acList.addEventListener('click', e => {
+    const item = e.target.closest('.item-ac-item');
+    if (item) pickItem(parseInt(item.dataset.idx), searchEl, acList);
+  });
+
+  searchEl.addEventListener('blur', () => {
+    setTimeout(() => acList.classList.remove('show'), 150);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    searchEl.value = '';
+    itemQuery = '';
+    clearBtn.classList.remove('visible');
+    acList.classList.remove('show');
+    itemFiltered = [];
+    renderItemDex();
+    searchEl.focus();
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#panel-items .movedex-search-wrap')) acList.classList.remove('show');
+  });
+
+  renderItemDex();
+}
+
+function renderTypeFilters() {
+  const el = document.getElementById('itemTypeFilters');
+  if (itemCatFilter !== 'machine') {
+    el.style.display = 'none';
+    return;
+  }
+  el.style.display = 'flex';
+  el.innerHTML = `<button class="item-type-filter-btn${!itemTypeFilter ? ' active' : ''}" onclick="toggleItemType(null)"
+    style="background:#111827;border:1.5px solid ${itemTypeFilter ? '#2a3550' : '#f5c518'};border-radius:20px;padding:5px 10px;cursor:pointer;font-size:11px;font-weight:600;color:${itemTypeFilter ? '#7986a8' : '#f5c518'};-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent">
+    All Types
+  </button>`
+  + ALL_TYPES_ORDERED.map(t => {
+    const active = itemTypeFilter === t;
+    return `<button class="item-type-filter-btn${active ? ' active' : ''}" data-type="${t}" onclick="toggleItemType('${t}')"
+      style="display:inline-flex;align-items:center;gap:4px;background:#111827;border:1.5px solid ${active ? TYPE_COLORS[t] : '#2a3550'};border-radius:20px;padding:4px 8px;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent">
+      ${typeSprite(t,'tiny')}
+    </button>`;
+  }).join('');
+}
+
+function pickItem(idx, searchEl, acList) {
+  const item = itemFiltered[idx];
+  if (!item) return;
+  searchEl.value = item[0];
+  itemQuery = item[0];
+  document.getElementById('itemClearBtn').classList.add('visible');
+  acList.classList.remove('show');
+  renderItemDex();
+}
+
+function toggleItemCat(cat) {
+  itemCatFilter = itemCatFilter === cat ? null : cat;
+  if (itemCatFilter !== 'machine') itemTypeFilter = null;
+  document.querySelectorAll('.item-cat-filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === itemCatFilter);
+  });
+  renderTypeFilters();
+  renderItemDex();
+}
+
+function toggleItemType(type) {
+  itemTypeFilter = itemTypeFilter === type ? null : type;
+  renderTypeFilters();
+  renderItemDex();
+}
+
+function getItemResults(q, catFilter, typeFilter) {
+  const lq = q ? q.toLowerCase() : '';
+  return ITEMS.filter(i => {
+    const matchesQ = !lq || i[0].toLowerCase().includes(lq) || i[2].toLowerCase().includes(lq);
+    const matchesCat = !catFilter || i[1] === catFilter;
+    let matchesType = true;
+    if (typeFilter && i[1] === 'machine') {
+      matchesType = getMachineType(i[0]) === typeFilter;
+    }
+    return matchesQ && matchesCat && matchesType;
+  }).sort((a, b) => {
+    // Sort machines: HMs first, then by TM number
+    if (a[1] === 'machine' && b[1] === 'machine') {
+      const aIsHM = a[0].startsWith('HM'), bIsHM = b[0].startsWith('HM');
+      if (aIsHM && !bIsHM) return -1;
+      if (!aIsHM && bIsHM) return 1;
+      return a[0].localeCompare(b[0], undefined, {numeric: true});
+    }
+    return a[0].localeCompare(b[0]);
+  });
+}
+
+function renderItemDex() {
+  const results = getItemResults(itemQuery, itemCatFilter, itemTypeFilter);
+
+  const header = document.getElementById('itemDexHeader');
+  const list = document.getElementById('itemDexList');
+
+  header.textContent = results.length === ITEMS.length
+    ? `All Items (${ITEMS.length})`
+    : `${results.length} Item${results.length !== 1 ? 's' : ''} Found`;
+
+  if (!results.length) {
+    list.innerHTML = `<div class="movedex-empty">No items match your search.</div>`;
+    return;
+  }
+
+  const toShow = results.slice(0, 400);
+
+  list.innerHTML = toShow.map(item => {
+    const [name, cat, effect, slug] = item;
+    const catInfo = ITEM_CATEGORIES.find(c => c.id === cat) || {label: cat, cls:'itemcat-other'};
+    const isMachine = cat === 'machine';
+    const machineType = isMachine ? getMachineType(name) : null;
+
+    // Sprite: TM type sprite for machines, regular item sprite for others
+    let imgHtml;
+    if (isMachine && machineType) {
+      const tmSrc = getMachineSprite(machineType);
+      imgHtml = `<img class="item-sprite" src="${tmSrc}" alt="${name}" loading="lazy" onerror="this.src='${ITEM_SPRITE_BASE}${slug}.png';this.onerror=null">`;
+    } else if (slug) {
+      imgHtml = `<img class="item-sprite" src="${ITEM_SPRITE_BASE}${slug}.png" alt="${name}" loading="lazy" onerror="this.style.display='none'">`;
+    } else {
+      imgHtml = `<div style="width:24px;height:24px;flex-shrink:0"></div>`;
+    }
+
+    // Type badge shown inline for machines
+    const typeBadge = (isMachine && machineType)
+      ? `<span style="display:inline-flex;align-items:center;margin-left:6px">${typeSprite(machineType, 'tiny')}</span>`
+      : '';
+
+    // Move name label for machines
+    const moveLabel = isMachine && TM_MOVE_MAP[name.toUpperCase()]
+      ? `<span style="font-size:10px;color:#7986a8;margin-left:4px">${TM_MOVE_MAP[name.toUpperCase()][0]}</span>`
+      : '';
+
+    return `<div class="itemdex-row">
+      ${imgHtml}
+      <div class="itemdex-info">
+        <div class="itemdex-name" style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${name}${moveLabel}${typeBadge}</div>
+        ${effect ? `<div class="itemdex-effect">${effect}</div>` : ''}
+      </div>
+      <span class="itemdex-cat-badge ${catInfo.cls}">${catInfo.label}</span>
+    </div>`;
+  }).join('');
+
+  if (results.length > 400) {
+    list.innerHTML += `<div class="movedex-empty" style="padding:16px 0">Showing first 400 of ${results.length} — refine your search to see more</div>`;
+  }
 }
 
 </script>
