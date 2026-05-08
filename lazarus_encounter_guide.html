@@ -111,7 +111,7 @@
 <script>
 (function() {
 // ═══════════════════════════════════════════
-// FULL DATA FROM EXCEL (Wild/Fish/Surf/Dive only)
+// FULL DATA FROM EXCEL (All rows, Wild/Fish/Surf/Dive only)
 // ═══════════════════════════════════════════
 const rawExcelRows = [
   ["Alolan Grimer","Acrisia City","","Wild","2 - 3","5% - Night"],
@@ -1149,7 +1149,7 @@ const rawExcelRows = [
   ["Wooper","Wanderer`s Woods","South","Wild","13 - 15","10% - Day"]
 ];
 
-// Build structured data
+// Build structured data with separated Day/Night land sections
 const areasMap = new Map();
 rawExcelRows.forEach(row => {
   const [pokemon, location, moreInfo, method, level, rate] = row;
@@ -1159,9 +1159,18 @@ rawExcelRows.forEach(row => {
     areasMap.set(fullLocation, { title: fullLocation, icon: '📍', subsections: {} });
   }
   const area = areasMap.get(fullLocation);
-  const subKey = method === 'Fish' ? 'Fishing' : method === 'Surf' ? 'Surfing' : method === 'Dive' ? 'Diving' : 'Land (Day/Night)';
+
+  let subKey;
+  if (method === 'Fish') subKey = 'Fishing';
+  else if (method === 'Surf') subKey = 'Surfing';
+  else if (method === 'Dive') subKey = 'Diving';
+  else if (method === 'Wild') {
+    // Determine Day or Night based on rate string
+    if (rate.includes('Night')) subKey = 'Land (Night)';
+    else subKey = 'Land (Day)'; // default Day
+  }
+
   if (!area.subsections[subKey]) area.subsections[subKey] = [];
-  // Format level
   let levelStr = level ? `Lv.${level.replace(/\s*\-\s*/g,'‑')}` : '';
   area.subsections[subKey].push({
     name: pokemon,
