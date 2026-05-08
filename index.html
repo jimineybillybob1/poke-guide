@@ -321,28 +321,203 @@ header h1 span {
   position: sticky;
   top: 0;
   z-index: 200;
-  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
-  gap: 4px;
+  padding: calc(8px + env(safe-area-inset-top)) 8px 0;
+  gap: 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.tab-bar::-webkit-scrollbar { display: none; }
 .tab-btn {
   flex: 1;
-  padding: 14px 8px 12px;
+  min-width: 0;
+  padding: 10px 10px 10px;
   background: transparent;
   border: none;
-  border-bottom: 0px solid transparent;
+  border-bottom: 3px solid transparent;
   color: #4a5568;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.1px;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
   -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
 }
 .tab-btn.active { color: #f5c518; border-bottom-color: #f5c518; }
 .tab-btn:active { opacity: 0.7; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
+
+/* ── SUB-TAB BAR (Type Guide) ─────────────────────────────── */
+.sub-tab-bar {
+  display: flex;
+  gap: 0;
+  margin: 0 0 16px;
+  background: #0d1422;
+  border-radius: 12px;
+  padding: 4px;
+}
+.sub-tab-btn {
+  flex: 1;
+  padding: 9px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  color: #4a5568;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.sub-tab-btn.active {
+  background: #1a2235;
+  color: #f5c518;
+}
+.sub-tab-btn:active { opacity: 0.7; }
+.sub-panel { display: none; }
+.sub-panel.active { display: block; }
+
+/* ── TYPE CHART GRID ───────────────────────────────────────── */
+.type-chart-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -16px;
+  padding: 0 16px 16px;
+}
+.type-chart-table {
+  border-collapse: collapse;
+  min-width: 640px;
+}
+.type-chart-table th, .type-chart-table td {
+  padding: 0;
+  border: 1px solid #0d1422;
+}
+.tc-corner { width: 32px; background: #0a0e1a; }
+.tc-def-head {
+  width: 32px;
+  text-align: center;
+  background: #0d1422;
+  vertical-align: middle;
+}
+.tc-def-head img { height: 14px; transform: rotate(90deg); transform-origin: center; display: block; margin: 4px auto; }
+.tc-atk-head {
+  background: #0d1422;
+  width: 32px;
+  padding: 2px 0;
+  vertical-align: middle;
+  text-align: center;
+}
+.tc-atk-head img { height: 14px; display: block; margin: 0 auto; }
+.tc-cell {
+  width: 32px; height: 28px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  position: relative;
+  transition: filter 0.1s;
+  font-size: 11px;
+  font-weight: 800;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.tc-cell:hover, .tc-cell.hover {
+  filter: brightness(1.35) saturate(1.3);
+  z-index: 5;
+}
+.tc-cell.mult-2 { background: #2d5016; color: #7ed940; }
+.tc-cell.mult-4 { background: #4a1a08; color: #ff6633; }
+.tc-cell.mult-05 { background: #0e1f3a; color: #4a80e8; }
+.tc-cell.mult-025 { background: #0a1428; color: #2a5ab8; }
+.tc-cell.mult-0 { background: #111118; color: #333355; }
+.tc-cell.mult-1 { background: #111827; color: transparent; }
+
+/* Type chart tooltip */
+.tc-tooltip {
+  position: fixed;
+  z-index: 1000;
+  background: #111827;
+  border: 1.5px solid #2a3550;
+  border-radius: 14px;
+  padding: 12px 14px;
+  min-width: 220px;
+  max-width: 300px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+  pointer-events: none;
+  display: none;
+  animation: fadeUp 0.15s ease;
+}
+.tc-tooltip.show { display: block; }
+.tc-tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: #7986a8;
+  font-weight: 600;
+}
+.tc-tooltip-mult {
+  font-size: 18px;
+  font-weight: 900;
+  margin-left: auto;
+}
+.tc-tooltip-mult.m2 { color: #7ed940; }
+.tc-tooltip-mult.m4 { color: #ff6633; }
+.tc-tooltip-mult.m05 { color: #4a80e8; }
+.tc-tooltip-mult.m025 { color: #2a5ab8; }
+.tc-tooltip-mult.m0 { color: #333355; }
+.tc-tooltip-moves {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.tc-tooltip-no-moves {
+  font-size: 12px;
+  color: #3a4a60;
+  font-style: italic;
+}
+.tc-tooltip-move-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1a2235;
+  border-radius: 8px;
+  padding: 5px 8px;
+}
+.tc-tooltip-poke-name {
+  font-size: 10px;
+  color: #7986a8;
+  font-weight: 600;
+  min-width: 52px;
+  max-width: 62px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tc-tooltip-move-name {
+  font-size: 11px;
+  color: #c8cfe8;
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tc-tooltip-effect {
+  font-size: 10px;
+  color: #5a6a88;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+.tc-row-highlight td { background-color: rgba(245,197,24,0.04) !important; }
+.tc-col-highlight { background-color: rgba(245,197,24,0.04) !important; }
 
 /* ── TEAM MATCHUP (inside type guide card) ───────────────── */
 .team-matchup-section {
@@ -712,8 +887,16 @@ header h1 span {
 
 .movedex-row {
   background: #111827; border: 1px solid #2a3550; border-radius: 12px;
-  padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; display: flex; align-items: flex-start; gap: 10px;
   animation: fadeUp 0.15s ease;
+  flex-wrap: wrap;
+}
+.movedex-row-main {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-width: 0;
+}
+.movedex-effect {
+  font-size: 10px; color: #5a6a88; line-height: 1.35;
+  width: 100%; padding-left: 30px; margin-top: -2px;
 }
 .movedex-name {
   flex: 1; font-size: 14px; font-weight: 600; color: #e8eaf6;
@@ -830,14 +1013,23 @@ header h1 span {
     <span class="header-icon"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dream-world/master-ball.png" alt="Pokéball" /></span>
     <h1>Pokémon<span>Type Guide</span></h1>
   </header>
-  <div class="search-wrap">
-    <span class="search-icon-el">🔍</span>
-    <input type="search" id="search" placeholder="Search Pokémon..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    <button class="clear-btn" id="clearBtn" aria-label="Clear">✕</button>
-    <div class="autocomplete-list" id="autocomplete"></div>
+  <div class="sub-tab-bar">
+    <button class="sub-tab-btn active" id="stab-search" onclick="switchSubTab('search')">🔍 Pokémon Search</button>
+    <button class="sub-tab-btn" id="stab-chart" onclick="switchSubTab('chart')">⚡ Type Chart</button>
   </div>
-  <div id="result">
-    <div class="hint">Search all Pokémon type effectiveness</div>
+  <div class="sub-panel active" id="spanel-search">
+    <div class="search-wrap">
+      <span class="search-icon-el">🔍</span>
+      <input type="search" id="search" placeholder="Search Pokémon..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <button class="clear-btn" id="clearBtn" aria-label="Clear">✕</button>
+      <div class="autocomplete-list" id="autocomplete"></div>
+    </div>
+    <div id="result">
+      <div class="hint">Search all Pokémon type effectiveness</div>
+    </div>
+  </div>
+  <div class="sub-panel" id="spanel-chart">
+    <div id="typeChartContainer"></div>
   </div>
 </div>
 </div>
@@ -1582,6 +1774,7 @@ const TYPE_IDS = {
 };
 
 const TYPE_SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-vi/omega-ruby-alpha-sapphire/';
+const TC_SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/small/';
 
 function typeSprite(t, size) {
   const id = TYPE_IDS[t];
@@ -2302,6 +2495,605 @@ MOVES.forEach(m => {
   const stats = MOVE_STATS[m[0]] || [null, null];
   MOVE_MAP[m[0].toLowerCase()] = { name: m[0], type: m[1], cat: m[2], power: stats[0], acc: stats[1] };
 });
+
+// ── MOVE EFFECTS ─────────────────────────────────────────────
+// Concise effect descriptions for moves
+const MOVE_EFFECTS = {
+"Absorb":"Restores HP equal to half the damage dealt.",
+"Accelerock":"Always moves first (priority +1).",
+"Acid":"May lower the target's Special Defense.",
+"Acid Spray":"Harshly lowers the target's Special Defense.",
+"Acrobatics":"Power doubles if user holds no item.",
+"Aerial Ace":"Never misses.",
+"Aeroblast":"High critical-hit ratio.",
+"Agility":"Sharply raises the user's Speed.",
+"Air Cutter":"High critical-hit ratio. Hits all adjacent foes.",
+"Air Slash":"May cause the target to flinch.",
+"Anchor Shot":"Prevents the target from escaping.",
+"Ancient Power":"May raise all of the user's stats.",
+"Apple Acid":"Lowers the target's Special Defense.",
+"Aqua Jet":"Always moves first (priority +1).",
+"Aqua Ring":"Restores a little HP each turn.",
+"Aqua Step":"Raises the user's Speed after use.",
+"Aqua Tail":"Powerful Water-type attack.",
+"Arm Thrust":"Hits 2–5 times in one turn.",
+"Assurance":"Power doubles if target has already taken damage this turn.",
+"Astonish":"May cause the target to flinch.",
+"Attract":"Infatuates a Pokémon of the opposite gender, halving its chance to attack.",
+"Aura Sphere":"Never misses.",
+"Aurora Beam":"May lower the target's Attack.",
+"Avalanche":"Power doubles if user took damage this turn.",
+"Axe Kick":"May cause the target to flinch. May confuse if it misses.",
+"Baneful Bunker":"Protects user; poisons attackers.",
+"Baby-Doll Eyes":"Always moves first. Lowers the target's Attack.",
+"Barb Barrage":"May badly poison the target. Power doubles against poisoned foes.",
+"Barrier":"Sharply raises the user's Defense.",
+"Baton Pass":"Switches out while passing stat changes to the replacement.",
+"Beat Up":"Each conscious party member deals a hit.",
+"Bite":"May cause the target to flinch.",
+"Blaze Kick":"High critical-hit ratio. May burn the target.",
+"Blizzard":"May freeze the target. Hits all foes.",
+"Body Slam":"May paralyze the target.",
+"Bone Club":"May cause the target to flinch.",
+"Bone Rush":"Hits 2–5 times in one turn.",
+"Bonemerang":"Hits twice in one turn.",
+"Boomburst":"Strikes all adjacent Pokémon.",
+"Bounce":"User flies up on first turn; attacks on second. May paralyze.",
+"Brave Bird":"User takes recoil damage equal to 1/3 of damage dealt.",
+"Brick Break":"Destroys Reflect and Light Screen before attacking.",
+"Brine":"Power doubles if target's HP is below half.",
+"Bubble Beam":"May lower the target's Speed.",
+"Bug Bite":"Steals and eats the target's Berry.",
+"Bug Buzz":"May lower the target's Special Defense.",
+"Bulk Up":"Raises the user's Attack and Defense.",
+"Bulldoze":"Lowers all adjacent Pokémon's Speed.",
+"Bullet Punch":"Always moves first (priority +1).",
+"Bullet Seed":"Hits 2–5 times in one turn.",
+"Burn Up":"Removes the user's Fire type after use.",
+"Burning Jealousy":"Burns the target if it had its stats raised this turn.",
+"Calm Mind":"Raises the user's Special Attack and Special Defense.",
+"Charge Beam":"May raise the user's Special Attack.",
+"Charm":"Sharply lowers the target's Attack.",
+"Circle Throw":"Ends wild battles. Forces opponent to switch in trainer battles.",
+"Close Combat":"Lowers the user's Defense and Special Defense.",
+"Coil":"Raises Attack, Defense, and accuracy.",
+"Confuse Ray":"Confuses the target.",
+"Confusion":"May confuse the target.",
+"Covet":"Steals the target's held item.",
+"Crabhammer":"High critical-hit ratio.",
+"Cross Chop":"High critical-hit ratio.",
+"Cross Poison":"High critical-hit ratio. May poison the target.",
+"Crunch":"May lower the target's Defense.",
+"Crush Claw":"May lower the target's Defense.",
+"Dark Pulse":"May cause the target to flinch.",
+"Darkest Lariat":"Ignores the target's stat changes.",
+"Dazzling Gleam":"Hits all adjacent foes.",
+"Dig":"User digs underground on first turn; attacks on second.",
+"Discharge":"May paralyze the target. Hits all adjacent Pokémon.",
+"Dive":"User dives underwater on first turn; attacks on second.",
+"Double-Edge":"User takes recoil damage equal to 1/3 of damage dealt.",
+"Dragon Dance":"Raises the user's Attack and Speed.",
+"Dragon Pulse":"Powerful Dragon-type special attack.",
+"Dragon Rush":"May cause the target to flinch.",
+"Dragon Tail":"Forces the target to switch out.",
+"Drain Punch":"Restores HP equal to half the damage dealt.",
+"Draining Kiss":"Restores HP equal to 75% of damage dealt.",
+"Dragon Dance":"Raises the user's Attack and Speed.",
+"Dream Eater":"Restores HP equal to half the damage dealt. Only works on sleeping targets.",
+"Drill Run":"High critical-hit ratio.",
+"Dynamic Punch":"Confuses the target. Rarely accurate.",
+"Earth Power":"May lower the target's Special Defense.",
+"Earthquake":"Hits all adjacent Pokémon. Does double damage to Dug-in foes.",
+"Ember":"May burn the target.",
+"Energy Ball":"May lower the target's Special Defense.",
+"Explosion":"User faints after use.",
+"Extrasensory":"May cause the target to flinch.",
+"Extreme Speed":"Always moves first (priority +2).",
+"Facade":"Power doubles if the user is burned, paralyzed, or poisoned.",
+"Fake Out":"Always moves first. Causes the target to flinch. First turn only.",
+"Fell Stinger":"Sharply raises the user's Attack if it KOs the target.",
+"Fire Blast":"May burn the target.",
+"Fire Fang":"May burn or cause the target to flinch.",
+"Fire Lash":"Lowers the target's Defense.",
+"Fire Spin":"Traps and damages the target for 4–5 turns.",
+"Flame Burst":"Damages adjacent foes slightly.",
+"Flame Charge":"Raises the user's Speed after hitting.",
+"Flame Wheel":"May burn the target.",
+"Flamethrower":"May burn the target.",
+"Flare Blitz":"User takes recoil damage. May burn the target.",
+"Flash Cannon":"May lower the target's Special Defense.",
+"Fleur Cannon":"Sharply lowers the user's Special Attack.",
+"Fling":"Power depends on the item flung.",
+"Flip Turn":"Deals damage then the user switches out.",
+"Flower Trick":"Always results in a critical hit.",
+"Focus Blast":"May lower the target's Special Defense.",
+"Foul Play":"Uses the target's Attack stat to deal damage.",
+"Freeze-Dry":"Super effective against Water-type Pokémon.",
+"Frost Breath":"Always a critical hit.",
+"Fury Attack":"Hits 2–5 times in one turn.",
+"Fury Cutter":"Power doubles each consecutive use (up to 160).",
+"Fusion Bolt":"Power doubles if Fusion Flare is used in the same turn.",
+"Giga Drain":"Restores HP equal to half the damage dealt.",
+"Glacial Lance":"Powerful Ice-type attack that hits all adjacent foes.",
+"Gunk Shot":"May badly poison the target.",
+"Gyro Ball":"Power increases the slower the user is compared to the target.",
+"Haze":"Resets all stat changes of all Pokémon.",
+"Head Smash":"User takes recoil damage equal to half of damage dealt.",
+"Heat Wave":"May burn the target. Hits all adjacent foes.",
+"Heavy Slam":"More powerful the heavier the user is than the target.",
+"Hex":"Power doubles if the target has a status condition.",
+"High Jump Kick":"User takes damage if it misses.",
+"Horn Drill":"One-hit KO. Rarely accurate.",
+"Hurricane":"May confuse the target. Always hits in rain.",
+"Hydro Pump":"Powerful Water-type attack.",
+"Hyper Beam":"User must rest on the next turn.",
+"Hyper Voice":"Hits all adjacent foes.",
+"Ice Beam":"May freeze the target.",
+"Ice Fang":"May freeze or cause the target to flinch.",
+"Ice Punch":"May freeze the target.",
+"Ice Shard":"Always moves first (priority +1).",
+"Icicle Crash":"May cause the target to flinch.",
+"Icicle Spear":"Hits 2–5 times in one turn.",
+"Icy Wind":"Lowers the target's Speed. Hits all adjacent foes.",
+"Inferno":"Burns the target. Rarely accurate.",
+"Infestation":"Traps and damages the target for 4–5 turns.",
+"Iron Defense":"Sharply raises the user's Defense.",
+"Iron Head":"May cause the target to flinch.",
+"Iron Tail":"May lower the target's Defense.",
+"Jet Punch":"Always moves first (priority +1).",
+"Jump Kick":"User takes damage if it misses.",
+"Karate Chop":"High critical-hit ratio.",
+"King's Shield":"Protects user; lowers attacker's Attack.",
+"Knock Off":"Removes the target's held item. Power increases if target holds an item.",
+"Leech Life":"Restores HP equal to half the damage dealt.",
+"Leech Seed":"Saps HP from the target each turn, restoring the user's HP.",
+"Lick":"May paralyze the target.",
+"Light Screen":"Halves Special attack damage for 5 turns.",
+"Liquidation":"May lower the target's Defense.",
+"Lock-On":"Ensures the user's next move hits.",
+"Low Sweep":"Lowers the target's Speed.",
+"Lunge":"Lowers the target's Attack.",
+"Mach Punch":"Always moves first (priority +1).",
+"Magical Leaf":"Never misses.",
+"Magma Storm":"Traps and damages the target for 4–5 turns.",
+"Magnitude":"Power varies randomly from 10 to 150.",
+"Metal Sound":"Sharply lowers the target's Special Defense.",
+"Meteor Mash":"May raise the user's Attack.",
+"Mirror Shot":"May lower the target's accuracy.",
+"Moonblast":"May lower the target's Special Attack.",
+"Mortal Spin":"Removes hazards from the user's side. Poisons the target.",
+"Muddy Water":"May lower the target's accuracy.",
+"Mud Shot":"Lowers the target's Speed.",
+"Mud-Slap":"Lowers the target's accuracy.",
+"Mystical Fire":"Lowers the target's Special Attack.",
+"Nasty Plot":"Sharply raises the user's Special Attack.",
+"Night Slash":"High critical-hit ratio.",
+"Nuzzle":"Paralyzes the target.",
+"Outrage":"User attacks 2–3 turns then becomes confused.",
+"Overheat":"Sharply lowers the user's Special Attack after use.",
+"Parting Shot":"Lowers the target's Attack and Special Attack, then switches out.",
+"Petal Dance":"User attacks 2–3 turns then becomes confused.",
+"Phantom Force":"Bypasses Protect and Detect.",
+"Pin Missile":"Hits 2–5 times in one turn.",
+"Play Rough":"May lower the target's Attack.",
+"Poison Fang":"May badly poison the target.",
+"Poison Jab":"May poison the target.",
+"Poison Sting":"May poison the target.",
+"Poison Tail":"High critical-hit ratio. May poison the target.",
+"Pound":"Basic Normal-type attack.",
+"Powder Snow":"May freeze the target.",
+"Power Gem":"Powerful Rock-type special attack.",
+"Power Whip":"Powerful Grass-type attack.",
+"Psychic":"May lower the target's Special Defense.",
+"Psychic Fangs":"Destroys Reflect and Light Screen before attacking.",
+"Psyshock":"Deals Special damage but based on the target's Defense.",
+"Psystrike":"Deals Special damage but based on the target's Defense.",
+"Psywave":"Deals damage equal to a random multiple of the user's level.",
+"Pursuit":"Power doubles if the target is switching out.",
+"Quick Attack":"Always moves first (priority +1).",
+"Quiver Dance":"Raises Special Attack, Special Defense, and Speed.",
+"Rage Fist":"Power increases by 50 for each hit the user has taken.",
+"Rain Dance":"Summons rain for 5 turns, boosting Water moves.",
+"Rapid Spin":"Removes entry hazards. Raises the user's Speed.",
+"Razor Leaf":"High critical-hit ratio. Hits all adjacent foes.",
+"Razor Shell":"May lower the target's Defense.",
+"Recover":"Restores up to half the user's max HP.",
+"Reflect":"Halves physical attack damage for 5 turns.",
+"Rest":"User sleeps for 2 turns, fully restoring HP and curing status.",
+"Revenge":"Power doubles if user was hit this turn.",
+"Reversal":"More powerful the less HP the user has.",
+"Rising Voltage":"Power doubles in Electric Terrain.",
+"Rock Blast":"Hits 2–5 times in one turn.",
+"Rock Slide":"May cause the target to flinch. Hits all adjacent foes.",
+"Rock Smash":"May lower the target's Defense.",
+"Rock Tomb":"Lowers the target's Speed.",
+"Roost":"Restores the user's HP by half. Removes the Flying type temporarily.",
+"Sacred Fire":"May burn the target. High chance of burning.",
+"Scald":"May burn the target.",
+"Scale Shot":"Hits 2–5 times. Raises Speed but lowers Defense after.",
+"Seed Bomb":"Powerful Grass-type physical attack.",
+"Self-Destruct":"User faints after use.",
+"Shadow Ball":"May lower the target's Special Defense.",
+"Shadow Claw":"High critical-hit ratio.",
+"Shadow Sneak":"Always moves first (priority +1).",
+"Shell Smash":"Sharply raises Attack, Special Attack, and Speed, but lowers Defense and Special Defense.",
+"Shock Wave":"Never misses.",
+"Sheer Cold":"One-hit KO. Rarely accurate. Ice-type.",
+"Signal Beam":"May confuse the target.",
+"Sludge":"May poison the target.",
+"Sludge Bomb":"May poison the target.",
+"Sludge Wave":"May poison the target. Hits all adjacent Pokémon.",
+"Smack Down":"Makes the target unable to avoid Ground-type moves.",
+"Smart Strike":"Never misses.",
+"Snarl":"Lowers the target's Special Attack. Hits all adjacent foes.",
+"Solar Beam":"Charges on first turn; attacks on second. No charging in sunlight.",
+"Solar Blade":"Physical version of Solar Beam.",
+"Spark":"May paralyze the target.",
+"Stealth Rock":"Sets sharp rocks that damage foes when they switch in.",
+"Stone Edge":"High critical-hit ratio.",
+"Stored Power":"Power increases by 20 for each stat boost the user has.",
+"Storm Throw":"Always results in a critical hit.",
+"Strength Sap":"Restores HP equal to target's Attack, then lowers target's Attack.",
+"String Shot":"Lowers the Speed of all adjacent foes.",
+"Sucker Punch":"Moves first if the target intends to attack.",
+"Sunsteel Strike":"Ignores the target's Ability.",
+"Superpower":"Lowers the user's Attack and Defense after use.",
+"Surf":"Hits all adjacent Pokémon.",
+"Swagger":"Confuses target but raises its Attack sharply.",
+"Swords Dance":"Sharply raises the user's Attack.",
+"Synthesis":"Restores HP. Restores more in sunlight, less in other weather.",
+"Tackle":"A basic physical attack.",
+"Tail Slap":"Hits 2–5 times in one turn.",
+"Tailwind":"Doubles Speed of the user's party for 4 turns.",
+"Take Down":"User takes recoil damage equal to 1/4 of damage dealt.",
+"Taunt":"Forces the target to use attacking moves only for 3 turns.",
+"Techno Blast":"Type changes based on the Drive held by Genesect.",
+"Teleport":"In battle, switches the user out. In wild, allows escape.",
+"Tera Blast":"Type changes to the user's Tera Type. Physical or Special based on higher stat.",
+"Thief":"Steals the target's held item.",
+"Thousand Arrows":"Hits Flying-type and levitating Pokémon. Grounds them.",
+"Throat Chop":"Prevents the target from using sound-based moves for 2 turns.",
+"Thunder":"May paralyze the target. Always hits in rain.",
+"Thunder Fang":"May paralyze or cause the target to flinch.",
+"Thunder Punch":"May paralyze the target.",
+"Thunder Wave":"Paralyzes the target.",
+"Thunderbolt":"May paralyze the target.",
+"Thunderclap":"Moves first if the target intends to attack.",
+"Thunderous Kick":"Lowers the target's Defense.",
+"Toxic":"Badly poisons the target.",
+"Toxic Spikes":"Poisons foes that switch in.",
+"Triple Axel":"Hits 3 times. Power increases with each hit.",
+"U-turn":"Deals damage then the user switches out.",
+"V-create":"Lowers the user's Speed, Defense, and Special Defense.",
+"Vacuum Wave":"Always moves first (priority +1).",
+"Venoshock":"Power doubles if the target is poisoned.",
+"Vine Whip":"A basic Grass-type physical attack.",
+"Volt Switch":"Deals damage then the user switches out.",
+"Volt Tackle":"User takes recoil. May paralyze target.",
+"Wake-Up Slap":"Power doubles against sleeping targets. Wakes them up.",
+"Waterfall":"May cause the target to flinch.",
+"Weather Ball":"Type and power change based on the current weather.",
+"Wild Charge":"User takes recoil damage equal to 1/4 of damage dealt.",
+"Will-O-Wisp":"Burns the target.",
+"Wood Hammer":"User takes recoil damage equal to 1/3 of damage dealt.",
+"X-Scissor":"Powerful Bug-type physical attack.",
+"Yawn":"Makes the target drowsy; it falls asleep next turn.",
+"Zap Cannon":"Paralyzes the target. Rarely accurate.",
+"Zen Headbutt":"May cause the target to flinch.",
+"Zing Zap":"May cause the target to flinch.",
+"Flamethrower":"May burn the target.",
+"Hydro Pump":"Powerful Water-type attack.",
+"Thunderbolt":"May paralyze the target.",
+"Surf":"Hits all adjacent Pokémon.",
+"Earthquake":"Hits all adjacent Pokémon.",
+"Psychic":"May lower the target's Special Defense.",
+"Ice Beam":"May freeze the target.",
+"Shadow Ball":"May lower the target's Special Defense.",
+"Energy Ball":"May lower the target's Special Defense.",
+"Focus Blast":"May lower the target's Special Defense.",
+"Dragon Claw":"Powerful Dragon-type physical attack.",
+"Outrage":"User attacks 2–3 turns then becomes confused.",
+"Draco Meteor":"Sharply lowers the user's Special Attack.",
+"Moonblast":"May lower the target's Special Attack.",
+"Play Rough":"May lower the target's Attack.",
+"Close Combat":"Lowers the user's Defense and Special Defense.",
+"High Jump Kick":"User takes damage if it misses.",
+"Giga Impact":"User must rest on the next turn.",
+"Stone Edge":"High critical-hit ratio.",
+"Leaf Blade":"High critical-hit ratio.",
+"Leaf Storm":"Sharply lowers the user's Special Attack.",
+"Power Whip":"Powerful Grass-type attack.",
+"Iron Head":"May cause the target to flinch.",
+"Flash Cannon":"May lower the target's Special Defense.",
+"Bullet Punch":"Always moves first (priority +1).",
+"Poison Jab":"May poison the target.",
+"Cross Poison":"High critical-hit ratio. May poison the target.",
+"Gunk Shot":"May badly poison the target.",
+"Night Slash":"High critical-hit ratio.",
+"Throat Chop":"Prevents the target from using sound-based moves for 2 turns.",
+"Crunch":"May lower the target's Defense.",
+"Dark Pulse":"May cause the target to flinch.",
+"Sucker Punch":"Moves first if the target intends to attack.",
+"Earthquake":"Hits all adjacent Pokémon.",
+"Earth Power":"May lower the target's Special Defense.",
+"Drill Run":"High critical-hit ratio.",
+"Magnitude":"Power varies randomly.",
+"Rock Slide":"May cause the target to flinch.",
+"Stone Edge":"High critical-hit ratio.",
+"Power Gem":"Powerful Rock-type special attack.",
+"Acrobatics":"Power doubles if user holds no item.",
+"Brave Bird":"User takes recoil damage.",
+"Hurricane":"May confuse the target.",
+"Wing Attack":"Powerful Flying-type physical attack.",
+"Air Slash":"May cause the target to flinch.",
+"Bug Buzz":"May lower the target's Special Defense.",
+"X-Scissor":"Powerful Bug-type physical attack.",
+"Leech Life":"Restores HP equal to half the damage dealt.",
+"Signal Beam":"May confuse the target.",
+"Fire Blast":"May burn the target.",
+"Overheat":"Sharply lowers the user's Special Attack.",
+"Heat Wave":"May burn the target.",
+"Flare Blitz":"User takes recoil. May burn the target.",
+"Waterfall":"May cause the target to flinch.",
+"Scald":"May burn the target.",
+"Hydro Pump":"Powerful Water-type attack.",
+"Surf":"Hits all adjacent Pokémon.",
+"Thunderbolt":"May paralyze the target.",
+"Thunder":"May paralyze. Always hits in rain.",
+"Volt Switch":"Deals damage then the user switches out.",
+"Grass Knot":"More powerful the heavier the target.",
+"Solar Beam":"Charges first turn in non-sunny weather.",
+"Leaf Storm":"Sharply lowers the user's Special Attack.",
+"Petal Blizzard":"Hits all adjacent Pokémon.",
+"Dazzling Gleam":"Hits all adjacent foes.",
+"Moonblast":"May lower the target's Special Attack.",
+"Spirit Break":"Lowers the target's Special Attack.",
+"Blizzard":"May freeze. Hits all foes in hail.",
+"Ice Beam":"May freeze the target.",
+"Freeze-Dry":"Super effective against Water-types.",
+"Icicle Crash":"May cause the target to flinch.",
+"Psyshock":"Hits based on target's Defense, not Sp. Def.",
+"Psychic":"May lower the target's Special Defense.",
+"Extrasensory":"May cause the target to flinch.",
+"Psystrike":"Hits based on target's Defense, not Sp. Def.",
+"Ghost":"Ghost-type move.",
+"Astonish":"May cause the target to flinch.",
+"Hex":"Power doubles if target has a status condition.",
+"Shadow Ball":"May lower the target's Special Defense.",
+"Phantom Force":"Bypasses Protect and Detect.",
+"Aura Sphere":"Never misses.",
+"Drain Punch":"Restores HP equal to half the damage dealt.",
+"Mach Punch":"Always moves first (priority +1).",
+"Fighting Moves":"Fighting-type move.",
+"Swords Dance":"Sharply raises the user's Attack.",
+"Dragon Dance":"Raises the user's Attack and Speed.",
+"Nasty Plot":"Sharply raises the user's Special Attack.",
+"Calm Mind":"Raises the user's Special Attack and Special Defense.",
+"Quiver Dance":"Raises Special Attack, Special Defense, and Speed.",
+"Shell Smash":"Sharply raises Attack, Special Attack, and Speed but lowers defenses.",
+};
+
+function getMoveEffect(moveName) {
+  return MOVE_EFFECTS[moveName] || null;
+}
+
+// ── SUB-TAB SWITCHER ──────────────────────────────────────────
+let chartBuilt = false;
+function switchSubTab(name) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('spanel-' + name).classList.add('active');
+  document.getElementById('stab-' + name).classList.add('active');
+  if (name === 'chart' && !chartBuilt) { chartBuilt = true; buildTypeChart(); }
+}
+
+// ── INTERACTIVE TYPE CHART ────────────────────────────────────
+const TC_TYPES = ['Normal','Fire','Water','Electric','Grass','Ice','Fighting','Poison',
+                  'Ground','Flying','Psychic','Bug','Rock','Ghost','Dragon','Dark','Steel','Fairy'];
+
+function getChartMult(atkType, defType) {
+  const row = CHART[atkType];
+  if (!row) return 1;
+  const v = row[defType];
+  return v !== undefined ? v : 1;
+}
+
+function multClass(m) {
+  if (m === 4) return 'mult-4';
+  if (m === 2) return 'mult-2';
+  if (m === 0.5) return 'mult-05';
+  if (m === 0.25) return 'mult-025';
+  if (m === 0) return 'mult-0';
+  return 'mult-1';
+}
+
+function multLabel(m) {
+  if (m === 2) return '2';
+  if (m === 4) return '4';
+  if (m === 0.5) return '½';
+  if (m === 0.25) return '¼';
+  if (m === 0) return '0';
+  return '';
+}
+
+// Build tooltip content for atk vs def
+function buildTooltipContent(atkType, defType) {
+  const m = getChartMult(atkType, defType);
+  const mClass = m >= 2 ? (m >= 4 ? 'm4' : 'm2') : (m === 0 ? 'm0' : (m <= 0.25 ? 'm025' : 'm05'));
+  const mTxt = m === 4 ? '×4' : m === 2 ? '×2' : m === 0.5 ? '½×' : m === 0.25 ? '¼×' : m === 0 ? '0×' : '1×';
+
+  let moveRows = '';
+  let hasMoves = false;
+  team.forEach(slot => {
+    if (!slot.pokemon) return;
+    slot.moves.forEach(mv => {
+      if (!mv) return;
+      // Only show moves of the attacking type
+      if (mv.type !== atkType) return;
+      hasMoves = true;
+      const stats = MOVE_STATS[mv.name] || [null, null];
+      const pw = mv.cat !== 'T' ? (stats[0] !== null ? stats[0] : '—') : null;
+      const effect = getMoveEffect(mv.name);
+      moveRows += `<div class="tc-tooltip-move-row">
+        <img src="${TYPE_SPRITE_BASE}${TYPE_IDS[mv.type]}.png" style="height:14px" alt="${mv.type}">
+        <span class="tc-tooltip-poke-name">${slot.pokemon.name.split(' ')[0]}</span>
+        <div style="flex:1;min-width:0">
+          <div class="tc-tooltip-move-name">${mv.name}${pw !== null ? `<span style="color:#5a6a88;font-weight:400;font-size:9px;margin-left:4px">PWR ${pw}</span>` : ''}</div>
+          ${effect ? `<div class="tc-tooltip-effect">${effect}</div>` : ''}
+        </div>
+      </div>`;
+    });
+  });
+
+  const hasTeam = team.some(s => s.pokemon && s.moves.some(Boolean));
+  const noMovesMsg = !hasTeam
+    ? '<div class="tc-tooltip-no-moves">Add moves in My Team to see coverage</div>'
+    : !hasMoves
+      ? `<div class="tc-tooltip-no-moves">No ${atkType}-type moves in your team</div>`
+      : '';
+
+  return `
+    <div class="tc-tooltip-header">
+      <img src="${TYPE_SPRITE_BASE}${TYPE_IDS[atkType]}.png" style="height:18px" alt="${atkType}">
+      <span>vs</span>
+      <img src="${TYPE_SPRITE_BASE}${TYPE_IDS[defType]}.png" style="height:18px" alt="${defType}">
+      <span class="tc-tooltip-mult ${mClass}">${mTxt}</span>
+    </div>
+    <div class="tc-tooltip-moves">
+      ${moveRows || noMovesMsg}
+    </div>`;
+}
+
+let tcTooltip = null;
+let tcHoverCell = null;
+
+function buildTypeChart() {
+  const container = document.getElementById('typeChartContainer');
+
+  // Create tooltip element
+  if (!tcTooltip) {
+    tcTooltip = document.createElement('div');
+    tcTooltip.className = 'tc-tooltip';
+    tcTooltip.id = 'tcTooltip';
+    document.body.appendChild(tcTooltip);
+  }
+
+  let html = `<div class="type-chart-wrap">
+    <table class="type-chart-table" id="tcTable">
+      <thead>
+        <tr>
+          <th class="tc-corner"><div style="font-size:8px;color:#3a4a60;padding:4px;text-align:center">DEF→<br>ATK↓</div></th>`;
+
+  // Defense headers (columns)
+  TC_TYPES.forEach(defType => {
+    html += `<th class="tc-def-head" title="${defType}">
+      <img src="${TC_SPRITE_BASE}${TYPE_IDS[defType]}.png" alt="${defType}">
+    </th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  // Rows: attack type
+  TC_TYPES.forEach((atkType, ri) => {
+    html += `<tr id="tcrow-${ri}">
+      <td class="tc-atk-head">
+        <img src="${TC_SPRITE_BASE}${TYPE_IDS[atkType]}.png" alt="${atkType}">
+      </td>`;
+    TC_TYPES.forEach((defType, ci) => {
+      const m = getChartMult(atkType, defType);
+      const cls = multClass(m);
+      const lbl = multLabel(m);
+      html += `<td class="tc-cell ${cls}" data-atk="${atkType}" data-def="${defType}" data-col="${ci}" data-row="${ri}">${lbl}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
+
+  // Event delegation for hover/click
+  const table = document.getElementById('tcTable');
+
+  function showTooltip(cell, e) {
+    const atk = cell.dataset.atk;
+    const def = cell.dataset.def;
+    if (!atk || !def) return;
+    tcTooltip.innerHTML = buildTooltipContent(atk, def);
+    tcTooltip.classList.add('show');
+    positionTooltip(e);
+    // Highlight row and column
+    if (tcHoverCell) {
+      const prevRow = tcHoverCell.dataset.row;
+      const prevCol = tcHoverCell.dataset.col;
+      table.querySelectorAll(`tr[id="tcrow-${prevRow}"] td`).forEach(td => td.classList.remove('tc-row-highlight'));
+      table.querySelectorAll(`.tc-cell[data-col="${prevCol}"]`).forEach(td => td.classList.remove('tc-col-highlight'));
+    }
+    tcHoverCell = cell;
+    const row = cell.dataset.row;
+    const col = cell.dataset.col;
+    table.querySelectorAll(`tr[id="tcrow-${row}"] td`).forEach(td => td.classList.add('tc-row-highlight'));
+    table.querySelectorAll(`.tc-cell[data-col="${col}"]`).forEach(td => td.classList.add('tc-col-highlight'));
+  }
+
+  function hideTooltip() {
+    tcTooltip.classList.remove('show');
+    if (tcHoverCell) {
+      const row = tcHoverCell.dataset.row;
+      const col = tcHoverCell.dataset.col;
+      table.querySelectorAll(`tr[id="tcrow-${row}"] td`).forEach(td => td.classList.remove('tc-row-highlight'));
+      table.querySelectorAll(`.tc-cell[data-col="${col}"]`).forEach(td => td.classList.remove('tc-col-highlight'));
+      tcHoverCell = null;
+    }
+  }
+
+  // Use document-level mousemove as source of truth — hides tooltip whenever
+  // the cursor is not directly over a .tc-cell, no matter how it got there.
+  function onDocMouseMove(e) {
+    const cell = document.elementFromPoint(e.clientX, e.clientY);
+    const tcCell = cell ? cell.closest('.tc-cell') : null;
+    if (tcCell) {
+      showTooltip(tcCell, e);
+    } else {
+      hideTooltip();
+    }
+  }
+
+  document.addEventListener('mousemove', onDocMouseMove);
+
+  // Touch support
+  table.addEventListener('click', e => {
+    const cell = e.target.closest('.tc-cell');
+    if (cell) {
+      if (tcHoverCell === cell && tcTooltip.classList.contains('show')) {
+        hideTooltip();
+      } else {
+        showTooltip(cell, e);
+      }
+    }
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#tcTable') && !e.target.closest('#tcTooltip')) {
+      hideTooltip();
+    }
+  });
+}
+
+function positionTooltip(e) {
+  const tip = tcTooltip;
+  if (!tip.classList.contains('show')) return;
+  const margin = 12;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const tw = tip.offsetWidth;
+  const th = tip.offsetHeight;
+  let x = e.clientX + 14;
+  let y = e.clientY + 14;
+  if (x + tw > vw - margin) x = e.clientX - tw - 14;
+  if (y + th > vh - margin) y = e.clientY - th - 14;
+  if (x < margin) x = margin;
+  if (y < margin) y = margin;
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+}
 
 // Helper to format power/accuracy display
 function movePowerAccStr(mv) {
