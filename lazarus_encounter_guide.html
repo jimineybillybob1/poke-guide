@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Lazarus — Full Encounter Tracker (Excel Data)</title>
+    <style>
+        :root {
+            --bg: #0a0a16; --surface: #12122a; --surface2: #181835;
+            --border: #252545; --text: #e0e4f0; --text-muted: #8890a8;
+            --accent: #4ade80; --accent2: #60a5fa; --danger: #f87171;
+            --warning: #fbbf24; --special: #c084fc;
+            --radius: 12px; --radius-sm: 7px; --transition: 0.18s ease;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --shadow-card: 0 2px 16px rgba(0,0,0,0.35);
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;line-height:1.45;
+            background-image:radial-gradient(ellipse at 20% 8%,rgba(74,222,128,0.03) 0%,transparent 55%),
+            radial-gradient(ellipse at 80% 88%,rgba(96,165,250,0.03) 0%,transparent 55%)}
+        .app{max-width:960px;margin:0 auto;padding:16px 12px 50px}
+        .header{text-align:center;padding:28px 16px 14px}
+        .header-icon{font-size:42px;display:block;margin-bottom:4px;animation:float 3s infinite}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .header h1{font-size:1.75rem;font-weight:800;background:linear-gradient(135deg,#4ade80,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .subtitle{color:var(--text-muted);font-size:0.82rem}
+        .stats-bar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:10px 0 6px}
+        .stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 15px;text-align:center;min-width:70px}
+        .stat-value{font-size:1.4rem;font-weight:700;color:var(--accent)}
+        .stat-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted)}
+        .progress-container{display:flex;justify-content:center;margin:8px 0 14px}
+        .progress-ring{position:relative;width:80px;height:80px}
+        .progress-ring svg{transform:rotate(-90deg);width:80px;height:80px}
+        .bg-circle{fill:none;stroke:var(--border);stroke-width:5}
+        .fg-circle{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;transition:0.45s}
+        .ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:var(--accent)}
+        .search-wrapper{position:relative;margin:0 0 14px}
+        .search-input{width:100%;padding:12px 44px 12px 18px;background:var(--surface2);border:2px solid var(--border);border-radius:50px;color:var(--text);font-size:0.95rem;font-family:var(--font);outline:none}
+        .search-input:focus{border-color:var(--accent2);box-shadow:0 0 0 4px rgba(96,165,250,0.08)}
+        .search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:1.1rem;color:var(--text-muted);pointer-events:none}
+        .search-results{position:absolute;top:100%;left:0;right:0;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);max-height:260px;overflow-y:auto;z-index:20;display:none;box-shadow:var(--shadow-card)}
+        .search-results.active{display:block}
+        .search-result-item{padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);font-size:0.85rem}
+        .search-result-item:hover{background:rgba(255,255,255,0.03)}
+        .result-name{font-weight:600;flex:1}
+        .result-meta{font-size:0.7rem;color:var(--text-muted)}
+        .badge-caught{background:var(--accent);color:#000;font-size:0.6rem;padding:2px 7px;border-radius:20px;font-weight:700}
+        .no-results{padding:14px;text-align:center;color:var(--text-muted)}
+        .tab-bar{display:flex;gap:8px;margin-bottom:16px}
+        .tab-btn{flex:1;padding:10px;border-radius:50px;font-size:0.85rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text-muted);text-align:center}
+        .tab-btn.active{background:var(--accent);border-color:var(--accent);color:#000}
+        .area-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow-card)}
+        .area-card.highlight{border-color:var(--accent2);box-shadow:0 0 20px rgba(96,165,250,0.18)}
+        .area-header{padding:13px 16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border-bottom:1px solid var(--border);user-select:none}
+        .area-header:hover{background:rgba(255,255,255,0.02)}
+        .area-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:0.95rem}
+        .area-icon{font-size:1.2rem}
+        .area-meta{display:flex;align-items:center;gap:8px;font-size:0.73rem;color:var(--text-muted)}
+        .area-progress{font-weight:600;color:var(--accent)}
+        .chevron{font-size:0.7rem;color:var(--text-muted);transition:0.2s}
+        .area-card.collapsed .chevron{transform:rotate(-90deg)}
+        .area-card.collapsed .area-body{display:none}
+        .area-body{padding:4px 0}
+        .area-subsection{padding:6px 16px 3px;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);font-weight:600}
+        .poke-row,.pokedex-row{display:flex;align-items:center;gap:10px;padding:7px 16px;cursor:pointer;border-left:3px solid transparent;font-size:0.85rem}
+        .poke-row:hover,.pokedex-row:hover{background:rgba(255,255,255,0.02)}
+        .poke-row.caught,.pokedex-row.caught{border-left-color:var(--accent);background:rgba(74,222,128,0.04)}
+        .check-circle{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.6rem;flex-shrink:0;background:transparent;color:transparent}
+        .caught .check-circle{background:var(--accent);border-color:var(--accent);color:#000;box-shadow:0 0 10px rgba(74,222,128,0.3)}
+        .poke-info{flex:1}
+        .poke-name{font-weight:600;font-size:0.83rem}
+        .caught .poke-name{color:var(--accent)}
+        .poke-badge{font-size:0.65rem;padding:2px 8px;border-radius:20px;font-weight:600;white-space:nowrap;flex-shrink:0}
+        .badge-rate{background:rgba(255,255,255,0.05);color:var(--text-muted)}
+        .badge-caught-sm{background:rgba(74,222,128,0.2);color:var(--accent);font-size:0.6rem;padding:2px 7px;border-radius:20px;font-weight:700;flex-shrink:0}
+        .btn-row{display:flex;gap:6px;flex-wrap:wrap;padding:6px 16px 10px}
+        .btn{padding:6px 13px;border-radius:50px;font-size:0.7rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);transition:0.2s}
+        .btn:hover{background:rgba(255,255,255,0.05)}
+        .btn-catch-all{border-color:var(--accent);color:var(--accent)}
+        .btn-reset{border-color:var(--danger);color:var(--danger)}
+        .btn-export{border-color:var(--accent2);color:var(--accent2)}
+        .btn-import{border-color:var(--warning);color:var(--warning)}
+        .toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--surface2);border:1px solid var(--accent);padding:10px 22px;border-radius:50px;font-weight:600;font-size:0.82rem;z-index:100;transition:0.3s;box-shadow:0 6px 24px rgba(0,0,0,0.5)}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+        .footer{text-align:center;padding:16px;color:var(--text-muted);font-size:0.68rem}
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:50;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none}
+        .modal-overlay.active{opacity:1;pointer-events:auto}
+        .modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;max-width:480px;width:90%}
+        .modal h3{margin-bottom:10px}
+        .modal textarea{width:100%;height:120px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);padding:10px;font-family:monospace;font-size:0.75rem;resize:vertical}
+        @media(max-width:600px){.header h1{font-size:1.4rem}.poke-row,.pokedex-row{padding:6px 12px;gap:7px}.poke-name{font-size:0.78rem}.btn{padding:5px 10px;font-size:0.65rem}}
+    </style>
+</head>
+<body>
+<div class="app">
+    <header class="header"><span class="header-icon">📋</span><h1>Pokémon Lazarus</h1><p class="subtitle">Complete Encounter Tracker · Wild / Fish / Surf / Dive</p></header>
+    <div class="stats-bar">
+        <div class="stat-card"><div class="stat-value" id="statTotal">0</div><div class="stat-label">Total</div></div>
+        <div class="stat-card"><div class="stat-value" id="statCaught">0</div><div class="stat-label">Caught</div></div>
+        <div class="stat-card"><div class="stat-value" id="statRemaining">0</div><div class="stat-label">Remaining</div></div>
+    </div>
+    <div class="progress-container"><div class="progress-ring"><svg viewBox="0 0 80 80"><circle class="bg-circle" cx="40" cy="40" r="34"/><circle class="fg-circle" id="progressCircle" cx="40" cy="40" r="34" stroke-dasharray="213.63" stroke-dashoffset="213.63"/></svg><div class="ring-text" id="progressPercent">0%</div></div></div>
+    <div class="search-wrapper"><input type="text" class="search-input" id="searchInput" placeholder="🔍 Search Pokémon or location..." autocomplete="off"><span class="search-icon">🔍</span><div class="search-results" id="searchResults"></div></div>
+    <div class="tab-bar"><button class="tab-btn active" id="tabAreasBtn" onclick="switchTab('areas')">🗺️ Areas</button><button class="tab-btn" id="tabPokedexBtn" onclick="switchTab('pokedex')">📖 Pokédex (A‑Z)</button></div>
+    <div id="areasContainer"></div>
+    <div id="pokedexContainer" style="display:none;"></div>
+    <div class="footer"><p>Auto-saves to browser. Last saved: <span id="lastSaved">—</span></p></div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal-overlay" id="importModal"><div class="modal"><h3>📥 Import Save Data</h3><textarea id="importTextarea" placeholder="Paste exported JSON here..."></textarea><div class="btn-row"><button class="btn" onclick="closeImportModal()">Cancel</button><button class="btn btn-import" onclick="doImport()">Import</button></div></div></div>
+<script>
+(function() {
+// ═══════════════════════════════════════════
+// FULL DATA FROM EXCEL (Wild/Fish/Surf/Dive only)
+// ═══════════════════════════════════════════
+const rawExcelRows = [
+  ["Alolan Grimer","Acrisia City","","Wild","2 - 3","5% - Night"],
+  ["Basculin White","Acrisia City","","Fish","","20% - Super Rod"],
+  ["Ducklett","Acrisia City","","Wild","2 - 3","10% - Day"],
+  ["Finneon","Acrisia City","","Fish","","40% - Super Rod"],
+  ["Finneon","Acrisia City","","Surf","","10%"],
+  ["Grimer","Acrisia City","","Wild","2 - 3","5% - Day"],
+  ["Hoothoot","Acrisia City","","Wild","2 - 3","20% - Night"],
+  ["Magikarp","Acrisia City","","Fish","","70% - Old Rod"],
+  ["Munna","Acrisia City","","Wild","2 - 3","10% - Night"],
+  ["Panpour","Acrisia City","","Wild","2 - 3","5% - Day"],
+  ["Panpour","Acrisia City","","Wild","2 - 3","5% - Night"],
+  ["Pansage","Acrisia City","","Wild","2 - 3","5% - Day"],
+  ["Pansage","Acrisia City","","Wild","2 - 3","5% - Night"],
+  ["Pansear","Acrisia City","","Wild","2 - 3","5% - Day"],
+  ["Pansear","Acrisia City","","Wild","2 - 3","5% - Night"],
+  ["Phanpy","Acrisia City","","Wild","2 - 3","10% - Day"],
+  ["Phanpy","Acrisia City","","Wild","2 - 3","10% - Night"],
+  ["Pikipek","Acrisia City","","Wild","2 - 3","20% - Day"],
+  ["Poliwag","Acrisia City","","Fish","","60% - Good Rod"],
+  ["Poliwag","Acrisia City","","Wild","2 - 3","10% - Day"],
+  ["Poliwag","Acrisia City","","Wild","2 - 3","10% - Night"],
+  ["Remoraid","Acrisia City","","Fish","","40% - Super Rod"],
+  ["Remoraid","Acrisia City","","Surf","","30%"],
+  ["Sandshrew","Acrisia City","","Wild","2 - 3","20% - Day"],
+  ["Sandshrew","Acrisia City","","Wild","2 - 3","20% - Night"],
+  ["Shroomish","Acrisia City","","Wild","2 - 3","10% - Day"],
+  ["Shroomish","Acrisia City","","Wild","2 - 3","10% - Night"],
+  ["Wimpod","Acrisia City","","Fish","","30% - Old Rod"],
+  ["Wimpod","Acrisia City","","Surf","","60%"],
+  ["Wooper","Acrisia City","","Fish","","40% - Good Rod"],
+  ["Alolan Sandshrew","Acrisia Mountains","","Wild","12","10% - Night"],
+  ["Aron","Acrisia Mountains","","Wild","9 - 12","8% - Day"],
+  ["Basculin White","Acrisia Mountains","","Fish","","20% - Super Rod"],
+  ["Bronzor","Acrisia Mountains","Peak","Wild","11","10% - Night"],
+  ["Dedenne","Acrisia Mountains","Peak","Wild","12","10% - Night"],
+  ["Finneon","Acrisia Mountains","","Fish","","40% - Super Rod"],
+  ["Finneon","Acrisia Mountains","","Surf","","10%"],
+  ["Flabébé","Acrisia Mountains","Peak, 5 Colours","Wild","11 - 12","50% - Day"],
+  ["Flittle","Acrisia Mountains","Peak","Wild","","20% - Day"],
+  ["Flittle","Acrisia Mountains","Peak","Wild","10 - 12","20% - Night"],
+  ["Klawf","Acrisia Mountains","","Wild","12","2% - Day"],
+  ["Klawf","Acrisia Mountains","","Wild","10","10% - Night"],
+  ["Magikarp","Acrisia Mountains","","Fish","","70% - Old Rod"],
+  ["Mankey","Acrisia Mountains","","Wild","9 - 12","5% - Day"],
+  ["Mankey","Acrisia Mountains","","Wild","12","5% - Night"],
+  ["Mawile","Acrisia Mountains","","Wild","9 - 12","5% - Day"],
+  ["Mawile","Acrisia Mountains","","Wild","12","5% - Night"],
+  ["Nosepass","Acrisia Mountains","","Wild","8 - 9","10% - Day"],
+  ["Pichu","Acrisia Mountains","Peak","Wild","","20% - Day"],
+  ["Pichu","Acrisia Mountains","Peak","Wild","10","10% - Night"],
+  ["Poliwag","Acrisia Mountains","","Fish","","60% - Good Rod"],
+  ["Remoraid","Acrisia Mountains","","Fish","","40% - Super Rod"],
+  ["Remoraid","Acrisia Mountains","","Surf","16","30%"],
+  ["Rockruff","Acrisia Mountains","","Wild","10 - 12","20% - Day"],
+  ["Rockruff","Acrisia Mountains","","Wild","9 - 12","20% - Night"],
+  ["Rockruff","Acrisia Mountains","Peak","Wild","","10% - Night"],
+  ["Sandshrew","Acrisia Mountains","","Wild","9 - 12","20% - Day"],
+  ["Sandshrew","Acrisia Mountains","","Wild","8 - 10","20% - Night"],
+  ["Skiddo","Acrisia Mountains","Peak","Wild","12","10% - Night"],
+  ["Snover","Acrisia Mountains","Peak","Wild","","10% - Day"],
+  ["Snover","Acrisia Mountains","Peak","Wild","12","10% - Night"],
+  ["Spinarak","Acrisia Mountains","Peak","Wild","11 - 12","20% - Night"],
+  ["Timburr","Acrisia Mountains","","Wild","8 - 10","10% - Day"],
+  ["Timburr","Acrisia Mountains","","Wild","9","10% - Night"],
+  ["Unown","Acrisia Mountains","Cave","Wild","5 - 10","100%"],
+  ["Vullaby","Acrisia Mountains","","Wild","8 - 12","10% - Day"],
+  ["Vullaby","Acrisia Mountains","","Wild","9","10% - Night"],
+  ["Wimpod","Acrisia Mountains","","Fish","","30% - Old Rod"],
+  ["Wimpod","Acrisia Mountains","","Surf","","60%"],
+  ["Woobat","Acrisia Mountains","","Wild","12","10% - Day"],
+  ["Woobat","Acrisia Mountains","","Wild","12","10% - Night"],
+  ["Wooper","Acrisia Mountains","","Fish","","40% - Good Rod"],
+  ["Alolan Muk","Areios Hideout","","Wild","37 - 38","10% - Night"],
+  ["Ariados","Areios Hideout","","Wild","","20% - Day"],
+  ["Boltund","Areios Hideout","","Wild","","10% - Day"],
+  ["Boltund","Areios Hideout","","Wild","35 - 38","10% - Night"],
+  ["Drapion","Areios Hideout","","Wild","36 - 38","20% - Night"],
+  ["Houndoom","Areios Hideout","","Wild","","20% - Day"],
+  ["Houndoom","Areios Hideout","","Wild","37 - 38","20% - Night"],
+  ["Lurantis","Areios Hideout","","Wild","","8% - Day"],
+  ["Muk","Areios Hideout","","Wild","","10% - Day"],
+  ["Obstagoon","Areios Hideout","","Wild","","10% - Day"],
+  ["Obstagoon","Areios Hideout","","Wild","38","10% - Night"],
+  ["Primeape","Areios Hideout","","Wild","36","10% - Day"],
+  ["Primeape","Areios Hideout","","Wild","36 - 37","10% - Night"],
+  ["Salandit","Areios Hideout","","Wild","","10% - Day"],
+  ["Salandit","Areios Hideout","","Wild","35","10% - Night"],
+  ["Scrafty","Areios Hideout","","Wild","36 - 38","8% - Night"],
+  ["Tyrunt","Areios Hideout","","Wild","","2% - Day"],
+  ["Tyrunt","Areios Hideout","","Wild","38","2% - Night"],
+  ["Buizel","Asfal Hills","","Wild","23","5% - Day"],
+  ["Chatot","Asfal Hills","","Wild","21","6% - Day"],
+  ["Dedenne","Asfal Hills","","Wild","25","10% - Night"],
+  ["Galarian Meowth","Asfal Hills","","Wild","23","10% - Day"],
+  ["Galarian Meowth","Asfal Hills","","Wild","25","10% - Night"],
+  ["Hawlucha","Asfal Hills","","Wild","23","4% - Day"],
+  ["Hawlucha","Asfal Hills","","Wild","22 - 25","4% - Night"],
+  ["Pachirisu","Asfal Hills","","Wild","22 - 23","10% - Day"],
+  ["Paldean Tauros-A","Asfal Hills","","Wild","25","20% - Night"],
+  ["Paldean Tauros-B","Asfal Hills","","Wild","22 - 25","20% - Night"],
+  ["Paldean Tauros-C","Asfal Hills","","Wild","22 - 23","20% - Day"],
+  ["Pawmi","Asfal Hills","","Wild","23","15% - Day"],
+  ["Pawmi","Asfal Hills","","Wild","22 - 25","15% - Night"],
+  ["Shroodle","Asfal Hills","","Wild","","5% - Night"],
+  ["Stunky","Asfal Hills","","Wild","23","6% - Night"],
+  ["Tauros","Asfal Hills","","Wild","21 - 23","20% - Day"],
+  ["Yamper","Asfal Hills","","Wild","23","10% - Day"],
+  ["Yamper","Asfal Hills","","Wild","23 - 25","10% - Night"],
+  ["Bellsprout","Bronze Fields","North","Wild","3","5% - Day"],
+  ["Comfey","Bronze Fields","South","Wild","6 - 7","5% - Day"],
+  ["Cubone","Bronze Fields","North","Wild","3 - 4","5% - Day"],
+  ["Cubone","Bronze Fields","North","Wild","","5% - Night"],
+  ["Cubone","Bronze Fields","South","Wild","5","2% - Day"],
+  ["Cubone","Bronze Fields","South","Wild","","2% - Night"],
+  ["Cutiefly","Bronze Fields","South","Wild","4 - 5","10% - Day"],
+  ["Ducklett","Bronze Fields","North","Wild","","5% - Day"],
+  ["Ducklett","Bronze Fields","North","Wild","","5% - Night"],
+  ["Fomantis","Bronze Fields","South","Wild","5 - 7","10% - Day"],
+  ["Grubbin","Bronze Fields","North","Wild","4","10% - Day"],
+  ["Grubbin","Bronze Fields","North","Wild","4","10% - Night"],
+  ["Grubbin","Bronze Fields","South","Wild","","4% - Day"],
+  ["Grubbin","Bronze Fields","South","Wild","7","4% - Night"],
+  ["Hoothoot","Bronze Fields","North","Wild","3","20% - Night"],
+  ["Hoppip","Bronze Fields","North","Wild","2 - 4","10% - Day"],
+  ["Hoppip","Bronze Fields","North","Wild","2 - 4","10% - Night"],
+  ["Hoppip","Bronze Fields","South","Wild","3 - 4","10% - Day"],
+  ["Lillipup","Bronze Fields","North","Wild","2 - 3","20% - Day"],
+  ["Lillipup","Bronze Fields","North","Wild","2 - 3","20% - Night"],
+  ["Lillipup","Bronze Fields","South","Wild","4 - 6","20% - Day"],
+  ["Lillipup","Bronze Fields","South","Wild","","20% - Night"],
+  ["Mareep","Bronze Fields","South","Wild","4 - 6","20% - Day"],
+  ["Mareep","Bronze Fields","South","Wild","","20% - Night"],
+  ["Mudbray","Bronze Fields","South","Wild","5 - 6","9% - Day"],
+  ["Mudbray","Bronze Fields","South","Wild","","9% - Night"],
+  ["Murkrow","Bronze Fields","North","Wild","3 - 4","5% - Night"],
+  ["Murkrow","Bronze Fields","South","Wild","6","20% - Night"],
+  ["Nincada","Bronze Fields","North","Wild","3 - 4","20% - Day"],
+  ["Nincada","Bronze Fields","South","Wild","4 - 7","10% - Day"],
+  ["Nincada","Bronze Fields","South","Wild","6","10% - Night"],
+  ["Paras","Bronze Fields","North","Wild","3 - 4","20% - Night"],
+  ["Phanpy","Bronze Fields","North","Wild","4","5% - Day"],
+  ["Phanpy","Bronze Fields","North","Wild","","5% - Night"],
+  ["Pikipek","Bronze Fields","North","Wild","2 - 3","20% - Day"],
+  ["Vullaby","Bronze Fields","South","Wild","","10% - Night"],
+  ["Yamper","Bronze Fields","South","Wild","","5% - Night"],
+  ["Aerodactyl","Corrin Crossing","","Wild","","10% - Day"],
+  ["Aerodactyl","Corrin Crossing","","Wild","36","10% - Night"],
+  ["Braviary","Corrin Crossing","","Wild","34 - 36","10% - Day"],
+  ["Bruxish","Corrin Crossing","","Fish","25 - 33","20% - Super Rod"],
+  ["Bruxish","Corrin Crossing","","Surf","","10%"],
+  ["Clamperl","Corrin Crossing","","Fish","","20% - Good Rod"],
+  ["Clamperl","Corrin Crossing","","Fish","26 - 35","40% - Super Rod"],
+  ["Farigiraf","Corrin Crossing","","Wild","36","5% - Night"],
+  ["Girafarig","Corrin Crossing","","Wild","33 - 36","10% - Night"],
+  ["Golduck","Corrin Crossing","","Wild","36","10% - Day"],
+  ["Golduck","Corrin Crossing","","Wild","36","10% - Night"],
+  ["Hisuian Braviary","Corrin Crossing","","Wild","33 - 36","10% - Night"],
+  ["Kirlia","Corrin Crossing","","Wild","36","8% - Day"],
+  ["Kirlia","Corrin Crossing","","Wild","35","8% - Night"],
+  ["Lumineon","Corrin Crossing","","Surf","31 - 36","30%"],
+  ["Magikarp","Corrin Crossing","","Fish","","70% - Old Rod"],
+  ["Magnemite","Corrin Crossing","","Wild","34 - 36","20% - Day"],
+  ["Magnemite","Corrin Crossing","","Wild","33","20% - Night"],
+  ["Munna","Corrin Crossing","","Wild","33 - 36","20% - Night"],
+  ["Musharna","Corrin Crossing","","Wild","36","5% - Night"],
+  ["Psyduck","Corrin Crossing","","Fish","","60% - Good Rod"],
+  ["Shellder","Corrin Crossing","","Fish","","30% - Old Rod"],
+  ["Shellder","Corrin Crossing","","Fish","","20% - Good Rod"],
+  ["Tentacruel","Corrin Crossing","","Surf","29 - 34","60%"],
+  ["Torkoal","Corrin Crossing","","Wild","33 - 36","2% - Day"],
+  ["Torkoal","Corrin Crossing","","Wild","36","2% - Night"],
+  ["Victreebel","Corrin Crossing","","Wild","36","5% - Day"],
+  ["Wailmer","Corrin Crossing","","Fish","27 - 34","40% - Super Rod"],
+  ["Weepinbell","Corrin Crossing","","Wild","33 - 36","20% - Day"],
+  ["Yanma","Corrin Crossing","","Wild","36","10% - Day"],
+  ["Yanmega","Corrin Crossing","","Wild","36","5% - Day"],
+  ["Cloyster","Davosi Straits","","Fish","32 - 40","15% - Super Rod"],
+  ["Dhelmise","Davosi Straits","","Surf","44","5%"],
+  ["Dragonair","Davosi Straits","","Surf","38","5%"],
+  ["Finizen","Davosi Straits","","Surf","30 - 39","60%"],
+  ["Finneon","Davosi Straits","","Fish","","20% - Good Rod"],
+  ["Golduck","Davosi Straits","","Fish","36 - 40","40% - Super Rod"],
+  ["Gorebyss","Davosi Straits","","Fish","33","5% - Super Rod"],
+  ["Magikarp","Davosi Straits","","Fish","","70% - Old Rod"],
+  ["Octillery","Davosi Straits","","Fish","35 - 40","40% - Super Rod"],
+  ["Remoraid","Davosi Straits","","Fish","","30% - Old Rod"],
+  ["Remoraid","Davosi Straits","","Fish","","20% - Good Rod"],
+  ["Shellder","Davosi Straits","","Fish","","60% - Good Rod"],
+  ["Swanna","Davosi Straits","","Surf","30 - 40","30%"],
+  ["Baltoy","Erinys Path","West","Wild","15 - 17","10% - Day"],
+  ["Baltoy","Erinys Path","West","Wild","15 - 17","20% - Night"],
+  ["Basculin White","Erinys Path","East","Fish","","30% - Old Rod"],
+  ["Cherubi","Erinys Path","East","Wild","18","20% - Day"],
+  ["Corphish","Erinys Path","East","Fish","","20% - Super Rod"],
+  ["Falinks","Erinys Path","East","Wild","18","10% - Day"],
+  ["Falinks","Erinys Path","East","Wild","17 - 18","10% - Night"],
+  ["Finizen","Erinys Path","East","Fish","","20% - Good Rod"],
+  ["Finizen","Erinys Path","East","Surf","22","10%"],
+  ["Finneon","Erinys Path","East","Fish","","40% - Super Rod"],
+  ["Fomantis","Erinys Path","East","Wild","15 - 18","20% - Night"],
+  ["Galarian Zigzagoon","Erinys Path","West","Wild","15 - 17","10% - Night"],
+  ["Gastly","Erinys Path","East","Wild","17 - 18","20% - Day"],
+  ["Gastly","Erinys Path","East","Wild","15 - 18","20% - Night"],
+  ["Gothita","Erinys Path","West","Wild","15 - 17","20% - Night"],
+  ["Hisuian Zorua","Erinys Path","West","Wild","15 - 17","10% - Night"],
+  ["Houndour","Erinys Path","East","Wild","18","10% - Day"],
+  ["Kabuto","Erinys Path","East","Wild","18","10% - Day"],
+  ["Kabuto","Erinys Path","East","Wild","","10% - Night"],
+  ["Komala","Erinys Path","West","Wild","15 - 17","10% - Day"],
+  ["Magikarp","Erinys Path","East","Fish","","70% - Old Rod"],
+  ["Mimikyu","Erinys Path","East","Wild","","2% - Day"],
+  ["Mimikyu","Erinys Path","East","Wild","17","2% - Night"],
+  ["Minior","Erinys Path","West, Blue Core","Wild","15 - 17","4% - Day"],
+  ["Minior","Erinys Path","West, Indigo Core","Wild","15 - 17","4% - Day"],
+  ["Minior","Erinys Path","West, Red Core","Wild","15 - 17","4% - Night"],
+  ["Minior","Erinys Path","West, Orange Core","Wild","15 - 17","4% - Night"],
+  ["Minior","Erinys Path","East, Green Core","Wild","15 - 18","4% - Day"],
+  ["Minior","Erinys Path","East, Yellow Core","Wild","16 - 18","4% - Day"],
+  ["Minior","Erinys Path","East, Indigo Core","Wild","16 - 18","4% - Night"],
+  ["Minior","Erinys Path","East, Yellow Core","Wild","16 - 18","4% - Night"],
+  ["Omanyte","Erinys Path","West","Wild","15 - 17","10% - Day"],
+  ["Omanyte","Erinys Path","West","Wild","15 - 17","10% - Night"],
+  ["Onix","Erinys Path","East","Wild","17 - 18","10% - Day"],
+  ["Onix","Erinys Path","East","Wild","17 - 18","10% - Night"],
+  ["Poliwag","Erinys Path","East","Fish","","60% - Good Rod"],
+  ["Remoraid","Erinys Path","East","Fish","","40% - Super Rod"],
+  ["Salandit","Erinys Path","East","Wild","16 - 18","10% - Night"],
+  ["Sandile","Erinys Path","West","Wild","15 - 17","20% - Day"],
+  ["Seel","Erinys Path","East","Surf","","30%"],
+  ["Skorupi","Erinys Path","East","Wild","16 - 18","10% - Night"],
+  ["Solosis","Erinys Path","West","Wild","15 - 17","20% - Day"],
+  ["Spheal","Erinys Path","East","Fish","","20% - Good Rod"],
+  ["Spheal","Erinys Path","East","Surf","20","60%"],
+  ["Spinarak","Erinys Path","East","Wild","","10% - Day"],
+  ["Stantler","Erinys Path","West","Wild","15 - 17","20% - Night"],
+  ["Togepi","Erinys Path","West","Wild","15","2% - Day"],
+  ["Togepi","Erinys Path","West","Wild","","2% - Night"],
+  ["Zigzagoon","Erinys Path","West","Wild","15 - 17","10% - Day"],
+  ["Zorua","Erinys Path","West","Wild","15 - 17","10% - Day"],
+  ["Chinchou","Fresco Isles","","Fish","","15% - Super Rod"],
+  ["Clamperl","Fresco Isles","","Fish","","20% - Good Rod"],
+  ["Clamperl","Fresco Isles","","Fish","","40% - Super Rod"],
+  ["Cyclizar","Fresco Isles","","Wild","","4% - Day"],
+  ["Cyclizar","Fresco Isles","","Wild","","4% - Night"],
+  ["Doduo","Fresco Isles","","Wild","31","10% - Day"],
+  ["Doduo","Fresco Isles","","Wild","28 - 31","10% - Night"],
+  ["Dratini","Fresco Isles","","Fish","","5% - Super Rod"],
+  ["Dratini","Fresco Isles","","Surf","","5%"],
+  ["Dreepy","Fresco Isles","","Wild","28 - 29","5% - Night"],
+  ["Finneon","Fresco Isles","","Fish","","20% - Good Rod"],
+  ["Gligar","Fresco Isles","","Wild","30","10% - Day"],
+  ["Gligar","Fresco Isles","","Wild","28 - 31","10% - Night"],
+  ["Helioptile","Fresco Isles","","Wild","","5% - Day"],
+  ["Krokorok","Fresco Isles","","Wild","27","5% - Day"],
+  ["Larvitar","Fresco Isles","","Wild","31","2% - Day"],
+  ["Larvitar","Fresco Isles","","Wild","31","2% - Night"],
+  ["Magikarp","Fresco Isles","","Fish","","70% - Old Rod"],
+  ["Numel","Fresco Isles","","Wild","31","10% - Day"],
+  ["Paldean Wooper","Fresco Isles","","Wild","","5% - Night"],
+  ["Psyduck","Fresco Isles","","Fish","","60% - Good Rod"],
+  ["Remoraid","Fresco Isles","","Surf","","5%"],
+  ["Salandit","Fresco Isles","","Wild","31","20% - Night"],
+  ["Scraggy","Fresco Isles","","Wild","31","20% - Day"],
+  ["Scraggy","Fresco Isles","","Wild","28","20% - Night"],
+  ["Skorupi","Fresco Isles","","Wild","","4% - Day"],
+  ["Skorupi","Fresco Isles","","Wild","","4% - Night"],
+  ["Tentacool","Fresco Isles","","Fish","","30% - Old Rod"],
+  ["Tentacool","Fresco Isles","","Surf","24 - 29","60%"],
+  ["Tinkatuff","Fresco Isles","","Wild","","10% - Day"],
+  ["Trapinch","Fresco Isles","","Wild","28 - 31","20% - Day"],
+  ["Trapinch","Fresco Isles","","Wild","","20% - Night"],
+  ["Wailmer","Fresco Isles","","Fish","","40% - Super Rod"],
+  ["Wailmer","Fresco Isles","","Surf","28 - 29","30%"],
+  ["Alolan Vulpix","Froslass Cavern","B1F","Wild","16 - 18","20%"],
+  ["Amaura","Froslass Cavern","1F","Wild","16 - 18","2%"],
+  ["Amaura","Froslass Cavern","B1F","Wild","","2%"],
+  ["Amaura","Froslass Cavern","B2F","Wild","19","2%"],
+  ["Basculin White","Froslass Cavern","B2F","Fish","","20% - Super Rod"],
+  ["Bronzor","Froslass Cavern","B1F","Wild","18","20%"],
+  ["Bronzor","Froslass Cavern","B2F","Wild","16 - 19","20%"],
+  ["Cubchoo","Froslass Cavern","B2F","Wild","16 - 19","10%"],
+  ["Finneon","Froslass Cavern","B2F","Fish","","40% - Super Rod"],
+  ["Hisuian Sneasel","Froslass Cavern","1F","Wild","17 - 18","20%"],
+  ["Lapras","Froslass Cavern","B2F","Surf","","1%"],
+  ["Magikarp","Froslass Cavern","B2F","Fish","","70% - Old Rod"],
+  ["Onix","Froslass Cavern","B1F","Wild","17","10%"],
+  ["Poliwhirl","Froslass Cavern","B2F","Fish","","60% - Good Rod"],
+  ["Remoraid","Froslass Cavern","B2F","Fish","","40% - Super Rod"],
+  ["Sealeo","Froslass Cavern","B2F","Surf","15","9%"],
+  ["Seel","Froslass Cavern","1F","Wild","16 - 18","10%"],
+  ["Seel","Froslass Cavern","B2F","Wild","17 - 19","10%"],
+  ["Shellder","Froslass Cavern","B2F","Fish","","30% - Old Rod"],
+  ["Shellder","Froslass Cavern","B2F","Fish","","40% - Good Rod"],
+  ["Shellder","Froslass Cavern","B2F","Surf","10 - 27","60%"],
+  ["Sneasel","Froslass Cavern","1F","Wild","17 - 18","20%"],
+  ["Snom","Froslass Cavern","B2F","Wild","19","5%"],
+  ["Snorunt","Froslass Cavern","1F","Wild","16 - 18","30%"],
+  ["Snorunt","Froslass Cavern","B1F","Wild","","30%"],
+  ["Snorunt","Froslass Cavern","B2F","Wild","16 - 19","30%"],
+  ["Spheal","Froslass Cavern","1F","Wild","18","10%"],
+  ["Spheal","Froslass Cavern","B1F","Wild","","10%"],
+  ["Spheal","Froslass Cavern","B2F","Surf","","30%"],
+  ["Spheal","Froslass Cavern","B2F","Wild","18 - 19","10%"],
+  ["Swinub","Froslass Cavern","1F","Wild","18","8%"],
+  ["Swinub","Froslass Cavern","B1F","Wild","","8%"],
+  ["Swinub","Froslass Cavern","B2F","Wild","16 - 19","13%"],
+  ["Alolan Vulpix","Jusmail Town","","Wild","4 - 7","4% - Night"],
+  ["Bounsweet","Jusmail Town","","Wild","4 - 7","10% - Day"],
+  ["Cutiefly","Jusmail Town","","Wild","4 - 7","20% - Day"],
+  ["Eevee","Jusmail Town","","Wild","4 - 7","10% - Day"],
+  ["Eevee","Jusmail Town","","Wild","4 - 7","10% - Night"],
+  ["Growlithe","Jusmail Town","","Wild","4 - 7","4% - Day"],
+  ["Hisuian Growlithe","Jusmail Town","","Wild","4 - 7","4% - Day"],
+  ["Hisuian Voltorb","Jusmail Town","","Wild","4 - 7","10% - Night"],
+  ["Oricorio Baile","Jusmail Town","","Wild","6 - 8","2% - Day"],
+  ["Oricorio Baile","Jusmail Town","","Wild","8","2% - Night"],
+  ["Pikipek","Jusmail Town","","Wild","4 - 7","20% - Day"],
+  ["Ralts","Jusmail Town","","Wild","4 - 7","10% - Night"],
+  ["Skiddo","Jusmail Town","","Wild","4 - 7","10% - Day"],
+  ["Skiddo","Jusmail Town","","Wild","4 - 7","10% - Night"],
+  ["Voltorb","Jusmail Town","","Wild","4 - 7","10% - Night"],
+  ["Vulpix","Jusmail Town","","Wild","4 - 7","4% - Night"],
+  ["Wurmple","Jusmail Town","","Wild","4 - 7","20% - Day"],
+  ["Wurmple","Jusmail Town","","Wild","4 - 7","20% - Night"],
+  ["Alolan Meowth","Kalami City","","Wild","","5% - Night"],
+  ["Applin","Kalami City","","Wild","12 - 15","10% - Day"],
+  ["Applin","Kalami City","","Wild","11 - 15","10% - Night"],
+  ["Barboach","Kalami City","","Fish","","40% - Super Rod"],
+  ["Barboach","Kalami City","","Surf","","10%"],
+  ["Buizel","Kalami City","","Fish","","40% - Good Rod"],
+  ["Buizel","Kalami City","","Wild","13","20% - Day"],
+  ["Buizel","Kalami City","","Wild","11","20% - Night"],
+  ["Clauncher","Kalami City","","Fish","","60% - Good Rod"],
+  ["Clauncher","Kalami City","","Surf","12 - 25","60%"],
+  ["Lillipup","Kalami City","","Wild","15","10% - Day"],
+  ["Magikarp","Kalami City","","Fish","","70% - Old Rod"],
+  ["Meowth","Kalami City","","Wild","15","5% - Day"],
+  ["Murkrow","Kalami City","","Wild","15","10% - Night"],
+  ["Oranguru","Kalami City","","Wild","12 - 13","2% - Night"],
+  ["Passimian","Kalami City","","Wild","13 - 15","2% - Day"],
+  ["Quagsire","Kalami City","","Fish","","20% - Super Rod"],
+  ["Remoraid","Kalami City","","Fish","","40% - Super Rod"],
+  ["Shroodle","Kalami City","","Wild","15","9% - Day"],
+  ["Shroodle","Kalami City","","Wild","11","9% - Night"],
+  ["Skrelp","Kalami City","","Fish","","30% - Old Rod"],
+  ["Skrelp","Kalami City","","Surf","15 - 22","30%"],
+  ["Toedscool","Kalami City","","Wild","13","10% - Day"],
+  ["Toedscool","Kalami City","","Wild","15","10% - Night"],
+  ["Totodile","Kalami City","","Wild","10 - 15","4% - Day"],
+  ["Totodile","Kalami City","","Wild","15","4% - Night"],
+  ["Wimpod","Kalami City","","Wild","13","10% - Day"],
+  ["Wimpod","Kalami City","","Wild","","10% - Night"],
+  ["Wingull","Kalami City","","Wild","15","20% - Day"],
+  ["Wingull","Kalami City","","Wild","12","20% - Night"],
+  ["Altaria","Kaptara Island","West","Wild","34","5% - Day"],
+  ["Altaria","Kaptara Island","West","Wild","31 - 34","5% - Night"],
+  ["Arbok","Kaptara Island","East","Wild","31 - 34","20% - Night"],
+  ["Charjabug","Kaptara Island","East","Wild","31 - 34","20% - Day"],
+  ["Charjabug","Kaptara Island","East","Wild","31 - 34","20% - Night"],
+  ["Cherrim","Kaptara Island","East","Wild","","4% - Day"],
+  ["Claydol","Kaptara Island","West","Wild","32 - 34","10% - Night"],
+  ["Dedenne","Kaptara Island","East","Wild","31","4% - Day"],
+  ["Doublade","Kaptara Island","East","Wild","34","2% - Day"],
+  ["Doublade","Kaptara Island","East","Wild","","2% - Night"],
+  ["Duosion","Kaptara Island","West","Wild","32","8% - Day"],
+  ["Espathra","Kaptara Island","West","Wild","31 - 34","10% - Night"],
+  ["Fomantis","Kaptara Island","West","Wild","31 - 34","20% - Day"],
+  ["Fomantis","Kaptara Island","West","Wild","31 - 33","20% - Night"],
+  ["Golduck","Kaptara Island","West","Wild","31 - 32","10% - Night"],
+  ["Goomy","Kaptara Island","East","Wild","33 - 34","10% - Day"],
+  ["Goomy","Kaptara Island","East","Wild","33 - 34","10% - Night"],
+  ["Gothitelle","Kaptara Island","West","Wild","31 - 34","2% - Night"],
+  ["Gothorita","Kaptara Island","West","Wild","31 - 34","8% - Night"],
+  ["Lurantis","Kaptara Island","West","Wild","","5% - Day"],
+  ["Lurantis","Kaptara Island","West","Wild","32 - 34","5% - Night"],
+  ["Morgrem","Kaptara Island","West","Wild","34","10% - Day"],
+  ["Morgrem","Kaptara Island","West","Wild","33 - 34","10% - Night"],
+  ["Oranguru","Kaptara Island","West","Wild","31 - 34","10% - Day"],
+  ["Paldean Tauros-A","Kaptara Island","East","Wild","31","10% - Night"],
+  ["Paldean Tauros-B","Kaptara Island","East","Wild","31","10% - Night"],
+  ["Paldean Tauros-C","Kaptara Island","East","Wild","32 - 34","10% - Day"],
+  ["Passimian","Kaptara Island","West","Wild","31 - 34","10% - Day"],
+  ["Perrserker","Kaptara Island","East","Wild","33 - 34","5% - Day"],
+  ["Perrserker","Kaptara Island","East","Wild","31","5% - Night"],
+  ["Reuniclus","Kaptara Island","West","Wild","33 - 34","2% - Day"],
+  ["Skiploom","Kaptara Island","East","Wild","31 - 34","20% - Day"],
+  ["Sliggoo","Kaptara Island","East","Wild","33 - 34","5% - Day"],
+  ["Tauros","Kaptara Island","East","Wild","31 - 34","10% - Day"],
+  ["Trumbeak","Kaptara Island","West","Wild","31 - 34","20% - Day"],
+  ["Trumbeak","Kaptara Island","West","Wild","31 - 34","20% - Night"],
+  ["Weepinbell","Kaptara Island","East","Wild","31 - 34","10% - Day"],
+  ["Weepinbell","Kaptara Island","East","Wild","32","10% - Night"],
+  ["Yanma","Kaptara Island","West","Wild","31 - 34","10% - Day"],
+  ["Beautifly","Kipos Town","","Wild","","2% - Day"],
+  ["Corsola","Kipos Town","","Fish","","15% - Super Rod"],
+  ["Corsola","Kipos Town","","Surf","22 - 24","5%"],
+  ["Doduo","Kipos Town","","Wild","","5% - Day"],
+  ["Doduo","Kipos Town","","Wild","","5% - Night"],
+  ["Dustox","Kipos Town","","Wild","","2% - Night"],
+  ["Eevee","Kipos Town","","Wild","","20% - Day"],
+  ["Eevee","Kipos Town","","Wild","25","20% - Night"],
+  ["Finneon","Kipos Town","","Fish","11 - 14","20% - Good Rod"],
+  ["Finneon","Kipos Town","","Surf","16","30%"],
+  ["Galarian Corsola","Kipos Town","","Fish","","5% - Super Rod"],
+  ["Galarian Corsola","Kipos Town","","Surf","","5%"],
+  ["Igglybuff","Kipos Town","","Wild","25","20% - Day"],
+  ["Magnemite","Kipos Town","","Wild","25","20% - Day"],
+  ["Magnemite","Kipos Town","","Wild","25","20% - Night"],
+  ["Pikachu","Kipos Town","","Wild","25","10% - Day"],
+  ["Pikachu","Kipos Town","","Wild","","10% - Night"],
+  ["Psyduck","Kipos Town","","Fish","11 - 17","60% - Good Rod"],
+  ["Pumpkaboo","Kipos Town","","Wild","24 - 25","8% - Night"],
+  ["Seel","Kipos Town","","Fish","","40% - Super Rod"],
+  ["Shellder","Kipos Town","","Fish","","70% - Old Rod"],
+  ["Skrelp","Kipos Town","","Fish","","20% - Good Rod"],
+  ["Stantler","Kipos Town","","Wild","","5% - Day"],
+  ["Stantler","Kipos Town","","Wild","","5% - Night"],
+  ["Steenee","Kipos Town","","Wild","","8% - Day"],
+  ["Stunky","Kipos Town","","Wild","24","20% - Night"],
+  ["Tentacool","Kipos Town","","Fish","","30% - Old Rod"],
+  ["Tentacool","Kipos Town","","Surf","13 - 25","60%"],
+  ["Timburr","Kipos Town","","Wild","","10% - Day"],
+  ["Timburr","Kipos Town","","Wild","24","10% - Night"],
+  ["Wailmer","Kipos Town","","Fish","","40% - Super Rod"],
+  ["Applin","Lastlight Road","","Wild","31 - 33","10% - Night"],
+  ["Armarouge","Lastlight Road","","Wild","33","2% - Day"],
+  ["Breloom","Lastlight Road","","Wild","","5% - Day"],
+  ["Breloom","Lastlight Road","","Wild","33","5% - Night"],
+  ["Ceruledge","Lastlight Road","","Wild","33","2% - Night"],
+  ["Cherrim","Lastlight Road","","Wild","30 - 33","10% - Day"],
+  ["Cyclizar","Lastlight Road","","Wild","31 - 33","5% - Day"],
+  ["Cyclizar","Lastlight Road","","Wild","30 - 33","5% - Night"],
+  ["Flaaffy","Lastlight Road","","Wild","30 - 33","20% - Night"],
+  ["Galarian Ponyta","Lastlight Road","","Wild","31 - 33","10% - Night"],
+  ["Helioptile","Lastlight Road","","Wild","30","10% - Day"],
+  ["Helioptile","Lastlight Road","","Wild","33","10% - Night"],
+  ["Lampent","Lastlight Road","","Wild","30 - 33","20% - Day"],
+  ["Lampent","Lastlight Road","","Wild","30 - 33","20% - Night"],
+  ["Litleo","Lastlight Road","","Wild","33","20% - Day"],
+  ["Mudbray","Lastlight Road","","Wild","30 - 33","10% - Day"],
+  ["Mudbray","Lastlight Road","","Wild","31 - 32","10% - Night"],
+  ["Ponyta","Lastlight Road","","Wild","33","10% - Day"],
+  ["Pyroar♀","Lastlight Road","","Wild","","4% - Day"],
+  ["Pyroar♀","Lastlight Road","","Wild","31","4% - Night"],
+  ["Pyroar♂","Lastlight Road","","Wild","33","4% - Day"],
+  ["Pyroar♂","Lastlight Road","","Wild","33","4% - Night"],
+  ["Anorith","Marmaro Island","","Wild","","6% - Day"],
+  ["Anorith","Marmaro Island","","Wild","22","6% - Night"],
+  ["Aron","Marmaro Island","","Wild","","10% - Night"],
+  ["Chinchou","Marmaro Island","","Surf","20 - 26","60%"],
+  ["Clauncher","Marmaro Island","","Fish","","20% - Good Rod"],
+  ["Clauncher","Marmaro Island","","Fish","","40% - Super Rod"],
+  ["Corsola","Marmaro Island","","Fish","","15% - Super Rod"],
+  ["Corsola","Marmaro Island","","Surf","","5%"],
+  ["Dedenne","Marmaro Island","","Wild","","8% - Day"],
+  ["Dwebble","Marmaro Island","","Wild","22 - 23","20% - Day"],
+  ["Dwebble","Marmaro Island","","Wild","26","20% - Night"],
+  ["Finizen","Marmaro Island","","Surf","22 - 28","30%"],
+  ["Finneon","Marmaro Island","","Fish","","20% - Good Rod"],
+  ["Galarian Corsola","Marmaro Island","","Fish","","5% - Super Rod"],
+  ["Galarian Corsola","Marmaro Island","","Surf","","5%"],
+  ["Growlithe","Marmaro Island","","Wild","","10% - Day"],
+  ["Hisuian Growlithe","Marmaro Island","","Wild","","10% - Night"],
+  ["Lileep","Marmaro Island","","Wild","","6% - Day"],
+  ["Lileep","Marmaro Island","","Wild","26","6% - Night"],
+  ["Magikarp","Marmaro Island","","Fish","","70% - Old Rod"],
+  ["Meditite","Marmaro Island","","Wild","","10% - Day"],
+  ["Meditite","Marmaro Island","","Wild","","10% - Night"],
+  ["Psyduck","Marmaro Island","","Fish","","60% - Good Rod"],
+  ["Sizzlipede","Marmaro Island","","Wild","","10% - Day"],
+  ["Swablu","Marmaro Island","","Wild","","20% - Day"],
+  ["Swablu","Marmaro Island","","Wild","","20% - Night"],
+  ["Tentacool","Marmaro Island","","Fish","","30% - Old Rod"],
+  ["Tinkatink","Marmaro Island","","Wild","","10% - Day"],
+  ["Tinkatink","Marmaro Island","","Wild","26","10% - Night"],
+  ["Togedemaru","Marmaro Island","","Wild","","8% - Night"],
+  ["Wailmer","Marmaro Island","","Fish","","40% - Super Rod"],
+  ["Basculin Red","Myrrini Island","","Surf","25 - 26","30%"],
+  ["Basculin White","Myrrini Island","","Surf","22 - 25","60%"],
+  ["Cherubi","Myrrini Island","","Wild","","10% - Day"],
+  ["Chinchou","Myrrini Island","","Fish","","15% - Super Rod"],
+  ["Drowzee","Myrrini Island","","Wild","25 - 27","20% - Night"],
+  ["Finizen","Myrrini Island","","Surf","","10%"],
+  ["Finneon","Myrrini Island","","Fish","","20% - Good Rod"],
+  ["Floette","Myrrini Island","Blue","Wild","26 - 27","10% - Night"],
+  ["Goomy","Myrrini Island","","Wild","25 - 27","10% - Night"],
+  ["Hawlucha","Myrrini Island","","Wild","26","10% - Day"],
+  ["Hawlucha","Myrrini Island","","Wild","","10% - Night"],
+  ["Jigglypuff","Myrrini Island","","Wild","","10% - Day"],
+  ["Lanturn","Myrrini Island","","Fish","","5% - Super Rod"],
+  ["Magikarp","Myrrini Island","","Fish","","70% - Old Rod"],
+  ["Meditite","Myrrini Island","","Wild","","20% - Day"],
+  ["Meditite","Myrrini Island","","Wild","25","20% - Night"],
+  ["Oricorio Baile","Myrrini Island","","Wild","","5% - Day"],
+  ["Oricorio Baile","Myrrini Island","","Wild","27","5% - Night"],
+  ["Oricorio Pa'u","Myrrini Island","","Wild","","5% - Day"],
+  ["Oricorio Pa'u","Myrrini Island","","Wild","27","5% - Night"],
+  ["Oricorio Pom-Pom","Myrrini Island","","Wild","","5% - Day"],
+  ["Oricorio Pom-Pom","Myrrini Island","","Wild","","5% - Night"],
+  ["Oricorio Sensu","Myrrini Island","","Wild","","5% - Day"],
+  ["Oricorio Sensu","Myrrini Island","","Wild","","5% - Night"],
+  ["Pancham","Myrrini Island","","Wild","","10% - Day"],
+  ["Pancham","Myrrini Island","","Wild","27","10% - Night"],
+  ["Psyduck","Myrrini Island","","Fish","","60% - Good Rod"],
+  ["Skrelp","Myrrini Island","","Fish","","20% - Good Rod"],
+  ["Skrelp","Myrrini Island","","Fish","","40% - Super Rod"],
+  ["Steenee","Myrrini Island","","Wild","","20% - Day"],
+  ["Tentacool","Myrrini Island","","Fish","","30% - Old Rod"],
+  ["Wailmer","Myrrini Island","","Fish","","40% - Super Rod"],
+  ["Archen","Palati City","","Wild","","10% - Day"],
+  ["Archen","Palati City","","Wild","33","10% - Night"],
+  ["Baltoy","Palati City","","Wild","","20% - Day"],
+  ["Baltoy","Palati City","","Wild","32","20% - Night"],
+  ["Clamperl","Palati City","","Fish","","20% - Good Rod"],
+  ["Clamperl","Palati City","","Fish","25 - 33","40% - Super Rod"],
+  ["Clodsire","Palati City","","Wild","30 - 33","10% - Night"],
+  ["Dhelmise","Palati City","","Fish","33","5% - Super Rod"],
+  ["Girafarig","Palati City","","Wild","","10% - Day"],
+  ["Girafarig","Palati City","","Wild","32","10% - Night"],
+  ["Grafaiai","Palati City","","Wild","33","10% - Night"],
+  ["Gurdurr","Palati City","","Wild","33","4% - Day"],
+  ["Klawf","Palati City","","Wild","30","20% - Day"],
+  ["Klawf","Palati City","","Wild","","20% - Night"],
+  ["Lycanroc","Palati City","","Wild","33","2% - Day"],
+  ["Magikarp","Palati City","","Fish","","70% - Old Rod"],
+  ["Midnight Lycanroc","Palati City","","Wild","33","2% - Night"],
+  ["Munna","Palati City","","Wild","","10% - Night"],
+  ["Pawmo","Palati City","","Wild","30 - 33","10% - Day"],
+  ["Quagsire","Palati City","","Wild","33","10% - Day"],
+  ["Shellder","Palati City","","Fish","","20% - Good Rod"],
+  ["Tentacool","Palati City","","Fish","","30% - Old Rod"],
+  ["Tentacool","Palati City","","Surf","","60%"],
+  ["Timburr","Palati City","","Wild","33","4% - Day"],
+  ["Tirtouga","Palati City","","Fish","","60% - Good Rod"],
+  ["Tirtouga","Palati City","","Fish","25 - 29","15% - Super Rod"],
+  ["Tirtouga","Palati City","","Surf","","10%"],
+  ["Toedscool","Palati City","","Wild","30","10% - Day"],
+  ["Toedscruel","Palati City","","Wild","33","8% - Night"],
+  ["Wailmer","Palati City","","Fish","26 - 35","40% - Super Rod"],
+  ["Wailmer","Palati City","","Surf","","30%"],
+  ["Alolan Grimer","Péntepetal City","","Wild","25","20% - Night"],
+  ["Beautifly","Péntepetal City","","Wild","","20% - Day"],
+  ["Bruxish","Péntepetal City","","Fish","","20% - Good Rod"],
+  ["Bruxish","Péntepetal City","","Fish","","15% - Super Rod"],
+  ["Clamperl","Péntepetal City","","Fish","","40% - Super Rod"],
+  ["Comfey","Péntepetal City","","Wild","","10% - Day"],
+  ["Dratini","Péntepetal City","","Surf","28","9%"],
+  ["Dustox","Péntepetal City","","Wild","28","20% - Night"],
+  ["Finizen","Péntepetal City","","Surf","","30%"],
+  ["Floette","Péntepetal City","5 Colours","Wild","","20% - Day"],
+  ["Floette","Péntepetal City","5 Colours","Wild","25 - 26","20% - Night"],
+  ["Galarian Linoone","Péntepetal City","","Wild","25","10% - Night"],
+  ["Grimer","Péntepetal City","","Wild","","20% - Day"],
+  ["Kirlia","Péntepetal City","","Wild","","10% - Day"],
+  ["Kirlia","Péntepetal City","","Wild","","10% - Night"],
+  ["Lapras","Péntepetal City","","Fish","32","5% - Super Rod"],
+  ["Lapras","Péntepetal City","","Surf","28","5%"],
+  ["Linoone","Péntepetal City","","Wild","","10% - Day"],
+  ["Magikarp","Péntepetal City","","Fish","","70% - Old Rod"],
+  ["Mawile","Péntepetal City","","Wild","26","10% - Day"],
+  ["Mawile","Péntepetal City","","Wild","","10% - Night"],
+  ["Pawmo","Péntepetal City","","Wild","","10% - Night"],
+  ["Poliwhirl","Péntepetal City","","Fish","32","40% - Super Rod"],
+  ["Sealeo","Péntepetal City","","Fish","","20% - Good Rod"],
+  ["Sealeo","Péntepetal City","","Surf","","60%"],
+  ["Seel","Péntepetal City","","Fish","","60% - Good Rod"],
+  ["Tentacool","Péntepetal City","","Fish","","30% - Old Rod"],
+  ["Braviary","Pollen Road","","Wild","44","5% - Day"],
+  ["Charjabug","Pollen Road","","Wild","41 - 43","10% - Night"],
+  ["Cloyster","Pollen Road","","Fish","35 - 39","15% - Super Rod"],
+  ["Comfey","Pollen Road","","Wild","44","10% - Day"],
+  ["Comfey","Pollen Road","","Wild","42 - 44","10% - Night"],
+  ["Dedenne","Pollen Road","","Wild","41 - 44","10% - Night"],
+  ["Dhelmise","Pollen Road","","Surf","","5%"],
+  ["Dodrio","Pollen Road","","Wild","40","5% - Day"],
+  ["Dragonair","Pollen Road","","Surf","32 - 44","5%"],
+  ["Espathra","Pollen Road","","Wild","40 - 44","5% - Night"],
+  ["Finizen","Pollen Road","","Surf","28 - 44","60%"],
+  ["Finneon","Pollen Road","","Fish","","20% - Good Rod"],
+  ["Floette","Pollen Road","Red","Wild","42 - 44","20% - Day"],
+  ["Floette","Pollen Road","Yellow","Wild","41 - 44","20% - Night"],
+  ["Golduck","Pollen Road","","Fish","31 - 38","40% - Super Rod"],
+  ["Hawlucha","Pollen Road","","Wild","41 - 44","8% - Day"],
+  ["Hawlucha","Pollen Road","","Wild","40 - 44","8% - Night"],
+  ["Hisuian Braviary","Pollen Road","","Wild","41 - 44","5% - Night"],
+  ["Hisuian Electrode","Pollen Road","","Wild","44","10% - Day"],
+  ["Huntail","Pollen Road","","Fish","32","5% - Super Rod"],
+  ["Magikarp","Pollen Road","","Fish","","70% - Old Rod"],
+  ["Octillery","Pollen Road","","Fish","30 - 38","40% - Super Rod"],
+  ["Pachirisu","Pollen Road","","Wild","44","10% - Day"],
+  ["Pikachu","Pollen Road","","Wild","44","10% - Day"],
+  ["Remoraid","Pollen Road","","Fish","","30% - Old Rod"],
+  ["Remoraid","Pollen Road","","Fish","","20% - Good Rod"],
+  ["Shellder","Pollen Road","","Fish","","60% - Good Rod"],
+  ["Skiploom","Pollen Road","","Wild","40 - 43","20% - Day"],
+  ["Skiploom","Pollen Road","","Wild","42 - 44","20% - Night"],
+  ["Swanna","Pollen Road","","Surf","30 - 44","30%"],
+  ["Togedemaru","Pollen Road","","Wild","41 - 44","10% - Night"],
+  ["Yanmega","Pollen Road","","Wild","44","2% - Day"],
+  ["Yanmega","Pollen Road","","Wild","43 - 44","2% - Night"],
+  ["Alolan Raichu","Port Pello","","Wild","","8% - Day"],
+  ["Bruxish","Port Pello","","Fish","","20% - Super Rod"],
+  ["Bruxish","Port Pello","","Surf","","10%"],
+  ["Cherrim","Port Pello","","Wild","","5% - Day"],
+  ["Clamperl","Port Pello","","Fish","","20% - Good Rod"],
+  ["Clamperl","Port Pello","","Fish","","40% - Super Rod"],
+  ["Floette","Port Pello","Red?","Wild","33 - 36","20% - Night"],
+  ["Florges","Port Pello","Red?","Wild","36","5% - Night"],
+  ["Galarian Linoone","Port Pello","","Wild","","10% - Night"],
+  ["Galarian Rapidash","Port Pello","","Wild","34","2% - Night"],
+  ["Grimmsnarl","Port Pello","","Wild","36","5% - Night"],
+  ["Jigglypuff","Port Pello","","Wild","34","20% - Day"],
+  ["Linoone","Port Pello","","Wild","","10% - Day"],
+  ["Lumineon","Port Pello","","Surf","","30%"],
+  ["Magikarp","Port Pello","","Fish","","70% - Old Rod"],
+  ["Mimikyu","Port Pello","","Wild","36","10% - Night"],
+  ["Morgrem","Port Pello","","Wild","36","20% - Night"],
+  ["Pachirisu","Port Pello","","Wild","","10% - Day"],
+  ["Psyduck","Port Pello","","Fish","","60% - Good Rod"],
+  ["Raichu","Port Pello","","Wild","35 - 36","8% - Night"],
+  ["Rapidash","Port Pello","","Wild","34","2% - Day"],
+  ["Ribombee","Port Pello","","Wild","","10% - Day"],
+  ["Ribombee","Port Pello","","Wild","36","10% - Night"],
+  ["Shellder","Port Pello","","Fish","","30% - Old Rod"],
+  ["Shellder","Port Pello","","Fish","","20% - Good Rod"],
+  ["Tentacruel","Port Pello","","Surf","","60%"],
+  ["Togetic","Port Pello","","Wild","36","20% - Day"],
+  ["Tropius","Port Pello","","Wild","","10% - Day"],
+  ["Tropius","Port Pello","","Wild","36","10% - Night"],
+  ["Wailmer","Port Pello","","Fish","","40% - Super Rod"],
+  ["Wigglytuff","Port Pello","","Wild","35","5% - Day"],
+  ["Basculin White","Pythios Cemetery","","Fish","","30% - Old Rod"],
+  ["Basculin White","Pythios Cemetery","","Fish","","40% - Super Rod"],
+  ["Bellsprout","Pythios Cemetery","","Wild","13 - 15","20% - Day"],
+  ["Clamperl","Pythios Cemetery","","Fish","","20% - Good Rod"],
+  ["Clauncher","Pythios Cemetery","","Surf","","10%"],
+  ["Cyndaquil","Pythios Cemetery","","Wild","11 - 13","2% - Day"],
+  ["Cyndaquil","Pythios Cemetery","","Wild","13","2% - Night"],
+  ["Dragonair","Pythios Cemetery","","Fish","","5% - Super Rod"],
+  ["Dratini","Pythios Cemetery","","Fish","16","20% - Good Rod"],
+  ["Dratini","Pythios Cemetery","","Fish","","15% - Super Rod"],
+  ["Duskull","Pythios Cemetery","","Wild","14","8% - Night"],
+  ["Ekans","Pythios Cemetery","","Wild","14 - 16","20% - Night"],
+  ["Finneon","Pythios Cemetery","","Fish","11 - 16","60% - Good Rod"],
+  ["Goomy","Pythios Cemetery","","Wild","15","5% - Day"],
+  ["Goomy","Pythios Cemetery","","Wild","13","5% - Night"],
+  ["Litwick","Pythios Cemetery","","Wild","13 - 15","20% - Night"],
+  ["Magikarp","Pythios Cemetery","","Fish","","70% - Old Rod"],
+  ["Natu","Pythios Cemetery","","Wild","","5% - Day"],
+  ["Natu","Pythios Cemetery","","Wild","13","5% - Night"],
+  ["Paras","Pythios Cemetery","","Wild","","10% - Day"],
+  ["Poliwhirl","Pythios Cemetery","","Fish","","40% - Super Rod"],
+  ["Remoraid","Pythios Cemetery","","Surf","21","30%"],
+  ["Scraggy","Pythios Cemetery","","Wild","13","10% - Day"],
+  ["Shuppet","Pythios Cemetery","","Wild","13","8% - Day"],
+  ["Sizzlipede","Pythios Cemetery","","Wild","14","10% - Day"],
+  ["Sizzlipede","Pythios Cemetery","","Wild","","10% - Night"],
+  ["Snom","Pythios Cemetery","","Wild","13 - 15","10% - Night"],
+  ["Stunky","Pythios Cemetery","","Wild","14 - 16","10% - Night"],
+  ["Trapinch","Pythios Cemetery","","Wild","13 - 16","10% - Day"],
+  ["Trapinch","Pythios Cemetery","","Wild","","10% - Night"],
+  ["Wattrel","Pythios Cemetery","","Wild","13 - 16","20% - Day"],
+  ["Wimpod","Pythios Cemetery","","Surf","","60%"],
+  ["Alolan Meowth","Pythios Town","","Wild","16","10% - Night"],
+  ["Basculin White","Pythios Town","","Fish","","20% - Super Rod"],
+  ["Corphish","Pythios Town","","Fish","14","30% - Old Rod"],
+  ["Doduo","Pythios Town","","Wild","16","10% - Day"],
+  ["Drowzee","Pythios Town","","Wild","","10% - Day"],
+  ["Drowzee","Pythios Town","","Wild","16","10% - Night"],
+  ["Dwebble","Pythios Town","","Wild","16","20% - Day"],
+  ["Dwebble","Pythios Town","","Wild","16","20% - Night"],
+  ["Finizen","Pythios Town","","Fish","","20% - Good Rod"],
+  ["Finneon","Pythios Town","","Fish","","40% - Super Rod"],
+  ["Flittle","Pythios Town","","Wild","","10% - Day"],
+  ["Flittle","Pythios Town","","Wild","","10% - Night"],
+  ["Honedge","Pythios Town","","Wild","","2% - Day"],
+  ["Honedge","Pythios Town","","Wild","15","2% - Night"],
+  ["Hoothoot","Pythios Town","","Wild","15 - 16","10% - Night"],
+  ["Magikarp","Pythios Town","","Fish","14","70% - Old Rod"],
+  ["Meowth","Pythios Town","","Wild","","10% - Day"],
+  ["Mienfoo","Pythios Town","","Wild","","10% - Day"],
+  ["Mienfoo","Pythios Town","","Wild","16","10% - Night"],
+  ["Poliwag","Pythios Town","","Fish","","60% - Good Rod"],
+  ["Remoraid","Pythios Town","","Fish","","40% - Super Rod"],
+  ["Rufflet","Pythios Town","","Wild","13 - 16","20% - Day"],
+  ["Seel","Pythios Town","","Surf","","30%"],
+  ["Shellder","Pythios Town","","Surf","","10%"],
+  ["Spheal","Pythios Town","","Fish","","20% - Good Rod"],
+  ["Spheal","Pythios Town","","Surf","18","60%"],
+  ["Vullaby","Pythios Town","","Wild","","20% - Night"],
+  ["Wingull","Pythios Town","","Wild","14 - 16","8% - Day"],
+  ["Wingull","Pythios Town","","Wild","","8% - Night"],
+  ["Aron","Riverwalk Trail","West","Wild","10 - 12","20% - Day"],
+  ["Aron","Riverwalk Trail","West","Wild","12","20% - Night"],
+  ["Barboach","Riverwalk Trail","South","Fish","22 - 27","40% - Super Rod"],
+  ["Barboach","Riverwalk Trail","South","Surf","","10%"],
+  ["Bounsweet","Riverwalk Trail","South","Wild","11 - 13","10% - Day"],
+  ["Buizel","Riverwalk Trail","West","Fish","","40% - Good Rod"],
+  ["Buizel","Riverwalk Trail","South","Fish","","40% - Good Rod"],
+  ["Buizel","Riverwalk Trail","South","Wild","11 - 13","20% - Day"],
+  ["Buizel","Riverwalk Trail","South","Wild","","20% - Night"],
+  ["Cascoon","Riverwalk Trail","South","Wild","","8% - Night"],
+  ["Clauncher","Riverwalk Trail","West","Fish","","60% - Good Rod"],
+  ["Clauncher","Riverwalk Trail","West","Surf","12","60%"],
+  ["Clauncher","Riverwalk Trail","South","Fish","","60% - Good Rod"],
+  ["Clauncher","Riverwalk Trail","South","Surf","13","60%"],
+  ["Clawitzer","Riverwalk Trail","West","Fish","34","20% - Super Rod"],
+  ["Cubchoo","Riverwalk Trail","West","Wild","","8% - Night"],
+  ["Cufant","Riverwalk Trail","South","Wild","13","5% - Day"],
+  ["Cufant","Riverwalk Trail","South","Wild","11 - 13","5% - Night"],
+  ["Cutiefly","Riverwalk Trail","West","Wild","12","10% - Day"],
+  ["Dreepy","Riverwalk Trail","South","Wild","11 - 12","2% - Night"],
+  ["Ekans","Riverwalk Trail","South","Wild","11 - 12","10% - Day"],
+  ["Ekans","Riverwalk Trail","South","Wild","13","10% - Night"],
+  ["Finneon","Riverwalk Trail","West","Fish","20 - 30","40% - Super Rod"],
+  ["Finneon","Riverwalk Trail","West","Surf","","30%"],
+  ["Galarian Ponyta","Riverwalk Trail","West","Wild","11 - 12","20% - Night"],
+  ["Galarian Zigzagoon","Riverwalk Trail","South","Wild","13","10% - Night"],
+  ["Gligar","Riverwalk Trail","West","Wild","10 - 12","5% - Day"],
+  ["Gligar","Riverwalk Trail","West","Wild","12","5% - Night"],
+  ["Jangmo-o","Riverwalk Trail","West","Wild","12","2% - Day"],
+  ["Jangmo-o","Riverwalk Trail","West","Wild","12","2% - Night"],
+  ["Litleo","Riverwalk Trail","West","Wild","10 - 12","10% - Day"],
+  ["Litleo","Riverwalk Trail","West","Wild","10 - 12","10% - Night"],
+  ["Magikarp","Riverwalk Trail","West","Fish","","70% - Old Rod"],
+  ["Magikarp","Riverwalk Trail","South","Fish","","70% - Old Rod"],
+  ["Meditite","Riverwalk Trail","West","Wild","12","10% - Day"],
+  ["Meditite","Riverwalk Trail","West","Wild","11","10% - Night"],
+  ["Mudbray","Riverwalk Trail","West","Wild","10 - 12","10% - Day"],
+  ["Mudbray","Riverwalk Trail","West","Wild","","10% - Night"],
+  ["Paldean Wooper","Riverwalk Trail","South","Wild","12 - 13","5% - Day"],
+  ["Paldean Wooper","Riverwalk Trail","South","Wild","","5% - Night"],
+  ["Poliwag","Riverwalk Trail","West","Fish","","30% - Old Rod"],
+  ["Ponyta","Riverwalk Trail","West","Wild","12","20% - Day"],
+  ["Pumpkaboo","Riverwalk Trail","South","Wild","13","10% - Night"],
+  ["Remoraid","Riverwalk Trail","West","Fish","25 - 29","40% - Super Rod"],
+  ["Remoraid","Riverwalk Trail","West","Surf","","10%"],
+  ["Remoraid","Riverwalk Trail","South","Fish","27 - 30","40% - Super Rod"],
+  ["Sandile","Riverwalk Trail","West","Wild","12","5% - Day"],
+  ["Sandile","Riverwalk Trail","West","Wild","","5% - Night"],
+  ["Silcoon","Riverwalk Trail","South","Wild","13","8% - Day"],
+  ["Skrelp","Riverwalk Trail","South","Fish","","30% - Old Rod"],
+  ["Skrelp","Riverwalk Trail","South","Surf","13","30%"],
+  ["Tropius","Riverwalk Trail","South","Wild","13","2% - Day"],
+  ["Whiscash","Riverwalk Trail","South","Fish","27","20% - Super Rod"],
+  ["Wooper","Riverwalk Trail","South","Wild","12 - 13","20% - Day"],
+  ["Wooper","Riverwalk Trail","South","Wild","11","20% - Night"],
+  ["Wurmple","Riverwalk Trail","South","Wild","11 - 13","10% - Day"],
+  ["Wurmple","Riverwalk Trail","South","Wild","13","10% - Night"],
+  ["Yamper","Riverwalk Trail","West","Wild","10 - 12","8% - Day"],
+  ["Yanma","Riverwalk Trail","West","Wild","10","10% - Night"],
+  ["Zigzagoon","Riverwalk Trail","South","Wild","13","10% - Day"],
+  ["Bellsprout","Sea of Asteri","West","Wild","","10% - Day"],
+  ["Bellsprout (Cufant?)","Sea of Asteri","West","Wild","","10% - Night"],
+  ["Charcadet","Sea of Asteri","East","Wild","26","5% - Day"],
+  ["Charjabug","Sea of Asteri","East","Wild","24 - 25","10% - Day"],
+  ["Charjabug","Sea of Asteri","East","Wild","","10% - Night"],
+  ["Chatot","Sea of Asteri","West","Wild","","10% - Day"],
+  ["Chatot (Wattrel?)","Sea of Asteri","West","Wild","","10% - Night"],
+  ["Chespin","Sea of Asteri","East","Wild","25","5% - Night"],
+  ["Chinchou","Sea of Asteri","West","Fish","","15% - Super Rod"],
+  ["Chinchou","Sea of Asteri","West","Dive","28","10%"],
+  ["Chinchou","Sea of Asteri","East","Fish","","15% - Super Rod"],
+  ["Clamperl","Sea of Asteri","West","Fish","","20% - Good Rod"],
+  ["Clamperl","Sea of Asteri","West","Fish","","40% - Super Rod"],
+  ["Clamperl","Sea of Asteri","East","Fish","","20% - Good Rod"],
+  ["Clamperl","Sea of Asteri","East","Fish","","40% - Super Rod"],
+  ["Clamperl","Sea of Asteri","East","Dive","26 - 28","8%"],
+  ["Clauncher","Sea of Asteri","West","Dive","28","5%"],
+  ["Corphish","Sea of Asteri","East","Dive","","10%"],
+  ["Corsola","Sea of Asteri","West","Dive","25","8%"],
+  ["Crabrawler","Sea of Asteri","West","Wild","","15% - Day"],
+  ["Crabrawler","Sea of Asteri","East","Wild","24 - 26","20% - Day"],
+  ["Crabrawler","Sea of Asteri","East","Wild","23","20% - Night"],
+  ["Crabrawler (Bellsprout?)","Sea of Asteri","West","Wild","","15% - Night"],
+  ["Cufant","Sea of Asteri","East","Wild","","10% - Day"],
+  ["Dreepy","Sea of Asteri","West","Wild","","2% - Day"],
+  ["Dreepy","Sea of Asteri","West","Wild","","2% - Night"],
+  ["Fennekin","Sea of Asteri","East","Wild","","5% - Night"],
+  ["Finizen","Sea of Asteri","East","Dive","","10%"],
+  ["Finneon","Sea of Asteri","West","Fish","","20% - Good Rod"],
+  ["Finneon","Sea of Asteri","West","Dive","26 - 28","20%"],
+  ["Finneon","Sea of Asteri","East","Fish","","20% - Good Rod"],
+  ["Finneon","Sea of Asteri","East","Dive","","20%"],
+  ["Floatzel","Sea of Asteri","East","Dive","","2%"],
+  ["Fomantis","Sea of Asteri","West","Wild","25","20% - Day"],
+  ["Fomantis","Sea of Asteri","West","Wild","","20% - Night"],
+  ["Froakie","Sea of Asteri","East","Wild","26","5% - Night"],
+  ["Gyarados","Sea of Asteri","West","Dive","","2%"],
+  ["Heracross","Sea of Asteri","West","Wild","","4% - Night"],
+  ["Jangmo-o","Sea of Asteri","East","Wild","26","5% - Day"],
+  ["Jangmo-o?","Sea of Asteri","East, (not on DexNav)","Wild","","5% - Night"],
+  ["Lanturn","Sea of Asteri","West","Fish","","5% - Super Rod"],
+  ["Lanturn","Sea of Asteri","East","Fish","","5% - Super Rod"],
+  ["Magikarp","Sea of Asteri","West","Fish","","70% - Old Rod"],
+  ["Magikarp","Sea of Asteri","West","Dive","26 - 27","10%"],
+  ["Magikarp","Sea of Asteri","East","Fish","","70% - Old Rod"],
+  ["Ninjask","Sea of Asteri","East","Wild","24 - 26","10% - Day"],
+  ["Psyduck","Sea of Asteri","West","Fish","","60% - Good Rod"],
+  ["Psyduck","Sea of Asteri","East","Fish","","60% - Good Rod"],
+  ["Remoraid","Sea of Asteri","East","Dive","25","10%"],
+  ["Rufflet","Sea of Asteri","East","Wild","23 - 26","20% - Day"],
+  ["Scyther","Sea of Asteri","West","Wild","","8% - Day"],
+  ["Scyther","Sea of Asteri","West","Wild","","4% - Night"],
+  ["Shedinja","Sea of Asteri","East","Wild","","10% - Night"],
+  ["Skrelp","Sea of Asteri","West","Dive","26 - 27","5%"],
+  ["Skrelp","Sea of Asteri","East","Surf","20 - 23","10%"],
+  ["Stufful","Sea of Asteri","West","Wild","","20% - Day"],
+  ["Stufful","Sea of Asteri","East","Wild","23 - 26","10% - Day"],
+  ["Stufful (Ekans?)","Sea of Asteri","West","Wild","","20% - Night"],
+  ["Tentacool","Sea of Asteri","West","Fish","","30% - Old Rod"],
+  ["Tentacool","Sea of Asteri","West","Surf","18 - 26","60%"],
+  ["Tentacool","Sea of Asteri","West","Dive","28","20%"],
+  ["Tentacool","Sea of Asteri","East","Fish","","30% - Old Rod"],
+  ["Tentacool","Sea of Asteri","East","Surf","20 - 24","60%"],
+  ["Tentacool","Sea of Asteri","East","Dive","27","20%"],
+  ["Togepi","Sea of Asteri","East","Wild","","10% - Night"],
+  ["Trumbeak","Sea of Asteri","East","Wild","23 - 24","10% - Day"],
+  ["Trumbeak","Sea of Asteri","East","Wild","","10% - Night"],
+  ["Vullaby","Sea of Asteri","East","Wild","26","20% - Night"],
+  ["Wailmer","Sea of Asteri","West","Fish","","40% - Super Rod"],
+  ["Wailmer","Sea of Asteri","West","Surf","18 - 26","10%"],
+  ["Wailmer","Sea of Asteri","West","Dive","25 - 27","20%"],
+  ["Wailmer","Sea of Asteri","East","Fish","","40% - Super Rod"],
+  ["Wailmer","Sea of Asteri","East","Dive","25 - 28","20%"],
+  ["Wattrel","Sea of Asteri","West","Wild","","15% - Day"],
+  ["Wattrel","Sea of Asteri","East","Surf","21 - 25","30%"],
+  ["Wattrel (Galarian Linoone?)","Sea of Asteri","West","Wild","","15% - Night"],
+  ["Wingull","Sea of Asteri","West","Surf","19 - 25","30%"],
+  ["Charcadet","Sea of Vulcai","","Wild","","10% - Day"],
+  ["Charcadet","Sea of Vulcai","","Wild","","10% - Night"],
+  ["Chinchou","Sea of Vulcai","","Fish","","15% - Super Rod"],
+  ["Chinchou","Sea of Vulcai","","Dive","27","10%"],
+  ["Clamperl","Sea of Vulcai","","Fish","","20% - Good Rod"],
+  ["Clamperl","Sea of Vulcai","","Fish","","40% - Super Rod"],
+  ["Clamperl","Sea of Vulcai","","Dive","28","5%"],
+  ["Finneon","Sea of Vulcai","","Fish","","20% - Good Rod"],
+  ["Finneon","Sea of Vulcai","","Dive","26 - 27","20%"],
+  ["Fuecoco","Sea of Vulcai","","Wild","","5% - Day"],
+  ["Galarian Corsola","Sea of Vulcai","","Dive","27","8%"],
+  ["Hisuian Voltorb","Sea of Vulcai","","Wild","","10% - Day"],
+  ["Kecleon","Sea of Vulcai","","Wild","30","10% - Day"],
+  ["Kecleon","Sea of Vulcai","","Wild","25 - 30","10% - Night"],
+  ["Kilowattrel","Sea of Vulcai","","Wild","","5% - Day"],
+  ["Kilowattrel","Sea of Vulcai","","Wild","","5% - Night"],
+  ["Lanturn","Sea of Vulcai","","Fish","","5% - Super Rod"],
+  ["Litten","Sea of Vulcai","","Wild","","5% - Night"],
+  ["Magikarp","Sea of Vulcai","","Fish","","70% - Old Rod"],
+  ["Noctowl","Sea of Vulcai","","Wild","","10% - Night"],
+  ["Octillery","Sea of Vulcai","","Surf","25 - 30","5%"],
+  ["Octillery","Sea of Vulcai","","Dive","27","5%"],
+  ["Popplio","Sea of Vulcai","","Wild","","5% - Night"],
+  ["Psyduck","Sea of Vulcai","","Fish","","60% - Good Rod"],
+  ["Quaxly","Sea of Vulcai","","Wild","","5% - Day"],
+  ["Relicanth","Sea of Vulcai","","Dive","26","2%"],
+  ["Remoraid","Sea of Vulcai","","Surf","22 - 30","5%"],
+  ["Remoraid","Sea of Vulcai","","Dive","26 - 28","20%"],
+  ["Rowlet","Sea of Vulcai","","Wild","30","5% - Night"],
+  ["Scyther","Sea of Vulcai","","Wild","","20% - Day"],
+  ["Scyther","Sea of Vulcai","","Wild","30","20% - Night"],
+  ["Sizzlipede","Sea of Vulcai","","Wild","","10% - Day"],
+  ["Skrelp","Sea of Vulcai","","Dive","27 - 28","10%"],
+  ["Sprigatito","Sea of Vulcai","","Wild","","5% - Day"],
+  ["Tentacool","Sea of Vulcai","","Fish","","30% - Old Rod"],
+  ["Tentacool","Sea of Vulcai","","Surf","22 - 30","60%"],
+  ["Tinkatuff","Sea of Vulcai","","Wild","","20% - Day"],
+  ["Tinkatuff","Sea of Vulcai","","Wild","25","20% - Night"],
+  ["Voltorb","Sea of Vulcai","","Wild","","10% - Night"],
+  ["Wailmer","Sea of Vulcai","","Fish","","40% - Super Rod"],
+  ["Wailmer","Sea of Vulcai","","Surf","22 - 30","30%"],
+  ["Wailmer","Sea of Vulcai","","Dive","26 - 28","20%"],
+  ["Baltoy","Sofos City","","Wild","24","10% - Night"],
+  ["Clauncher","Sofos City","","Fish","","20% - Good Rod"],
+  ["Clauncher","Sofos City","","Fish","","40% - Super Rod"],
+  ["Comfey","Sofos City","","Wild","24","10% - Day"],
+  ["Corphish","Sofos City","","Wild","","8% - Day"],
+  ["Corphish","Sofos City","","Wild","","8% - Night"],
+  ["Corsola","Sofos City","","Fish","","15% - Super Rod"],
+  ["Corsola","Sofos City","","Surf","21 - 24","5%"],
+  ["Crabrawler","Sofos City","","Wild","24","10% - Day"],
+  ["Crabrawler","Sofos City","","Wild","","10% - Night"],
+  ["Finneon","Sofos City","","Fish","","20% - Good Rod"],
+  ["Galarian Corsola","Sofos City","","Fish","","5% - Super Rod"],
+  ["Galarian Corsola","Sofos City","","Surf","","5%"],
+  ["Galarian Ponyta","Sofos City","","Wild","","10% - Night"],
+  ["Girafarig","Sofos City","","Wild","24","5% - Day"],
+  ["Helioptile","Sofos City","","Wild","22 - 24","10% - Day"],
+  ["Honedge","Sofos City","","Wild","","2% - Day"],
+  ["Honedge","Sofos City","","Wild","","2% - Night"],
+  ["Kirlia","Sofos City","","Wild","24","10% - Night"],
+  ["Magikarp","Sofos City","","Fish","","70% - Old Rod"],
+  ["Natu","Sofos City","","Wild","","5% - Night"],
+  ["Noctowl","Sofos City","","Wild","21","20% - Night"],
+  ["Nosepass","Sofos City","","Wild","","5% - Day"],
+  ["Nosepass","Sofos City","","Wild","","5% - Night"],
+  ["Ponyta","Sofos City","","Wild","24","10% - Day"],
+  ["Psyduck","Sofos City","","Fish","","60% - Good Rod"],
+  ["Shellder","Sofos City","","Fish","","30% - Old Rod"],
+  ["Swablu","Sofos City","","Wild","23","20% - Day"],
+  ["Tentacool","Sofos City","","Surf","11 - 24","60%"],
+  ["Wailmer","Sofos City","","Fish","","40% - Super Rod"],
+  ["Wailmer","Sofos City","","Surf","17 - 24","30%"],
+  ["Wingull","Sofos City","","Wild","24","20% - Day"],
+  ["Wingull","Sofos City","","Wild","23","20% - Night"],
+  ["Abomasnow","The Nyx Trails","","Wild","37","5% - Day"],
+  ["Abomasnow","The Nyx Trails","","Wild","34 - 37","5% - Night"],
+  ["Alolan Persian","The Nyx Trails","","Wild","35 - 37","10% - Night"],
+  ["Banette","The Nyx Trails","","Wild","34 - 37","4% - Day"],
+  ["Banette","The Nyx Trails","","Wild","36 - 37","4% - Night"],
+  ["Breloom","The Nyx Trails","","Wild","35","10% - Day"],
+  ["Bruxish","The Nyx Trails","","Fish","","20% - Super Rod"],
+  ["Bruxish","The Nyx Trails","","Surf","","10%"],
+  ["Clamperl","The Nyx Trails","","Fish","","20% - Good Rod"],
+  ["Clamperl","The Nyx Trails","","Fish","","40% - Super Rod"],
+  ["Dusclops","The Nyx Trails","","Wild","37","4% - Day"],
+  ["Dusclops","The Nyx Trails","","Wild","36 - 37","4% - Night"],
+  ["Duskull","The Nyx Trails","","Wild","34 - 37","10% - Night"],
+  ["Gogoat","The Nyx Trails","","Wild","37","10% - Day"],
+  ["Gourgeist","The Nyx Trails","","Wild","35 - 37","5% - Night"],
+  ["Hisuian Electrode","The Nyx Trails","","Wild","34","2% - Day"],
+  ["Hisuian Electrode","The Nyx Trails","","Wild","37","2% - Night"],
+  ["Lumineon","The Nyx Trails","","Surf","","30%"],
+  ["Lurantis","The Nyx Trails","","Wild","35","5% - Day"],
+  ["Magikarp","The Nyx Trails","","Fish","","70% - Old Rod"],
+  ["Perrserker","The Nyx Trails","","Wild","36 - 37","10% - Day"],
+  ["Perrserker","The Nyx Trails","","Wild","36 - 37","10% - Night"],
+  ["Persian","The Nyx Trails","","Wild","37","10% - Day"],
+  ["Psyduck","The Nyx Trails","","Fish","","60% - Good Rod"],
+  ["Pumpkaboo","The Nyx Trails","","Wild","34 - 37","20% - Night"],
+  ["Shellder","The Nyx Trails","","Fish","","30% - Old Rod"],
+  ["Shellder","The Nyx Trails","","Fish","","20% - Good Rod"],
+  ["Shuppet","The Nyx Trails","","Wild","35 - 37","10% - Night"],
+  ["Snover","The Nyx Trails","","Wild","34 - 36","20% - Day"],
+  ["Snover","The Nyx Trails","","Wild","34 - 37","20% - Night"],
+  ["Tentacruel","The Nyx Trails","","Surf","","60%"],
+  ["Wailmer","The Nyx Trails","","Fish","","40% - Super Rod"],
+  ["Xatu","The Nyx Trails","","Wild","34 - 37","20% - Day"],
+  ["Altaria","Tower of Dioxippus","","Wild","35","5% - Day"],
+  ["Appletun","Tower of Dioxippus","","Wild","35","4% - Day"],
+  ["Appletun","Tower of Dioxippus","","Wild","34 - 35","4% - Night"],
+  ["Applin","Tower of Dioxippus","","Wild","33 - 35","20% - Day"],
+  ["Applin","Tower of Dioxippus","","Wild","32 - 35","20% - Night"],
+  ["Dipplin","Tower of Dioxippus","","Wild","35","2% - Day"],
+  ["Dipplin","Tower of Dioxippus","","Wild","35","2% - Night"],
+  ["Drakloak","Tower of Dioxippus","","Wild","35","5% - Night"],
+  ["Dreepy","Tower of Dioxippus","","Wild","34 - 35","20% - Night"],
+  ["Flapple","Tower of Dioxippus","","Wild","35","4% - Day"],
+  ["Flapple","Tower of Dioxippus","","Wild","35","4% - Night"],
+  ["Gogoat","Tower of Dioxippus","","Wild","35","5% - Day"],
+  ["Gogoat","Tower of Dioxippus","","Wild","33 - 35","5% - Night"],
+  ["Goomy","Tower of Dioxippus","","Wild","","10% - Day"],
+  ["Goomy","Tower of Dioxippus","","Wild","33 - 35","10% - Night"],
+  ["Kecleon","Tower of Dioxippus","","Wild","","10% - Day"],
+  ["Mawile","Tower of Dioxippus","","Wild","34 - 35","10% - Night"],
+  ["Steenee","Tower of Dioxippus","","Wild","32","10% - Day"],
+  ["Steenee","Tower of Dioxippus","","Wild","35","10% - Night"],
+  ["Swablu","Tower of Dioxippus","","Wild","","20% - Day"],
+  ["Yanma","Tower of Dioxippus","","Wild","35","10% - Day"],
+  ["Yanma","Tower of Dioxippus","","Wild","32 - 34","10% - Night"],
+  ["Alolan Raichu","Wakewater Isle","","Wild","","10% - Day"],
+  ["Annihilape","Wakewater Isle","","Wild","","2% - Night"],
+  ["Bewear","Wakewater Isle","","Wild","45","10% - Day"],
+  ["Bewear","Wakewater Isle","","Wild","","10% - Night"],
+  ["Crabominable","Wakewater Isle","","Wild","","5% - Day"],
+  ["Crabominable","Wakewater Isle","","Wild","","5% - Night"],
+  ["Crawdaunt","Wakewater Isle","","Wild","47","4% - Day"],
+  ["Crawdaunt","Wakewater Isle","","Wild","","4% - Night"],
+  ["Dodrio","Wakewater Isle","","Wild","","10% - Day"],
+  ["Dodrio","Wakewater Isle","","Wild","","10% - Night"],
+  ["Farigiraf","Wakewater Isle","","Wild","","2% - Day"],
+  ["Gogoat","Wakewater Isle","","Wild","46","20% - Day"],
+  ["Komala","Wakewater Isle","","Wild","","4% - Day"],
+  ["Komala","Wakewater Isle","","Wild","","4% - Night"],
+  ["Oranguru","Wakewater Isle","","Wild","","10% - Night"],
+  ["Passimian","Wakewater Isle","","Wild","44","10% - Day"],
+  ["Pelipper","Wakewater Isle","","Wild","","20% - Night"],
+  ["Raichu","Wakewater Isle","","Wild","","10% - Night"],
+  ["Scyther","Wakewater Isle","","Wild","","5% - Day"],
+  ["Scyther","Wakewater Isle","","Wild","","5% - Night"],
+  ["Toucannon","Wakewater Isle","","Wild","","20% - Day"],
+  ["Victreebel","Wakewater Isle","","Wild","","20% - Night"],
+  ["Aipom","Wanderer`s Woods","North","Wild","12 - 15","20% - Day"],
+  ["Aipom","Wanderer`s Woods","South","Wild","","10% - Day"],
+  ["Anorith","Wanderer`s Woods","South","Wild","15","5% - Night"],
+  ["Applin","Wanderer`s Woods","North","Wild","12 - 15","10% - Day"],
+  ["Barboach","Wanderer`s Woods","North","Fish","9","30% - Old Rod"],
+  ["Basculin White","Wanderer`s Woods","North","Fish","","20% - Super Rod"],
+  ["Blitzle","Wanderer`s Woods","North","Wild","15","2% - Day"],
+  ["Blitzle","Wanderer`s Woods","North","Wild","15","2% - Night"],
+  ["Chikorita","Wanderer`s Woods","North","Wild","11 - 15","4% - Day"],
+  ["Ducklett","Wanderer`s Woods","North","Surf","","10%"],
+  ["Duskull","Wanderer`s Woods","South","Wild","13 - 14","10% - Night"],
+  ["Finneon","Wanderer`s Woods","North","Fish","","40% - Super Rod"],
+  ["Goomy","Wanderer`s Woods","South","Wild","13 - 15","8% - Day"],
+  ["Goomy","Wanderer`s Woods","South","Wild","15","8% - Night"],
+  ["Heracross","Wanderer`s Woods","North","Wild","12 - 15","5% - Day"],
+  ["Heracross","Wanderer`s Woods","North","Wild","12 - 15","5% - Night"],
+  ["Heracross","Wanderer`s Woods","South","Wild","13 - 15","5% - Day"],
+  ["Impidimp","Wanderer`s Woods","North","Wild","12 - 14","20% - Night"],
+  ["Impidimp","Wanderer`s Woods","South","Wild","14 - 15","10% - Night"],
+  ["Lileep","Wanderer`s Woods","South","Wild","13 - 15","5% - Day"],
+  ["Magikarp","Wanderer`s Woods","North","Fish","","70% - Old Rod"],
+  ["Munna","Wanderer`s Woods","South","Wild","14 - 15","10% - Day"],
+  ["Natu","Wanderer`s Woods","North","Wild","12 - 15","10% - Night"],
+  ["Natu","Wanderer`s Woods","South","Wild","13 - 15","20% - Day"],
+  ["Natu","Wanderer`s Woods","South","Wild","13 - 15","20% - Night"],
+  ["Oricorio Sensu","Wanderer`s Woods","South","Wild","14 - 15","5% - Night"],
+  ["Paldean Wooper","Wanderer`s Woods","North","Wild","12 - 15","10% - Night"],
+  ["Paldean Wooper","Wanderer`s Woods","South","Wild","14 - 15","10% - Night"],
+  ["Paras","Wanderer`s Woods","South","Wild","13 - 15","20% - Day"],
+  ["Paras","Wanderer`s Woods","South","Wild","13 - 15","20% - Night"],
+  ["Pichu","Wanderer`s Woods","North","Wild","12 - 15","4% - Day"],
+  ["Pichu","Wanderer`s Woods","North","Wild","15","4% - Night"],
+  ["Poliwag","Wanderer`s Woods","North","Fish","","60% - Good Rod"],
+  ["Poliwag","Wanderer`s Woods","North","Wild","13","5% - Day"],
+  ["Poliwag","Wanderer`s Woods","North","Wild","12 - 15","5% - Night"],
+  ["Psyduck","Wanderer`s Woods","North","Surf","","30%"],
+  ["Pumpkaboo","Wanderer`s Woods","North","Wild","12 - 15","10% - Day"],
+  ["Ralts","Wanderer`s Woods","South","Wild","13 - 14","10% - Day"],
+  ["Ralts","Wanderer`s Woods","South","Wild","13 - 15","10% - Night"],
+  ["Remoraid","Wanderer`s Woods","North","Fish","","40% - Super Rod"],
+  ["Scyther","Wanderer`s Woods","South","Wild","14 - 15","2% - Day"],
+  ["Scyther","Wanderer`s Woods","South","Wild","15","2% - Night"],
+  ["Shroomish","Wanderer`s Woods","North","Wild","12 - 15","20% - Day"],
+  ["Shroomish","Wanderer`s Woods","North","Wild","12 - 15","20% - Night"],
+  ["Shuppet","Wanderer`s Woods","North","Wild","15","10% - Night"],
+  ["Toedscool","Wanderer`s Woods","North","Wild","13 - 15","10% - Day"],
+  ["Toedscool","Wanderer`s Woods","North","Wild","13 - 15","10% - Night"],
+  ["Togedemaru","Wanderer`s Woods","North","Wild","14 - 15","4% - Night"],
+  ["Wimpod","Wanderer`s Woods","North","Surf","5 - 8","60%"],
+  ["Wooper","Wanderer`s Woods","North","Fish","","40% - Good Rod"],
+  ["Wooper","Wanderer`s Woods","North","Wild","12 - 15","10% - Day"],
+  ["Wooper","Wanderer`s Woods","South","Wild","13 - 15","10% - Day"]
+];
+
+// Build structured data
+const areasMap = new Map();
+rawExcelRows.forEach(row => {
+  const [pokemon, location, moreInfo, method, level, rate] = row;
+  if (!['Wild','Fish','Surf','Dive'].includes(method)) return;
+  const fullLocation = location + (moreInfo ? ` (${moreInfo})` : '');
+  if (!areasMap.has(fullLocation)) {
+    areasMap.set(fullLocation, { title: fullLocation, icon: '📍', subsections: {} });
+  }
+  const area = areasMap.get(fullLocation);
+  const subKey = method === 'Fish' ? 'Fishing' : method === 'Surf' ? 'Surfing' : method === 'Dive' ? 'Diving' : 'Land (Day/Night)';
+  if (!area.subsections[subKey]) area.subsections[subKey] = [];
+  // Format level
+  let levelStr = level ? `Lv.${level.replace(/\s*\-\s*/g,'‑')}` : '';
+  area.subsections[subKey].push({
+    name: pokemon,
+    rate: `${levelStr ? levelStr + ', ' : ''}${rate}`
+  });
+});
+
+// Convert map to array
+const areasData = Array.from(areasMap.values()).map(area => {
+  const subsections = Object.entries(area.subsections).map(([label, pokemon]) => ({
+    label,
+    pokemon: pokemon.sort((a,b) => a.name.localeCompare(b.name))
+  }));
+  return { id: area.title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''), title: area.title, icon: '📍', subsections };
+});
+
+// ═══════════════════════════════════════════
+// STATE & LOGIC (same as before)
+// ═══════════════════════════════════════════
+const STORAGE_KEY = 'pkmn_lazarus_full_caught';
+let caughtSet = new Set();
+let currentTab = 'areas';
+
+function normalize(name) { return name.trim().toLowerCase().replace(/\s+/g, ' '); }
+function loadState() { try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr)) caughtSet = new Set(arr.map(normalize)); } } catch(e) { caughtSet = new Set(); } }
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(caughtSet))); document.getElementById('lastSaved').textContent = new Date().toLocaleTimeString(); }
+function isCaught(name) { return caughtSet.has(normalize(name)); }
+function toggleCaught(name) { const key = normalize(name); if (caughtSet.has(key)) caughtSet.delete(key); else caughtSet.add(key); saveState(); refreshAllUI(); }
+function setCaught(name, value) { const key = normalize(name); if (value) caughtSet.add(key); else caughtSet.delete(key); }
+
+function buildAreas() {
+  const container = document.getElementById('areasContainer');
+  container.innerHTML = '';
+  areasData.forEach(area => {
+    const card = document.createElement('div');
+    card.className = 'area-card';
+    card.id = 'area-' + area.id;
+    card.dataset.areaId = area.id;
+    const allPoke = area.subsections.flatMap(s => s.pokemon);
+    const uniquePoke = [...new Set(allPoke.map(p => normalize(p.name)))];
+    const caughtCount = uniquePoke.filter(n => caughtSet.has(n)).length;
+    const totalCount = uniquePoke.length;
+    const pct = totalCount ? Math.round((caughtCount/totalCount)*100) : 0;
+    card.innerHTML = `
+      <div class="area-header" onclick="toggleCollapse('${area.id}')">
+        <span class="area-title"><span class="area-icon">${area.icon}</span>${area.title}</span>
+        <span class="area-meta"><span class="area-progress">${caughtCount}/${totalCount} · ${pct}%</span><span class="chevron">▼</span></span>
+      </div>
+      <div class="area-body">
+        ${area.subsections.map(sub => `
+          <div class="area-subsection">${sub.label}</div>
+          ${sub.pokemon.map(p => {
+            const caught = isCaught(p.name);
+            return `<div class="poke-row${caught?' caught':''}" data-poke-name="${normalize(p.name)}" data-area-id="${area.id}" onclick="toggleCaught('${p.name.replace(/'/g, "\\'")}')">
+              <div class="check-circle">✓</div>
+              <div class="poke-info"><div class="poke-name">${p.name}</div></div>
+              <span class="poke-badge badge-rate">${p.rate}</span>
+              ${caught?'<span class="badge-caught-sm">Caught</span>':''}
+            </div>`;
+          }).join('')}
+        `).join('')}
+        <div class="btn-row">
+          <button class="btn btn-catch-all" onclick="event.stopPropagation();markAllInArea('${area.id}',true)">✅ Mark All</button>
+          <button class="btn btn-reset" onclick="event.stopPropagation();markAllInArea('${area.id}',false)">↩ Clear</button>
+        </div>
+      </div>`;
+    container.appendChild(card);
+  });
+  document.querySelectorAll('.area-card').forEach(card => {
+    const saved = localStorage.getItem('collapse_'+card.dataset.areaId);
+    if (saved==='true') card.classList.add('collapsed');
+  });
+}
+
+function buildPokedex() {
+  const container = document.getElementById('pokedexContainer');
+  const allPoke = new Map();
+  areasData.forEach(area => area.subsections.forEach(sub => sub.pokemon.forEach(p => {
+    const key = normalize(p.name);
+    if (!allPoke.has(key)) allPoke.set(key, { name: p.name, locations: [] });
+    const entry = allPoke.get(key);
+    if (!entry.locations.find(l => l.id === area.id)) entry.locations.push({ id: area.id, title: area.title });
+  })));
+  const sorted = [...allPoke.keys()].sort((a,b) => a.localeCompare(b));
+  container.innerHTML = '';
+  sorted.forEach(key => {
+    const entry = allPoke.get(key);
+    const caught = caughtSet.has(key);
+    const div = document.createElement('div');
+    div.className = 'pokedex-row' + (caught?' caught':'');
+    div.dataset.pokeName = key;
+    div.onclick = () => toggleCaught(entry.name);
+    div.innerHTML = `<div class="check-circle">✓</div><div class="poke-info"><div class="poke-name">${entry.name}</div><div style="font-size:0.65rem;color:var(--text-muted)">${entry.locations.map(l=>l.title).join(', ')}</div></div>${caught?'<span class="badge-caught-sm">Caught</span>':''}`;
+    container.appendChild(div);
+  });
+}
+
+function refreshAllUI() {
+  document.querySelectorAll('.poke-row').forEach(row => {
+    const caught = caughtSet.has(row.dataset.pokeName);
+    row.classList.toggle('caught', caught);
+    const badge = row.querySelector('.badge-caught-sm');
+    if (caught && !badge) { const b = document.createElement('span'); b.className = 'badge-caught-sm'; b.textContent = 'Caught'; row.appendChild(b); }
+    else if (!caught && badge) badge.remove();
+  });
+  document.querySelectorAll('.area-card').forEach(card => {
+    const area = areasData.find(a => a.id === card.dataset.areaId);
+    if (!area) return;
+    const unique = [...new Set(area.subsections.flatMap(s => s.pokemon).map(p => normalize(p.name)))];
+    const caughtCount = unique.filter(n => caughtSet.has(n)).length;
+    const total = unique.length;
+    const pct = total ? Math.round((caughtCount/total)*100) : 0;
+    const el = card.querySelector('.area-progress');
+    if (el) el.textContent = `${caughtCount}/${total} · ${pct}%`;
+  });
+  if (currentTab === 'pokedex') {
+    document.querySelectorAll('.pokedex-row').forEach(row => {
+      const caught = caughtSet.has(row.dataset.pokeName);
+      row.classList.toggle('caught', caught);
+      const badge = row.querySelector('.badge-caught-sm');
+      if (caught && !badge) { const b = document.createElement('span'); b.className = 'badge-caught-sm'; b.textContent = 'Caught'; row.appendChild(b); }
+      else if (!caught && badge) badge.remove();
+    });
+  }
+  updateStats();
+}
+
+function updateStats() {
+  const allUnique = new Set();
+  areasData.forEach(a => a.subsections.forEach(s => s.pokemon.forEach(p => allUnique.add(normalize(p.name)))));
+  const total = allUnique.size;
+  let caught = 0;
+  allUnique.forEach(n => { if (caughtSet.has(n)) caught++; });
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statCaught').textContent = caught;
+  document.getElementById('statRemaining').textContent = total - caught;
+  const pct = total ? Math.round((caught/total)*100) : 0;
+  document.getElementById('progressPercent').textContent = pct + '%';
+  document.getElementById('progressCircle').style.strokeDashoffset = 213.63 - (pct/100)*213.63;
+}
+
+window.toggleCollapse = function(id) {
+  const card = document.getElementById('area-'+id);
+  if (card) { card.classList.toggle('collapsed'); localStorage.setItem('collapse_'+id, card.classList.contains('collapsed')); }
+};
+window.markAllInArea = function(areaId, caught) {
+  const area = areasData.find(a => a.id === areaId);
+  if (!area) return;
+  area.subsections.forEach(s => s.pokemon.forEach(p => setCaught(p.name, caught)));
+  saveState();
+  refreshAllUI();
+  showToast(caught ? '✅ All marked caught!' : '↩ Area cleared.');
+};
+
+window.switchTab = function(tab) {
+  currentTab = tab;
+  document.getElementById('tabAreasBtn').classList.toggle('active', tab==='areas');
+  document.getElementById('tabPokedexBtn').classList.toggle('active', tab==='pokedex');
+  document.getElementById('areasContainer').style.display = tab==='areas' ? 'block' : 'none';
+  document.getElementById('pokedexContainer').style.display = tab==='pokedex' ? 'block' : 'none';
+  if (tab==='pokedex') buildPokedex();
+};
+
+// Search
+const searchInput = document.getElementById('searchInput');
+const searchResults = document.getElementById('searchResults');
+const pokemonIndex = new Map();
+const locationIndex = new Map();
+areasData.forEach(area => {
+  locationIndex.set(area.title.toLowerCase(), area.id);
+  area.subsections.forEach(sub => sub.pokemon.forEach(p => {
+    const key = normalize(p.name);
+    if (!pokemonIndex.has(key)) pokemonIndex.set(key, { name: p.name, locations: [] });
+    const entry = pokemonIndex.get(key);
+    if (!entry.locations.find(l => l.id === area.id)) entry.locations.push({ id: area.id, title: area.title });
+  }));
+});
+
+function updateSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  if (q.length < 2) { searchResults.classList.remove('active'); return; }
+  const results = [];
+  pokemonIndex.forEach((entry, key) => { if (key.includes(q) || entry.name.toLowerCase().includes(q)) results.push({type:'pokemon', entry}); });
+  locationIndex.forEach((id, title) => { if (title.includes(q)) { const area = areasData.find(a => a.id === id); if (area) results.push({type:'location', area}); } });
+  searchResults.innerHTML = results.length ? results.map(r => r.type==='pokemon' ? `<div class="search-result-item" onclick="scrollToPokemon('${normalize(r.entry.name)}','${r.entry.locations[0]?.id}')"><span class="result-name">${r.entry.name}</span><span class="result-meta">${r.entry.locations.map(l=>l.title).join(', ')}</span>${caughtSet.has(normalize(r.entry.name))?'<span class="badge-caught">✓</span>':''}</div>` : `<div class="search-result-item" onclick="scrollToArea('${r.area.id}')"><span class="result-name">📍 ${r.area.title}</span></div>`).join('') : '<div class="no-results">Nothing found.</div>';
+  searchResults.classList.add('active');
+}
+searchInput.addEventListener('input', updateSearch);
+searchInput.addEventListener('focus', () => { if (searchInput.value.trim().length >= 2) updateSearch(); });
+document.addEventListener('click', e => { if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) searchResults.classList.remove('active'); });
+
+window.scrollToPokemon = function(normName, areaId) {
+  searchResults.classList.remove('active');
+  if (currentTab !== 'areas') switchTab('areas');
+  const card = document.getElementById('area-'+areaId);
+  if (card) { card.classList.remove('collapsed'); localStorage.setItem('collapse_'+areaId, 'false'); card.scrollIntoView({behavior:'smooth',block:'center'}); }
+};
+window.scrollToArea = function(areaId) {
+  searchResults.classList.remove('active');
+  if (currentTab !== 'areas') switchTab('areas');
+  const card = document.getElementById('area-'+areaId);
+  if (card) { card.classList.remove('collapsed'); card.scrollIntoView({behavior:'smooth',block:'center'}); }
+};
+
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+
+// Export/Import
+window.exportData = function() {
+  const data = { caught: Array.from(caughtSet), exported: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lazarus-full-save.json'; a.click();
+};
+window.openImportModal = function() { document.getElementById('importModal').classList.add('active'); };
+window.closeImportModal = function() { document.getElementById('importModal').classList.remove('active'); };
+window.doImport = function() {
+  const raw = document.getElementById('importTextarea').value;
+  try {
+    const data = JSON.parse(raw);
+    if (data.caught && Array.isArray(data.caught)) {
+      caughtSet = new Set(data.caught.map(normalize));
+      saveState(); refreshAllUI(); closeImportModal(); showToast('📥 Imported!');
+    }
+  } catch(e) { alert('Invalid JSON'); }
+};
+
+// Init
+function init() {
+  loadState();
+  buildAreas();
+  buildPokedex();
+  updateStats();
+  document.getElementById('lastSaved').textContent = localStorage.getItem(STORAGE_KEY) ? new Date().toLocaleTimeString() : '—';
+  const footer = document.querySelector('.footer');
+  const div = document.createElement('div');
+  div.style.cssText = 'margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap';
+  div.innerHTML = `<button class="btn btn-export" onclick="exportData()">📤 Export</button><button class="btn btn-import" onclick="openImportModal()">📥 Import</button><button class="btn btn-reset" onclick="if(confirm('Clear all?')){caughtSet.clear();saveState();refreshAllUI();showToast('🗑️ Cleared');}">🗑️ Reset</button>`;
+  footer.appendChild(div);
+}
+init();
+})();
+</script>
+</body>
+</html>
